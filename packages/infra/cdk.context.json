@@ -1,0 +1,17 @@
+{
+  "sonarqubeScannerConfig": {
+    "sonarqubeEndpoint": "https://www.dev.sonar.qube.aws-prototyping.cloud",
+    "sonarqubeAuthorizedGroup": "aws-apj-anz-prototyping",
+    "sonarqubeDefaultProfileOrGateName": "prototyping-default",
+    "sonarqubeSpecificProfileOrGateName": "prototyping-apj-anz",
+    "sonarqubeProjectName": "ANZPrototypingAWSAutomatedDisclosure",
+    "sonarqubeTags": [
+      "apj",
+      "anz",
+      "Program-Engagement-32174"
+    ],
+    "preArchiveCommands": [
+      "cd packages/infra && cat cdk.context.json | jq 'del(.sonarqubeScannerConfig)' > cdk.context.json"
+    ]
+  }
+}
