@@ -15,6 +15,7 @@ from api_python_client.model.aggregate_metrics import AggregateMetrics
 from api_python_client.model.status_transition import StatusTransition
 from api_python_client.model.document_metadata import DocumentMetadata
 from api_python_client.model.form_metadata import FormMetadata
+import botocore
 
 from aws_lambdas.utils.time import millis_between, utc_now_datetime, to_datetime
 from aws_lambdas.utils.misc import only_defined_values
