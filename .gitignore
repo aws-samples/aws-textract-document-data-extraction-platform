@@ -4,7 +4,6 @@
 !/.projen/deps.json
 !/.projen/files.json
 !/package.json
-!/LICENSE
 !/.npmignore
 logs
 *.log
@@ -43,3 +42,7 @@ jspm_packages/
 !/.nxignore
 !/.nx/plugins/nx-monorepo-plugin.js
 !/nx.json
+!/LICENSE
+.vscode/*
+.env/*
+!/packages/api/generated/README.md

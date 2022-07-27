@@ -1,0 +1,21 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+import { TypeScriptProject } from "projen/lib/typescript";
+import { getShortLicense } from "./license";
+
+/**
+ * Add the MIT-0 header to ts files
+ */
+const addEslintHeaderConfig = (project: TypeScriptProject) => {
+  project.eslint?.addPlugins("header");
+  project.eslint?.addRules({
+    "header/header": [2, "line", [...getShortLicense()]],
+  });
+};
+
+/**
+ * Apply custom eslint config to the project
+ */
+export const configureEslint = (project: TypeScriptProject) => {
+  addEslintHeaderConfig(project);
+};
