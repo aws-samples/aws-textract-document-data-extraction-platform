@@ -29,7 +29,7 @@ Name | Type | Description | Notes
 **oneOf** | **[FormJSONSchema]** |  | [optional] 
 **anyOf** | **[FormJSONSchema]** |  | [optional] 
 **items** | [**FormJSONSchema**](FormJSONSchema.md) |  | [optional] 
-**properties** | **{str: (FormJSONSchema,)}** |  | [optional] 
+**properties** | [**FormJSONSchemaProperties**](FormJSONSchemaProperties.md) |  | [optional] 
 **additionalProperties** | **bool** |  | [optional]  if omitted the server will use the default value of True
 **description** | **str** |  | [optional] 
 **formatType** | **str** |  | [optional] 

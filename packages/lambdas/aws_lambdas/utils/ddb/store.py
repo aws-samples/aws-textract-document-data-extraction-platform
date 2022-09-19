@@ -221,13 +221,15 @@ def _sanitise_dict_for_ddb(item):
     Sanitise floats for storage in dynamodb as decimals
     """
     if isinstance(item, list):
+        new_list = []
         for i in range(0, len(item)):
-            item[i] = _sanitise_dict_for_ddb(item[i])
-        return item
+            new_list[i] = _sanitise_dict_for_ddb(item[i])
+        return new_list
     elif isinstance(item, dict):
+        new_dict = {}
         for k in item.keys():
-            item[k] = _sanitise_dict_for_ddb(item[k])
-        return item
+            new_dict[k] = _sanitise_dict_for_ddb(item[k])
+        return new_dict
     elif isinstance(item, float):
         return decimal_context.create_decimal_from_float(item)
     else:

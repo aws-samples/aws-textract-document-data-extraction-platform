@@ -175,8 +175,8 @@ with api_python_client.ApiClient(configuration) as api_client:
             one_of=[],
             any_of=[],
             items=FormJSONSchema(),
-            properties=dict(
-                "key": FormJSONSchema(),
+            properties=FormJSONSchemaProperties(
+                key=FormJSONSchema(),
             ),
             additional_properties=True,
             description="description_example",
@@ -1674,7 +1674,65 @@ with api_python_client.ApiClient(configuration) as api_client:
     path_params = {
         'schemaId': "schemaId_example",
     }
-    body = FormSchema()
+    body = FormSchema(
+        schema_id="schema_id_example",
+        title="title_example",
+        description="description_example",
+        schema=FormJSONSchema(
+            order=1,
+            extraction_metadata=FormFieldExtractionMetadata(
+                form_key="form_key_example",
+                table_position=1,
+                row_position=1,
+                column_position=1,
+                textract_query="textract_query_example",
+            ),
+            title="title_example",
+            multiple_of=0,
+            maximum=3.14,
+            exclusive_maximum=False,
+            minimum=3.14,
+            exclusive_minimum=False,
+            max_length=0,
+            min_length=0,
+            pattern="pattern_example",
+            max_items=0,
+            min_items=0,
+            unique_items=False,
+            max_properties=0,
+            min_properties=0,
+            required=[
+                "required_example"
+            ],
+            enum=[
+                None
+            ],
+            type_of="array",
+            not_of=FormJSONSchema(),
+            all_of=[
+                FormJSONSchema()
+            ],
+            one_of=[],
+            any_of=[],
+            items=FormJSONSchema(),
+            properties=FormJSONSchemaProperties(
+                key=FormJSONSchema(),
+            ),
+            additional_properties=True,
+            description="description_example",
+            format_type="format_type_example",
+            default=None,
+            nullable=False,
+            read_only=False,
+            write_only=False,
+            example=None,
+            deprecated=False,
+        ),
+        created_by="created_by_example",
+        updated_by="updated_by_example",
+        created_timestamp="created_timestamp_example",
+        updated_timestamp="updated_timestamp_example",
+    )
     try:
         api_response = api_instance.update_form_schema(
             path_params=path_params,

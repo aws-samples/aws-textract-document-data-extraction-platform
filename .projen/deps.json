@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "name": "@aws-prototyping-sdk/open-api-gateway",
-      "version": "0.3.13",
+      "version": "0.10.0",
       "type": "build"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "aws-prototyping-sdk",
-      "version": "0.3.13",
+      "version": "0.10.0",
       "type": "build"
     },
     {

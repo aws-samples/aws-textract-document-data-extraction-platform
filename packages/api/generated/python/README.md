@@ -13,6 +13,87 @@ Python &gt;&#x3D;3.9
 v3.9 is needed so one can combine classmethod and property decorators to define
 object schema properties as classes
 
+## Migration from other generators like python and python-legacy
+
+### Changes
+1. This generator uses spec case for all (object) property names and parameter names.
+    - So if the spec has a property name like camelCase, it will use camelCase rather than camel_case
+    - So you will need to update how you input and read properties to use spec case
+2. Endpoint parameters are stored in dictionaries to prevent collisions (explanation below)
+    - So you will need to update how you pass data in to endpoints
+3. Endpoint responses now include the original response, the deserialized response body, and (todo)the deserialized headers
+    - So you will need to update your code to use response.body to access deserialized data
+4. All validated data is instantiated in an instance that subclasses all validated Schema classes and Decimal/str/list/tuple/frozendict/NoneClass/BoolClass/bytes/io.FileIO
+    - This means that you can use isinstance to check if a payload validated against a schema class
+    - This means that no data will be of type None/True/False
+        - ingested None will subclass NoneClass
+        - ingested True will subclass BoolClass
+        - ingested False will subclass BoolClass
+        - So if you need to check is True/False/None, instead use instance.is_true_oapg()/.is_false_oapg()/.is_none_oapg()
+5. All validated class instances are immutable except for ones based on io.File
+    - This is because if properties were changed after validation, that validation would no longer apply
+    - So no changing values or property values after a class has been instantiated
+6. String + Number types with formats
+    - String type data is stored as a string and if you need to access types based on its format like date,
+    date-time, uuid, number etc then you will need to use accessor functions on the instance
+    - type string + format: See .as_date_oapg, .as_datetime_oapg, .as_decimal_oapg, .as_uuid_oapg
+    - type number + format: See .as_float_oapg, .as_int_oapg
+    - this was done because openapi/json-schema defines constraints. string data may be type string with no format
+    keyword in one schema, and include a format constraint in another schema
+    - So if you need to access a string format based type, use as_date_oapg/as_datetime_oapg/as_decimal_oapg/as_uuid_oapg
+    - So if you need to access a number format based type, use as_int_oapg/as_float_oapg
+7. Property access on AnyType(type unset) or object(dict) schemas
+    - Only required keys with valid python names are properties like .someProp and have type hints
+    - All optional keys may not exist, so properties are not defined for them
+    - One can access optional values with dict_instance['optionalProp'] and KeyError will be raised if it does not exist
+    - Use get_item_oapg if you need a way to always get a value whether or not the key exists
+        - If the key does not exist, schemas.unset is returned from calling dict_instance.get_item_oapg('optionalProp')
+        - All required and optional keys have type hints for this method, and @typing.overload is used
+        - A type hint is also generated for additionalProperties accessed using this method
+    - So you will need to update you code to use some_instance['optionalProp'] to access optional property
+    and additionalProperty values
+
+### Why are Oapg and _oapg used in class and method names?
+Classes can have arbitrarily named properties set on them
+Endpoints can have arbitrary operationId method names set
+For those reasons, I use the prefix Oapg and _oapg to greatly reduce the likelihood of collisions
+on protected + public classes/methods.
+oapg stands for OpenApi Python Generator.
+
+### Object property spec case
+This was done because when payloads are ingested, they can be validated against N number of schemas.
+If the input signature used a different property name then that has mutated the payload.
+So SchemaA and SchemaB must both see the camelCase spec named variable.
+Also it is possible to send in two properties, named camelCase and camel_case in the same payload.
+That use case should be support so spec case is used.
+
+### Parameter spec case
+Parameters can be included in different locations including:
+- query
+- path
+- header
+- cookie
+
+Any of those parameters could use the same parameter names, so if every parameter
+was included as an endpoint parameter in a function signature, they would collide.
+For that reason, each of those inputs have been separated out into separate typed dictionaries:
+- query_params
+- path_params
+- header_params
+- cookie_params
+
+So when updating your code, you will need to pass endpoint parameters in using those
+dictionaries.
+
+### Endpoint responses
+Endpoint responses have been enriched to now include more information.
+Any response reom an endpoint will now include the following properties:
+response: urllib3.HTTPResponse
+body: typing.Union[Unset, Schema]
+headers: typing.Union[Unset, TODO]
+Note: response header deserialization has not yet been added
+
+
 ## Installation & Usage
 ### pip install
 
@@ -51,7 +132,7 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import time
 import api_python_client
 from pprint import pprint
-from api_python_client.api import default_api
+from api_python_client.apis import default_api
 from api_python_client.model.aggregate_metrics import AggregateMetrics
 from api_python_client.model.api_error import ApiError
 from api_python_client.model.create_form_review_workflow_tag_input import CreateFormReviewWorkflowTagInput
@@ -96,55 +177,55 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**create_form_review_workflow_tag**](docs/DefaultApi.md#create_form_review_workflow_tag) | **POST** /tags | 
-*DefaultApi* | [**create_form_schema**](docs/DefaultApi.md#create_form_schema) | **POST** /schemas | 
-*DefaultApi* | [**delete_form_schema**](docs/DefaultApi.md#delete_form_schema) | **DELETE** /schemas/{schemaId} | 
-*DefaultApi* | [**get_document**](docs/DefaultApi.md#get_document) | **GET** /documents/{documentId} | 
-*DefaultApi* | [**get_document_form**](docs/DefaultApi.md#get_document_form) | **GET** /documents/{documentId}/forms/{formId} | 
-*DefaultApi* | [**get_document_upload_url**](docs/DefaultApi.md#get_document_upload_url) | **GET** /documents/upload-url | 
-*DefaultApi* | [**get_form_schema**](docs/DefaultApi.md#get_form_schema) | **GET** /schemas/{schemaId} | 
-*DefaultApi* | [**get_metrics**](docs/DefaultApi.md#get_metrics) | **GET** /metrics | 
-*DefaultApi* | [**list_document_forms**](docs/DefaultApi.md#list_document_forms) | **GET** /documents/{documentId}/forms | 
-*DefaultApi* | [**list_documents**](docs/DefaultApi.md#list_documents) | **GET** /documents | 
-*DefaultApi* | [**list_form_review_workflow_tags**](docs/DefaultApi.md#list_form_review_workflow_tags) | **GET** /tags | 
-*DefaultApi* | [**list_form_schemas**](docs/DefaultApi.md#list_form_schemas) | **GET** /schemas | 
-*DefaultApi* | [**list_forms**](docs/DefaultApi.md#list_forms) | **GET** /forms | 
-*DefaultApi* | [**submit_source_document**](docs/DefaultApi.md#submit_source_document) | **POST** /sources/document | 
-*DefaultApi* | [**update_form_review**](docs/DefaultApi.md#update_form_review) | **PUT** /documents/{documentId}/forms/{formId}/review | 
-*DefaultApi* | [**update_form_schema**](docs/DefaultApi.md#update_form_schema) | **PUT** /schemas/{schemaId} | 
-*DefaultApi* | [**update_status**](docs/DefaultApi.md#update_status) | **PUT** /documents/{documentId}/forms/{formId}/status | 
+*DefaultApi* | [**create_form_review_workflow_tag**](docs/apis/tags/DefaultApi.md#create_form_review_workflow_tag) | **post** /tags | 
+*DefaultApi* | [**create_form_schema**](docs/apis/tags/DefaultApi.md#create_form_schema) | **post** /schemas | 
+*DefaultApi* | [**delete_form_schema**](docs/apis/tags/DefaultApi.md#delete_form_schema) | **delete** /schemas/{schemaId} | 
+*DefaultApi* | [**get_document**](docs/apis/tags/DefaultApi.md#get_document) | **get** /documents/{documentId} | 
+*DefaultApi* | [**get_document_form**](docs/apis/tags/DefaultApi.md#get_document_form) | **get** /documents/{documentId}/forms/{formId} | 
+*DefaultApi* | [**get_document_upload_url**](docs/apis/tags/DefaultApi.md#get_document_upload_url) | **get** /documents/upload-url | 
+*DefaultApi* | [**get_form_schema**](docs/apis/tags/DefaultApi.md#get_form_schema) | **get** /schemas/{schemaId} | 
+*DefaultApi* | [**get_metrics**](docs/apis/tags/DefaultApi.md#get_metrics) | **get** /metrics | 
+*DefaultApi* | [**list_document_forms**](docs/apis/tags/DefaultApi.md#list_document_forms) | **get** /documents/{documentId}/forms | 
+*DefaultApi* | [**list_documents**](docs/apis/tags/DefaultApi.md#list_documents) | **get** /documents | 
+*DefaultApi* | [**list_form_review_workflow_tags**](docs/apis/tags/DefaultApi.md#list_form_review_workflow_tags) | **get** /tags | 
+*DefaultApi* | [**list_form_schemas**](docs/apis/tags/DefaultApi.md#list_form_schemas) | **get** /schemas | 
+*DefaultApi* | [**list_forms**](docs/apis/tags/DefaultApi.md#list_forms) | **get** /forms | 
+*DefaultApi* | [**submit_source_document**](docs/apis/tags/DefaultApi.md#submit_source_document) | **post** /sources/document | 
+*DefaultApi* | [**update_form_review**](docs/apis/tags/DefaultApi.md#update_form_review) | **put** /documents/{documentId}/forms/{formId}/review | 
+*DefaultApi* | [**update_form_schema**](docs/apis/tags/DefaultApi.md#update_form_schema) | **put** /schemas/{schemaId} | 
+*DefaultApi* | [**update_status**](docs/apis/tags/DefaultApi.md#update_status) | **put** /documents/{documentId}/forms/{formId}/status | 
 
 ## Documentation For Models
 
- - [AggregateDocumentMetrics](docs/AggregateDocumentMetrics.md)
- - [AggregateFormMetrics](docs/AggregateFormMetrics.md)
- - [AggregateMetrics](docs/AggregateMetrics.md)
- - [ApiError](docs/ApiError.md)
- - [CreateFormReviewWorkflowTagInput](docs/CreateFormReviewWorkflowTagInput.md)
- - [CreateUpdateDetails](docs/CreateUpdateDetails.md)
- - [DocumentMetadata](docs/DocumentMetadata.md)
- - [ExecutionStatus](docs/ExecutionStatus.md)
- - [ExtractionAccuracy](docs/ExtractionAccuracy.md)
- - [ExtractionExecution](docs/ExtractionExecution.md)
- - [ExtractionExecutionStatus](docs/ExtractionExecutionStatus.md)
- - [FormFieldExtractionMetadata](docs/FormFieldExtractionMetadata.md)
- - [FormJSONSchema](docs/FormJSONSchema.md)
- - [FormMetadata](docs/FormMetadata.md)
- - [FormReviewWorkflowTag](docs/FormReviewWorkflowTag.md)
- - [FormSchema](docs/FormSchema.md)
- - [FormSchemaInput](docs/FormSchemaInput.md)
- - [GetDocumentUploadUrlResponse](docs/GetDocumentUploadUrlResponse.md)
- - [IngestionExecution](docs/IngestionExecution.md)
- - [ListDocumentsResponse](docs/ListDocumentsResponse.md)
- - [ListFormReviewWorkflowTagsResponse](docs/ListFormReviewWorkflowTagsResponse.md)
- - [ListFormSchemasResponse](docs/ListFormSchemasResponse.md)
- - [ListFormsResponse](docs/ListFormsResponse.md)
- - [PaginatedResponse](docs/PaginatedResponse.md)
- - [S3Location](docs/S3Location.md)
- - [StatusTransition](docs/StatusTransition.md)
- - [SubmitSourceDocumentInput](docs/SubmitSourceDocumentInput.md)
- - [UpdateFormInput](docs/UpdateFormInput.md)
- - [UpdateStatusInput](docs/UpdateStatusInput.md)
+ - [AggregateDocumentMetrics](docs/models/AggregateDocumentMetrics.md)
+ - [AggregateFormMetrics](docs/models/AggregateFormMetrics.md)
+ - [AggregateMetrics](docs/models/AggregateMetrics.md)
+ - [ApiError](docs/models/ApiError.md)
+ - [CreateFormReviewWorkflowTagInput](docs/models/CreateFormReviewWorkflowTagInput.md)
+ - [CreateUpdateDetails](docs/models/CreateUpdateDetails.md)
+ - [DocumentMetadata](docs/models/DocumentMetadata.md)
+ - [ExecutionStatus](docs/models/ExecutionStatus.md)
+ - [ExtractionAccuracy](docs/models/ExtractionAccuracy.md)
+ - [ExtractionExecution](docs/models/ExtractionExecution.md)
+ - [ExtractionExecutionStatus](docs/models/ExtractionExecutionStatus.md)
+ - [FormFieldExtractionMetadata](docs/models/FormFieldExtractionMetadata.md)
+ - [FormJSONSchema](docs/models/FormJSONSchema.md)
+ - [FormMetadata](docs/models/FormMetadata.md)
+ - [FormReviewWorkflowTag](docs/models/FormReviewWorkflowTag.md)
+ - [FormSchema](docs/models/FormSchema.md)
+ - [FormSchemaInput](docs/models/FormSchemaInput.md)
+ - [GetDocumentUploadUrlResponse](docs/models/GetDocumentUploadUrlResponse.md)
+ - [IngestionExecution](docs/models/IngestionExecution.md)
+ - [ListDocumentsResponse](docs/models/ListDocumentsResponse.md)
+ - [ListFormReviewWorkflowTagsResponse](docs/models/ListFormReviewWorkflowTagsResponse.md)
+ - [ListFormSchemasResponse](docs/models/ListFormSchemasResponse.md)
+ - [ListFormsResponse](docs/models/ListFormsResponse.md)
+ - [PaginatedResponse](docs/models/PaginatedResponse.md)
+ - [S3Location](docs/models/S3Location.md)
+ - [StatusTransition](docs/models/StatusTransition.md)
+ - [SubmitSourceDocumentInput](docs/models/SubmitSourceDocumentInput.md)
+ - [UpdateFormInput](docs/models/UpdateFormInput.md)
+ - [UpdateStatusInput](docs/models/UpdateStatusInput.md)
 
 ## Documentation For Authorization
 
@@ -160,7 +241,7 @@ RecursionError indicating the maximum recursion limit has been exceeded. In that
 
 Solution 1:
 Use specific imports for apis and models like:
-- `from api_python_client.api.default_api import DefaultApi`
+- `from api_python_client.apis.default_api import DefaultApi`
 - `from api_python_client.model.pet import Pet`
 
 Solution 1:

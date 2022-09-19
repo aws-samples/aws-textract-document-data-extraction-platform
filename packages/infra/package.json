@@ -54,7 +54,7 @@
     "@aws/api": "^0.0.0",
     "@aws/api-typescript": "^0.0.0",
     "aws-cdk-lib": "2.23.0",
-    "aws-prototyping-sdk": "0.3.13",
+    "aws-prototyping-sdk": "0.10.0",
     "aws-sdk": "^2.1118.0",
     "cdk-nag": "^2.15.16",
     "constructs": "10.0.77",

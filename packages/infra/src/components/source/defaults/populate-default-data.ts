@@ -42,7 +42,7 @@ export class PopulateDefaultData extends Construct {
     [APPENDIX_3X, APPENDIX_3Y, APPENDIX_3Z].forEach((schema) => {
       new AwsCustomResource(
         this,
-        `Default11Schema${schema.title.replace(/\s/g, "")}`,
+        `default21Schema${schema.title.replace(/\s/g, "")}`,
         {
           policy: AwsCustomResourcePolicy.fromStatements([
             new PolicyStatement({
@@ -93,7 +93,7 @@ export class PopulateDefaultData extends Construct {
     REVIEW_WORKFLOW_TAGS.forEach((tag) => {
       new AwsCustomResource(
         this,
-        `Default11FormReviewWorkflowTag${tag.tagText.replace(/\s/g, "")}`,
+        `default21FormReviewWorkflowTag${tag.tagText.replace(/\s/g, "")}`,
         {
           policy: AwsCustomResourcePolicy.fromStatements([
             new PolicyStatement({

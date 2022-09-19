@@ -10,7 +10,7 @@ import { configureProject } from "./projenrc/utils/common";
 import { configureTsProject } from "./projenrc/utils/typescript";
 import { webappProject } from "./projenrc/webapp";
 
-const awsPrototypingSdkVersion = "0.3.13";
+const awsPrototypingSdkVersion = "0.10.0";
 const cdkVersion = "2.23.0";
 const constructsVersion = "10.0.77";
 const monorepo = new nx_monorepo.NxMonorepoProject({
@@ -40,6 +40,7 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
 });
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
+monorepo.gitignore.addPatterns(".DS_Store");
 // Lint this file and other projen code as part of post synthesize
 monorepo.components.push(
   new (class extends Component {

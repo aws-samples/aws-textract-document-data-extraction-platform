@@ -83,5 +83,5 @@ dmypy.json
 .pytype/
 
 cython_debug/
-!/.openapi-generator-ignore
 !/package.json
+!/.openapi-generator-ignore

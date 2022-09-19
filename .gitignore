@@ -45,4 +45,5 @@ jspm_packages/
 !/LICENSE
 .vscode/*
 .env/*
+.DS_Store
 !/packages/api/generated/README.md

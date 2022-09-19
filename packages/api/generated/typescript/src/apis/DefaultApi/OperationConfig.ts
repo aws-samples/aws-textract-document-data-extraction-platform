@@ -70,6 +70,9 @@ import {
     UpdateStatusRequest,
 } from '..';
 
+// API Gateway Types
+import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
+
 // Generic type for object keyed by operation names
 export interface OperationConfig<T> {
     createFormReviewWorkflowTag: T;
@@ -186,16 +189,16 @@ const decodeRequestParameters = (parameters: ApiGatewayRequestParameters): ApiGa
 /**
  * Parse the body if the content type is json, otherwise leave as a raw string
  */
-const parseBody = (body: string, contentTypes: string[]): any => contentTypes.filter((contentType) => contentType !== 'application/json').length === 0 ? JSON.parse(body || '{}') : body;
+const parseBody = (body: string, demarshal: (body: string) => any, contentTypes: string[]): any => contentTypes.filter((contentType) => contentType !== 'application/json').length === 0 ? demarshal(body || '{}') : body;
 
 // Api gateway lambda handler type
-type ApiGatewayLambdaHandler = (event: any, context: any) => Promise<any>;
+type ApiGatewayLambdaHandler = (event: APIGatewayProxyEvent, context: Context) => Promise<APIGatewayProxyResult>;
 
 // Type of the response to be returned by an operation lambda handler
-export interface OperationResponse<T, ApiError> {
-    statusCode: number;
+export interface OperationResponse<StatusCode extends number, Body> {
+    statusCode: StatusCode;
     headers?: { [key: string]: string };
-    body?: T | ApiError;
+    body: Body;
 }
 
 // Input for a lambda handler for an operation
@@ -205,15 +208,61 @@ export type LambdaRequestParameters<RequestParameters, RequestArrayParameters, R
     body: RequestBody,
 };
 
-// Type for a lambda handler function to be wrapped
-export type LambdaHandlerFunction<RequestParameters, RequestArrayParameters, RequestBody, RequestOutput, ApiError> = (
-    input: LambdaRequestParameters<RequestParameters, RequestArrayParameters, RequestBody>,
-    event: any,
-    context: any,
-) => Promise<OperationResponse<RequestOutput, ApiError>>;
+export type InterceptorContext = { [key: string]: any };
 
-// Type alias for the request
-type CreateFormReviewWorkflowTagRequestInput = CreateFormReviewWorkflowTagRequest;
+export interface RequestInput<RequestParameters, RequestArrayParameters, RequestBody> {
+    input: LambdaRequestParameters<RequestParameters, RequestArrayParameters, RequestBody>;
+    event: APIGatewayProxyEvent;
+    context: Context;
+    interceptorContext: InterceptorContext;
+}
+
+export interface ChainedRequestInput<RequestParameters, RequestArrayParameters, RequestBody, Response> extends RequestInput<RequestParameters, RequestArrayParameters, RequestBody> {
+    chain: LambdaHandlerChain<RequestParameters, RequestArrayParameters, RequestBody, Response>;
+}
+
+/**
+ * A lambda handler function which is part of a chain. It may invoke the remainder of the chain via the given chain input
+ */
+export type ChainedLambdaHandlerFunction<RequestParameters, RequestArrayParameters, RequestBody, Response> = (
+  input: ChainedRequestInput<RequestParameters, RequestArrayParameters, RequestBody, Response>,
+) => Promise<Response>;
+
+// Type for a lambda handler function to be wrapped
+export type LambdaHandlerFunction<RequestParameters, RequestArrayParameters, RequestBody, Response> = (
+  input: RequestInput<RequestParameters, RequestArrayParameters, RequestBody>,
+) => Promise<Response>;
+
+export interface LambdaHandlerChain<RequestParameters, RequestArrayParameters, RequestBody, Response> {
+  next: LambdaHandlerFunction<RequestParameters, RequestArrayParameters, RequestBody, Response>;
+}
+
+// Interceptor is a type alias for ChainedLambdaHandlerFunction
+export type Interceptor<RequestParameters, RequestArrayParameters, RequestBody, Response> = ChainedLambdaHandlerFunction<RequestParameters, RequestArrayParameters, RequestBody, Response>;
+
+/**
+ * Build a chain from the given array of chained lambda handlers
+ */
+const buildHandlerChain = <RequestParameters, RequestArrayParameters, RequestBody, Response>(
+  ...handlers: ChainedLambdaHandlerFunction<RequestParameters, RequestArrayParameters, RequestBody, Response>[]
+): LambdaHandlerChain<RequestParameters, RequestArrayParameters, RequestBody, Response> => {
+  if (handlers.length === 0) {
+    return {
+      next: () => {
+        throw new Error("No more handlers remain in the chain! The last handler should not call next.");
+      }
+    };
+  }
+  const [currentHandler, ...remainingHandlers] = handlers;
+  return {
+    next: (input) => {
+      return currentHandler({
+        ...input,
+        chain: buildHandlerChain(...remainingHandlers),
+      });
+    },
+  };
+};
 
 /**
  * Single-value path/query parameters for CreateFormReviewWorkflowTag
@@ -232,13 +281,20 @@ export interface CreateFormReviewWorkflowTagRequestArrayParameters {
  */
 export type CreateFormReviewWorkflowTagRequestBody = CreateFormReviewWorkflowTagInput;
 
+export type CreateFormReviewWorkflowTag200OperationResponse = OperationResponse<200, FormReviewWorkflowTag>;
+export type CreateFormReviewWorkflowTagOperationResponses = | CreateFormReviewWorkflowTag200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type CreateFormReviewWorkflowTagHandlerFunction<ApiError> = LambdaHandlerFunction<CreateFormReviewWorkflowTagRequestParameters, CreateFormReviewWorkflowTagRequestArrayParameters, CreateFormReviewWorkflowTagRequestBody, FormReviewWorkflowTag, ApiError>;
+export type CreateFormReviewWorkflowTagHandlerFunction = LambdaHandlerFunction<CreateFormReviewWorkflowTagRequestParameters, CreateFormReviewWorkflowTagRequestArrayParameters, CreateFormReviewWorkflowTagRequestBody, CreateFormReviewWorkflowTagOperationResponses>;
+export type CreateFormReviewWorkflowTagChainedHandlerFunction = ChainedLambdaHandlerFunction<CreateFormReviewWorkflowTagRequestParameters, CreateFormReviewWorkflowTagRequestArrayParameters, CreateFormReviewWorkflowTagRequestBody, CreateFormReviewWorkflowTagOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of createFormReviewWorkflowTag
  */
-export const createFormReviewWorkflowTagHandler = <ApiError>(handler: CreateFormReviewWorkflowTagHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const createFormReviewWorkflowTagHandler = (
+    firstHandler: CreateFormReviewWorkflowTagChainedHandlerFunction,
+    ...remainingHandlers: CreateFormReviewWorkflowTagChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -248,22 +304,43 @@ export const createFormReviewWorkflowTagHandler = <ApiError>(handler: CreateForm
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as CreateFormReviewWorkflowTagRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json',]) as CreateFormReviewWorkflowTagRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        parsed = CreateFormReviewWorkflowTagInputFromJSON(parsed);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json',]) as CreateFormReviewWorkflowTagRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormReviewWorkflowTagToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type CreateFormSchemaRequestInput = CreateFormSchemaRequest;
-
 /**
  * Single-value path/query parameters for CreateFormSchema
  */
@@ -281,13 +358,20 @@ export interface CreateFormSchemaRequestArrayParameters {
  */
 export type CreateFormSchemaRequestBody = FormSchemaInput;
 
+export type CreateFormSchema200OperationResponse = OperationResponse<200, FormSchema>;
+export type CreateFormSchemaOperationResponses = | CreateFormSchema200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type CreateFormSchemaHandlerFunction<ApiError> = LambdaHandlerFunction<CreateFormSchemaRequestParameters, CreateFormSchemaRequestArrayParameters, CreateFormSchemaRequestBody, FormSchema, ApiError>;
+export type CreateFormSchemaHandlerFunction = LambdaHandlerFunction<CreateFormSchemaRequestParameters, CreateFormSchemaRequestArrayParameters, CreateFormSchemaRequestBody, CreateFormSchemaOperationResponses>;
+export type CreateFormSchemaChainedHandlerFunction = ChainedLambdaHandlerFunction<CreateFormSchemaRequestParameters, CreateFormSchemaRequestArrayParameters, CreateFormSchemaRequestBody, CreateFormSchemaOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of createFormSchema
  */
-export const createFormSchemaHandler = <ApiError>(handler: CreateFormSchemaHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const createFormSchemaHandler = (
+    firstHandler: CreateFormSchemaChainedHandlerFunction,
+    ...remainingHandlers: CreateFormSchemaChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -297,22 +381,43 @@ export const createFormSchemaHandler = <ApiError>(handler: CreateFormSchemaHandl
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as CreateFormSchemaRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json',]) as CreateFormSchemaRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        parsed = FormSchemaInputFromJSON(parsed);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json',]) as CreateFormSchemaRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormSchemaToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type DeleteFormSchemaRequestInput = DeleteFormSchemaRequest;
-
 /**
  * Single-value path/query parameters for DeleteFormSchema
  */
@@ -331,13 +436,20 @@ export interface DeleteFormSchemaRequestArrayParameters {
  */
 export type DeleteFormSchemaRequestBody = never;
 
+export type DeleteFormSchema200OperationResponse = OperationResponse<200, FormSchema>;
+export type DeleteFormSchemaOperationResponses = | DeleteFormSchema200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type DeleteFormSchemaHandlerFunction<ApiError> = LambdaHandlerFunction<DeleteFormSchemaRequestParameters, DeleteFormSchemaRequestArrayParameters, DeleteFormSchemaRequestBody, FormSchema, ApiError>;
+export type DeleteFormSchemaHandlerFunction = LambdaHandlerFunction<DeleteFormSchemaRequestParameters, DeleteFormSchemaRequestArrayParameters, DeleteFormSchemaRequestBody, DeleteFormSchemaOperationResponses>;
+export type DeleteFormSchemaChainedHandlerFunction = ChainedLambdaHandlerFunction<DeleteFormSchemaRequestParameters, DeleteFormSchemaRequestArrayParameters, DeleteFormSchemaRequestBody, DeleteFormSchemaOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of deleteFormSchema
  */
-export const deleteFormSchemaHandler = <ApiError>(handler: DeleteFormSchemaHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const deleteFormSchemaHandler = (
+    firstHandler: DeleteFormSchemaChainedHandlerFunction,
+    ...remainingHandlers: DeleteFormSchemaChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -347,22 +459,42 @@ export const deleteFormSchemaHandler = <ApiError>(handler: DeleteFormSchemaHandl
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as DeleteFormSchemaRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as DeleteFormSchemaRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as DeleteFormSchemaRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormSchemaToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type GetDocumentRequestInput = GetDocumentRequest;
-
 /**
  * Single-value path/query parameters for GetDocument
  */
@@ -381,13 +513,21 @@ export interface GetDocumentRequestArrayParameters {
  */
 export type GetDocumentRequestBody = never;
 
+export type GetDocument200OperationResponse = OperationResponse<200, DocumentMetadata>;
+export type GetDocument404OperationResponse = OperationResponse<404, ApiError>;
+export type GetDocumentOperationResponses = | GetDocument200OperationResponse | GetDocument404OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type GetDocumentHandlerFunction<ApiError> = LambdaHandlerFunction<GetDocumentRequestParameters, GetDocumentRequestArrayParameters, GetDocumentRequestBody, DocumentMetadata, ApiError>;
+export type GetDocumentHandlerFunction = LambdaHandlerFunction<GetDocumentRequestParameters, GetDocumentRequestArrayParameters, GetDocumentRequestBody, GetDocumentOperationResponses>;
+export type GetDocumentChainedHandlerFunction = ChainedLambdaHandlerFunction<GetDocumentRequestParameters, GetDocumentRequestArrayParameters, GetDocumentRequestBody, GetDocumentOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of getDocument
  */
-export const getDocumentHandler = <ApiError>(handler: GetDocumentHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const getDocumentHandler = (
+    firstHandler: GetDocumentChainedHandlerFunction,
+    ...remainingHandlers: GetDocumentChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -397,22 +537,45 @@ export const getDocumentHandler = <ApiError>(handler: GetDocumentHandlerFunction
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as GetDocumentRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as GetDocumentRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as GetDocumentRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(DocumentMetadataToJSON(marshalledBody));
+                break;
+            case 404:
+                marshalledBody = JSON.stringify(ApiErrorToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type GetDocumentFormRequestInput = GetDocumentFormRequest;
-
 /**
  * Single-value path/query parameters for GetDocumentForm
  */
@@ -432,13 +595,21 @@ export interface GetDocumentFormRequestArrayParameters {
  */
 export type GetDocumentFormRequestBody = never;
 
+export type GetDocumentForm200OperationResponse = OperationResponse<200, FormMetadata>;
+export type GetDocumentForm404OperationResponse = OperationResponse<404, ApiError>;
+export type GetDocumentFormOperationResponses = | GetDocumentForm200OperationResponse | GetDocumentForm404OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type GetDocumentFormHandlerFunction<ApiError> = LambdaHandlerFunction<GetDocumentFormRequestParameters, GetDocumentFormRequestArrayParameters, GetDocumentFormRequestBody, FormMetadata, ApiError>;
+export type GetDocumentFormHandlerFunction = LambdaHandlerFunction<GetDocumentFormRequestParameters, GetDocumentFormRequestArrayParameters, GetDocumentFormRequestBody, GetDocumentFormOperationResponses>;
+export type GetDocumentFormChainedHandlerFunction = ChainedLambdaHandlerFunction<GetDocumentFormRequestParameters, GetDocumentFormRequestArrayParameters, GetDocumentFormRequestBody, GetDocumentFormOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of getDocumentForm
  */
-export const getDocumentFormHandler = <ApiError>(handler: GetDocumentFormHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const getDocumentFormHandler = (
+    firstHandler: GetDocumentFormChainedHandlerFunction,
+    ...remainingHandlers: GetDocumentFormChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -448,22 +619,45 @@ export const getDocumentFormHandler = <ApiError>(handler: GetDocumentFormHandler
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as GetDocumentFormRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as GetDocumentFormRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as GetDocumentFormRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormMetadataToJSON(marshalledBody));
+                break;
+            case 404:
+                marshalledBody = JSON.stringify(ApiErrorToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type GetDocumentUploadUrlRequestInput = GetDocumentUploadUrlRequest;
-
 /**
  * Single-value path/query parameters for GetDocumentUploadUrl
  */
@@ -483,13 +677,20 @@ export interface GetDocumentUploadUrlRequestArrayParameters {
  */
 export type GetDocumentUploadUrlRequestBody = never;
 
+export type GetDocumentUploadUrl200OperationResponse = OperationResponse<200, GetDocumentUploadUrlResponse>;
+export type GetDocumentUploadUrlOperationResponses = | GetDocumentUploadUrl200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type GetDocumentUploadUrlHandlerFunction<ApiError> = LambdaHandlerFunction<GetDocumentUploadUrlRequestParameters, GetDocumentUploadUrlRequestArrayParameters, GetDocumentUploadUrlRequestBody, GetDocumentUploadUrlResponse, ApiError>;
+export type GetDocumentUploadUrlHandlerFunction = LambdaHandlerFunction<GetDocumentUploadUrlRequestParameters, GetDocumentUploadUrlRequestArrayParameters, GetDocumentUploadUrlRequestBody, GetDocumentUploadUrlOperationResponses>;
+export type GetDocumentUploadUrlChainedHandlerFunction = ChainedLambdaHandlerFunction<GetDocumentUploadUrlRequestParameters, GetDocumentUploadUrlRequestArrayParameters, GetDocumentUploadUrlRequestBody, GetDocumentUploadUrlOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of getDocumentUploadUrl
  */
-export const getDocumentUploadUrlHandler = <ApiError>(handler: GetDocumentUploadUrlHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const getDocumentUploadUrlHandler = (
+    firstHandler: GetDocumentUploadUrlChainedHandlerFunction,
+    ...remainingHandlers: GetDocumentUploadUrlChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -499,22 +700,42 @@ export const getDocumentUploadUrlHandler = <ApiError>(handler: GetDocumentUpload
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as GetDocumentUploadUrlRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as GetDocumentUploadUrlRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as GetDocumentUploadUrlRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(GetDocumentUploadUrlResponseToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type GetFormSchemaRequestInput = GetFormSchemaRequest;
-
 /**
  * Single-value path/query parameters for GetFormSchema
  */
@@ -533,13 +754,20 @@ export interface GetFormSchemaRequestArrayParameters {
  */
 export type GetFormSchemaRequestBody = never;
 
+export type GetFormSchema200OperationResponse = OperationResponse<200, FormSchema>;
+export type GetFormSchemaOperationResponses = | GetFormSchema200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type GetFormSchemaHandlerFunction<ApiError> = LambdaHandlerFunction<GetFormSchemaRequestParameters, GetFormSchemaRequestArrayParameters, GetFormSchemaRequestBody, FormSchema, ApiError>;
+export type GetFormSchemaHandlerFunction = LambdaHandlerFunction<GetFormSchemaRequestParameters, GetFormSchemaRequestArrayParameters, GetFormSchemaRequestBody, GetFormSchemaOperationResponses>;
+export type GetFormSchemaChainedHandlerFunction = ChainedLambdaHandlerFunction<GetFormSchemaRequestParameters, GetFormSchemaRequestArrayParameters, GetFormSchemaRequestBody, GetFormSchemaOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of getFormSchema
  */
-export const getFormSchemaHandler = <ApiError>(handler: GetFormSchemaHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const getFormSchemaHandler = (
+    firstHandler: GetFormSchemaChainedHandlerFunction,
+    ...remainingHandlers: GetFormSchemaChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -549,22 +777,42 @@ export const getFormSchemaHandler = <ApiError>(handler: GetFormSchemaHandlerFunc
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as GetFormSchemaRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as GetFormSchemaRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as GetFormSchemaRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormSchemaToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type GetMetricsRequestInput = GetMetricsRequest;
-
 /**
  * Single-value path/query parameters for GetMetrics
  */
@@ -584,13 +832,20 @@ export interface GetMetricsRequestArrayParameters {
  */
 export type GetMetricsRequestBody = never;
 
+export type GetMetrics200OperationResponse = OperationResponse<200, AggregateMetrics>;
+export type GetMetricsOperationResponses = | GetMetrics200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type GetMetricsHandlerFunction<ApiError> = LambdaHandlerFunction<GetMetricsRequestParameters, GetMetricsRequestArrayParameters, GetMetricsRequestBody, AggregateMetrics, ApiError>;
+export type GetMetricsHandlerFunction = LambdaHandlerFunction<GetMetricsRequestParameters, GetMetricsRequestArrayParameters, GetMetricsRequestBody, GetMetricsOperationResponses>;
+export type GetMetricsChainedHandlerFunction = ChainedLambdaHandlerFunction<GetMetricsRequestParameters, GetMetricsRequestArrayParameters, GetMetricsRequestBody, GetMetricsOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of getMetrics
  */
-export const getMetricsHandler = <ApiError>(handler: GetMetricsHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const getMetricsHandler = (
+    firstHandler: GetMetricsChainedHandlerFunction,
+    ...remainingHandlers: GetMetricsChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -600,22 +855,42 @@ export const getMetricsHandler = <ApiError>(handler: GetMetricsHandlerFunction<A
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as GetMetricsRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as GetMetricsRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as GetMetricsRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(AggregateMetricsToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type ListDocumentFormsRequestInput = ListDocumentFormsRequest;
-
 /**
  * Single-value path/query parameters for ListDocumentForms
  */
@@ -636,13 +911,21 @@ export interface ListDocumentFormsRequestArrayParameters {
  */
 export type ListDocumentFormsRequestBody = never;
 
+export type ListDocumentForms200OperationResponse = OperationResponse<200, ListFormsResponse>;
+export type ListDocumentForms404OperationResponse = OperationResponse<404, ApiError>;
+export type ListDocumentFormsOperationResponses = | ListDocumentForms200OperationResponse | ListDocumentForms404OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type ListDocumentFormsHandlerFunction<ApiError> = LambdaHandlerFunction<ListDocumentFormsRequestParameters, ListDocumentFormsRequestArrayParameters, ListDocumentFormsRequestBody, ListFormsResponse, ApiError>;
+export type ListDocumentFormsHandlerFunction = LambdaHandlerFunction<ListDocumentFormsRequestParameters, ListDocumentFormsRequestArrayParameters, ListDocumentFormsRequestBody, ListDocumentFormsOperationResponses>;
+export type ListDocumentFormsChainedHandlerFunction = ChainedLambdaHandlerFunction<ListDocumentFormsRequestParameters, ListDocumentFormsRequestArrayParameters, ListDocumentFormsRequestBody, ListDocumentFormsOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of listDocumentForms
  */
-export const listDocumentFormsHandler = <ApiError>(handler: ListDocumentFormsHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const listDocumentFormsHandler = (
+    firstHandler: ListDocumentFormsChainedHandlerFunction,
+    ...remainingHandlers: ListDocumentFormsChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -652,22 +935,45 @@ export const listDocumentFormsHandler = <ApiError>(handler: ListDocumentFormsHan
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as ListDocumentFormsRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as ListDocumentFormsRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as ListDocumentFormsRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(ListFormsResponseToJSON(marshalledBody));
+                break;
+            case 404:
+                marshalledBody = JSON.stringify(ApiErrorToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type ListDocumentsRequestInput = ListDocumentsRequest;
-
 /**
  * Single-value path/query parameters for ListDocuments
  */
@@ -687,13 +993,20 @@ export interface ListDocumentsRequestArrayParameters {
  */
 export type ListDocumentsRequestBody = never;
 
+export type ListDocuments200OperationResponse = OperationResponse<200, ListDocumentsResponse>;
+export type ListDocumentsOperationResponses = | ListDocuments200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type ListDocumentsHandlerFunction<ApiError> = LambdaHandlerFunction<ListDocumentsRequestParameters, ListDocumentsRequestArrayParameters, ListDocumentsRequestBody, ListDocumentsResponse, ApiError>;
+export type ListDocumentsHandlerFunction = LambdaHandlerFunction<ListDocumentsRequestParameters, ListDocumentsRequestArrayParameters, ListDocumentsRequestBody, ListDocumentsOperationResponses>;
+export type ListDocumentsChainedHandlerFunction = ChainedLambdaHandlerFunction<ListDocumentsRequestParameters, ListDocumentsRequestArrayParameters, ListDocumentsRequestBody, ListDocumentsOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of listDocuments
  */
-export const listDocumentsHandler = <ApiError>(handler: ListDocumentsHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const listDocumentsHandler = (
+    firstHandler: ListDocumentsChainedHandlerFunction,
+    ...remainingHandlers: ListDocumentsChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -703,22 +1016,42 @@ export const listDocumentsHandler = <ApiError>(handler: ListDocumentsHandlerFunc
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as ListDocumentsRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as ListDocumentsRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as ListDocumentsRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(ListDocumentsResponseToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type ListFormReviewWorkflowTagsRequestInput = ListFormReviewWorkflowTagsRequest;
-
 /**
  * Single-value path/query parameters for ListFormReviewWorkflowTags
  */
@@ -738,13 +1071,20 @@ export interface ListFormReviewWorkflowTagsRequestArrayParameters {
  */
 export type ListFormReviewWorkflowTagsRequestBody = never;
 
+export type ListFormReviewWorkflowTags200OperationResponse = OperationResponse<200, ListFormReviewWorkflowTagsResponse>;
+export type ListFormReviewWorkflowTagsOperationResponses = | ListFormReviewWorkflowTags200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type ListFormReviewWorkflowTagsHandlerFunction<ApiError> = LambdaHandlerFunction<ListFormReviewWorkflowTagsRequestParameters, ListFormReviewWorkflowTagsRequestArrayParameters, ListFormReviewWorkflowTagsRequestBody, ListFormReviewWorkflowTagsResponse, ApiError>;
+export type ListFormReviewWorkflowTagsHandlerFunction = LambdaHandlerFunction<ListFormReviewWorkflowTagsRequestParameters, ListFormReviewWorkflowTagsRequestArrayParameters, ListFormReviewWorkflowTagsRequestBody, ListFormReviewWorkflowTagsOperationResponses>;
+export type ListFormReviewWorkflowTagsChainedHandlerFunction = ChainedLambdaHandlerFunction<ListFormReviewWorkflowTagsRequestParameters, ListFormReviewWorkflowTagsRequestArrayParameters, ListFormReviewWorkflowTagsRequestBody, ListFormReviewWorkflowTagsOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of listFormReviewWorkflowTags
  */
-export const listFormReviewWorkflowTagsHandler = <ApiError>(handler: ListFormReviewWorkflowTagsHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const listFormReviewWorkflowTagsHandler = (
+    firstHandler: ListFormReviewWorkflowTagsChainedHandlerFunction,
+    ...remainingHandlers: ListFormReviewWorkflowTagsChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -754,22 +1094,42 @@ export const listFormReviewWorkflowTagsHandler = <ApiError>(handler: ListFormRev
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as ListFormReviewWorkflowTagsRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as ListFormReviewWorkflowTagsRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as ListFormReviewWorkflowTagsRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(ListFormReviewWorkflowTagsResponseToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type ListFormSchemasRequestInput = ListFormSchemasRequest;
-
 /**
  * Single-value path/query parameters for ListFormSchemas
  */
@@ -789,13 +1149,20 @@ export interface ListFormSchemasRequestArrayParameters {
  */
 export type ListFormSchemasRequestBody = never;
 
+export type ListFormSchemas200OperationResponse = OperationResponse<200, ListFormSchemasResponse>;
+export type ListFormSchemasOperationResponses = | ListFormSchemas200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type ListFormSchemasHandlerFunction<ApiError> = LambdaHandlerFunction<ListFormSchemasRequestParameters, ListFormSchemasRequestArrayParameters, ListFormSchemasRequestBody, ListFormSchemasResponse, ApiError>;
+export type ListFormSchemasHandlerFunction = LambdaHandlerFunction<ListFormSchemasRequestParameters, ListFormSchemasRequestArrayParameters, ListFormSchemasRequestBody, ListFormSchemasOperationResponses>;
+export type ListFormSchemasChainedHandlerFunction = ChainedLambdaHandlerFunction<ListFormSchemasRequestParameters, ListFormSchemasRequestArrayParameters, ListFormSchemasRequestBody, ListFormSchemasOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of listFormSchemas
  */
-export const listFormSchemasHandler = <ApiError>(handler: ListFormSchemasHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const listFormSchemasHandler = (
+    firstHandler: ListFormSchemasChainedHandlerFunction,
+    ...remainingHandlers: ListFormSchemasChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -805,22 +1172,42 @@ export const listFormSchemasHandler = <ApiError>(handler: ListFormSchemasHandler
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as ListFormSchemasRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as ListFormSchemasRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as ListFormSchemasRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(ListFormSchemasResponseToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type ListFormsRequestInput = ListFormsRequest;
-
 /**
  * Single-value path/query parameters for ListForms
  */
@@ -840,13 +1227,20 @@ export interface ListFormsRequestArrayParameters {
  */
 export type ListFormsRequestBody = never;
 
+export type ListForms200OperationResponse = OperationResponse<200, ListFormsResponse>;
+export type ListFormsOperationResponses = | ListForms200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type ListFormsHandlerFunction<ApiError> = LambdaHandlerFunction<ListFormsRequestParameters, ListFormsRequestArrayParameters, ListFormsRequestBody, ListFormsResponse, ApiError>;
+export type ListFormsHandlerFunction = LambdaHandlerFunction<ListFormsRequestParameters, ListFormsRequestArrayParameters, ListFormsRequestBody, ListFormsOperationResponses>;
+export type ListFormsChainedHandlerFunction = ChainedLambdaHandlerFunction<ListFormsRequestParameters, ListFormsRequestArrayParameters, ListFormsRequestBody, ListFormsOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of listForms
  */
-export const listFormsHandler = <ApiError>(handler: ListFormsHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const listFormsHandler = (
+    firstHandler: ListFormsChainedHandlerFunction,
+    ...remainingHandlers: ListFormsChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -856,22 +1250,42 @@ export const listFormsHandler = <ApiError>(handler: ListFormsHandlerFunction<Api
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as ListFormsRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json']) as ListFormsRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json']) as ListFormsRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(ListFormsResponseToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type SubmitSourceDocumentRequestInput = SubmitSourceDocumentRequest;
-
 /**
  * Single-value path/query parameters for SubmitSourceDocument
  */
@@ -889,13 +1303,20 @@ export interface SubmitSourceDocumentRequestArrayParameters {
  */
 export type SubmitSourceDocumentRequestBody = SubmitSourceDocumentInput;
 
+export type SubmitSourceDocument200OperationResponse = OperationResponse<200, DocumentMetadata>;
+export type SubmitSourceDocumentOperationResponses = | SubmitSourceDocument200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type SubmitSourceDocumentHandlerFunction<ApiError> = LambdaHandlerFunction<SubmitSourceDocumentRequestParameters, SubmitSourceDocumentRequestArrayParameters, SubmitSourceDocumentRequestBody, DocumentMetadata, ApiError>;
+export type SubmitSourceDocumentHandlerFunction = LambdaHandlerFunction<SubmitSourceDocumentRequestParameters, SubmitSourceDocumentRequestArrayParameters, SubmitSourceDocumentRequestBody, SubmitSourceDocumentOperationResponses>;
+export type SubmitSourceDocumentChainedHandlerFunction = ChainedLambdaHandlerFunction<SubmitSourceDocumentRequestParameters, SubmitSourceDocumentRequestArrayParameters, SubmitSourceDocumentRequestBody, SubmitSourceDocumentOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of submitSourceDocument
  */
-export const submitSourceDocumentHandler = <ApiError>(handler: SubmitSourceDocumentHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const submitSourceDocumentHandler = (
+    firstHandler: SubmitSourceDocumentChainedHandlerFunction,
+    ...remainingHandlers: SubmitSourceDocumentChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -905,22 +1326,43 @@ export const submitSourceDocumentHandler = <ApiError>(handler: SubmitSourceDocum
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as SubmitSourceDocumentRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json',]) as SubmitSourceDocumentRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        parsed = SubmitSourceDocumentInputFromJSON(parsed);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json',]) as SubmitSourceDocumentRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(DocumentMetadataToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type UpdateFormReviewRequestInput = UpdateFormReviewRequest;
-
 /**
  * Single-value path/query parameters for UpdateFormReview
  */
@@ -940,13 +1382,21 @@ export interface UpdateFormReviewRequestArrayParameters {
  */
 export type UpdateFormReviewRequestBody = UpdateFormInput;
 
+export type UpdateFormReview200OperationResponse = OperationResponse<200, FormMetadata>;
+export type UpdateFormReview404OperationResponse = OperationResponse<404, ApiError>;
+export type UpdateFormReviewOperationResponses = | UpdateFormReview200OperationResponse | UpdateFormReview404OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type UpdateFormReviewHandlerFunction<ApiError> = LambdaHandlerFunction<UpdateFormReviewRequestParameters, UpdateFormReviewRequestArrayParameters, UpdateFormReviewRequestBody, FormMetadata, ApiError>;
+export type UpdateFormReviewHandlerFunction = LambdaHandlerFunction<UpdateFormReviewRequestParameters, UpdateFormReviewRequestArrayParameters, UpdateFormReviewRequestBody, UpdateFormReviewOperationResponses>;
+export type UpdateFormReviewChainedHandlerFunction = ChainedLambdaHandlerFunction<UpdateFormReviewRequestParameters, UpdateFormReviewRequestArrayParameters, UpdateFormReviewRequestBody, UpdateFormReviewOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of updateFormReview
  */
-export const updateFormReviewHandler = <ApiError>(handler: UpdateFormReviewHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const updateFormReviewHandler = (
+    firstHandler: UpdateFormReviewChainedHandlerFunction,
+    ...remainingHandlers: UpdateFormReviewChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -956,22 +1406,46 @@ export const updateFormReviewHandler = <ApiError>(handler: UpdateFormReviewHandl
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as UpdateFormReviewRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json',]) as UpdateFormReviewRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        parsed = UpdateFormInputFromJSON(parsed);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json',]) as UpdateFormReviewRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormMetadataToJSON(marshalledBody));
+                break;
+            case 404:
+                marshalledBody = JSON.stringify(ApiErrorToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type UpdateFormSchemaRequestInput = UpdateFormSchemaRequest;
-
 /**
  * Single-value path/query parameters for UpdateFormSchema
  */
@@ -990,13 +1464,20 @@ export interface UpdateFormSchemaRequestArrayParameters {
  */
 export type UpdateFormSchemaRequestBody = FormSchema;
 
+export type UpdateFormSchema200OperationResponse = OperationResponse<200, FormSchema>;
+export type UpdateFormSchemaOperationResponses = | UpdateFormSchema200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type UpdateFormSchemaHandlerFunction<ApiError> = LambdaHandlerFunction<UpdateFormSchemaRequestParameters, UpdateFormSchemaRequestArrayParameters, UpdateFormSchemaRequestBody, FormSchema, ApiError>;
+export type UpdateFormSchemaHandlerFunction = LambdaHandlerFunction<UpdateFormSchemaRequestParameters, UpdateFormSchemaRequestArrayParameters, UpdateFormSchemaRequestBody, UpdateFormSchemaOperationResponses>;
+export type UpdateFormSchemaChainedHandlerFunction = ChainedLambdaHandlerFunction<UpdateFormSchemaRequestParameters, UpdateFormSchemaRequestArrayParameters, UpdateFormSchemaRequestBody, UpdateFormSchemaOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of updateFormSchema
  */
-export const updateFormSchemaHandler = <ApiError>(handler: UpdateFormSchemaHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const updateFormSchemaHandler = (
+    firstHandler: UpdateFormSchemaChainedHandlerFunction,
+    ...remainingHandlers: UpdateFormSchemaChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -1006,22 +1487,43 @@ export const updateFormSchemaHandler = <ApiError>(handler: UpdateFormSchemaHandl
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as UpdateFormSchemaRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json',]) as UpdateFormSchemaRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        parsed = FormSchemaFromJSON(parsed);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json',]) as UpdateFormSchemaRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormSchemaToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };
-// Type alias for the request
-type UpdateStatusRequestInput = UpdateStatusRequest;
-
 /**
  * Single-value path/query parameters for UpdateStatus
  */
@@ -1041,13 +1543,20 @@ export interface UpdateStatusRequestArrayParameters {
  */
 export type UpdateStatusRequestBody = UpdateStatusInput;
 
+export type UpdateStatus200OperationResponse = OperationResponse<200, FormMetadata>;
+export type UpdateStatusOperationResponses = | UpdateStatus200OperationResponse ;
+
 // Type that the handler function provided to the wrapper must conform to
-type UpdateStatusHandlerFunction<ApiError> = LambdaHandlerFunction<UpdateStatusRequestParameters, UpdateStatusRequestArrayParameters, UpdateStatusRequestBody, FormMetadata, ApiError>;
+export type UpdateStatusHandlerFunction = LambdaHandlerFunction<UpdateStatusRequestParameters, UpdateStatusRequestArrayParameters, UpdateStatusRequestBody, UpdateStatusOperationResponses>;
+export type UpdateStatusChainedHandlerFunction = ChainedLambdaHandlerFunction<UpdateStatusRequestParameters, UpdateStatusRequestArrayParameters, UpdateStatusRequestBody, UpdateStatusOperationResponses>;
 
 /**
  * Lambda handler wrapper to provide typed interface for the implementation of updateStatus
  */
-export const updateStatusHandler = <ApiError>(handler: UpdateStatusHandlerFunction<ApiError>): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
+export const updateStatusHandler = (
+    firstHandler: UpdateStatusChainedHandlerFunction,
+    ...remainingHandlers: UpdateStatusChainedHandlerFunction[]
+): ApiGatewayLambdaHandler => async (event: any, context: any): Promise<any> => {
     const requestParameters = decodeRequestParameters({
         ...(event.pathParameters || {}),
         ...(event.queryStringParameters || {}),
@@ -1057,16 +1566,40 @@ export const updateStatusHandler = <ApiError>(handler: UpdateStatusHandlerFuncti
         ...(event.multiValueQueryStringParameters || {}),
     }) as unknown as UpdateStatusRequestArrayParameters;
 
-    const body = parseBody(event.body, ['application/json',]) as UpdateStatusRequestBody;
+    const demarshal = (bodyString: string): any => {
+        let parsed = JSON.parse(bodyString);
+        parsed = UpdateStatusInputFromJSON(parsed);
+        return parsed;
+    };
+    const body = parseBody(event.body, demarshal, ['application/json',]) as UpdateStatusRequestBody;
 
-    const response = await handler({
-        requestParameters,
-        requestArrayParameters,
-        body,
-    }, event, context);
+    const chain = buildHandlerChain(firstHandler, ...remainingHandlers);
+    const response = await chain.next({
+        input: {
+            requestParameters,
+            requestArrayParameters,
+            body,
+        },
+        event,
+        context,
+        interceptorContext: {},
+    });
+
+    const marshal = (statusCode: number, responseBody: any): string => {
+        let marshalledBody = responseBody;
+        switch(statusCode) {
+            case 200:
+                marshalledBody = JSON.stringify(FormMetadataToJSON(marshalledBody));
+                break;
+            default:
+                break;
+        }
+
+        return marshalledBody;
+    };
 
     return {
         ...response,
-        body: response.body ? JSON.stringify(response.body) : '',
+        body: response.body ? marshal(response.statusCode, response.body) : '',
     };
 };

@@ -16,6 +16,7 @@
 /.projen/tasks.json linguist-generated
 /.syncpackrc.json linguist-generated
 /cdk.json linguist-generated
+/generated/.client-settings.json linguist-generated
 /header.txt linguist-generated
 /LICENSE linguist-generated
 /nx.json linguist-generated

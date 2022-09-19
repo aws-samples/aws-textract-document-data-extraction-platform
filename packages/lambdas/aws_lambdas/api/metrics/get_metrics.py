@@ -4,7 +4,7 @@
 #
 from typing import List
 
-from api_python_client.api.default_api_operation_config import (
+from api_python_client.apis.tags.default_api_operation_config import (
     get_metrics_handler,
     GetMetricsRequest,
 )
@@ -48,7 +48,7 @@ def handler(input: GetMetricsRequest, **kwargs) -> ApiResponse[AggregateMetrics]
     start_timestamp = input.request_parameters["startTimestamp"]
     end_timestamp = input.request_parameters["endTimestamp"]
 
-    schema_ids = [schema.schema_id for schema in _list_all_schemas()]
+    schema_ids = [schema.schemaId for schema in _list_all_schemas()]
 
     return Response.success(
         Metrics().get_aggregate_metrics(start_timestamp, end_timestamp, schema_ids)

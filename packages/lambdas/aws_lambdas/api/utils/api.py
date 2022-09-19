@@ -63,6 +63,8 @@ def _get_caller(event: Any) -> CallingUser:
         "requestContext" in event
         and "identity" in event["requestContext"]
         and "cognitoAuthenticationProvider" in event["requestContext"]["identity"]
+        and event["requestContext"]["identity"]["cognitoAuthenticationProvider"]
+        is not None
     ):
         return _get_cognito_authenticated_caller(
             event["requestContext"]["identity"]["cognitoAuthenticationProvider"]
@@ -106,7 +108,9 @@ def api(handler: Handler):
         return {
             "statusCode": response.status_code,
             "headers": response.headers,
-            "body": json.dumps(response.body),
+            "body": json.dumps(
+                response.body, default=lambda o: o.__dict__, sort_keys=True, indent=4
+            ),
         }
 
     return inner

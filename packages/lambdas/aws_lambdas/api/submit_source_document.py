@@ -7,7 +7,7 @@ from dataclasses import asdict
 import json
 
 import boto3
-from api_python_client.api.default_api_operation_config import (
+from api_python_client.apis.tags.default_api_operation_config import (
     submit_source_document_handler,
     SubmitSourceDocumentRequest,
 )

@@ -564,7 +564,7 @@ Object {
                   "Version": "1",
                 },
                 "Configuration": Object {
-                  "EnvironmentVariables": "[{\\"name\\":\\"_PROJECT_CONFIG_HASH\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"8533101db276345f6bc13facb35959b098469809d545c1424573d1e113312d6f\\"}]",
+                  "EnvironmentVariables": "[{\\"name\\":\\"_PROJECT_CONFIG_HASH\\",\\"type\\":\\"PLAINTEXT\\",\\"value\\":\\"e2db3d0e436045d38bd4f440cc7b89f7d4fe56e078dffe8cfa304cd40cfdd0dc\\"}]",
                   "ProjectName": Object {
                     "Ref": "CodePipelineBuildSynthCdkBuildProjectEDF0E7B6",
                   },
@@ -659,7 +659,8 @@ Object {
   \\"phases\\": {
     \\"install\\": {
       \\"commands\\": [
-        \\"yarn install --frozen-lockfile\\"
+        \\"npm install -g aws-cdk\\",
+        \\"yarn install --frozen-lockfile || npx projen && yarn install --frozen-lockfile\\"
       ]
     },
     \\"build\\": {

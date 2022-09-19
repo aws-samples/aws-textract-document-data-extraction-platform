@@ -114,7 +114,7 @@
     },
     {
       "name": "aws-prototyping-sdk",
-      "version": "0.3.13",
+      "version": "0.10.0",
       "type": "runtime"
     },
     {

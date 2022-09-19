@@ -3,7 +3,7 @@
 #   SPDX-License-Identifier: MIT-0
 #
 
-from api_python_client.api.default_api_operation_config import (
+from api_python_client.apis.tags.default_api_operation_config import (
     list_documents_handler,
     ListDocumentsRequest,
 )

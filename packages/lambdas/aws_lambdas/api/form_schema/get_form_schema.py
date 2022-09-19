@@ -4,7 +4,7 @@
 #
 
 from api_python_client.model.form_schema import FormSchema
-from api_python_client.api.default_api_operation_config import (
+from api_python_client.apis.tags.default_api_operation_config import (
     get_form_schema_handler,
     GetFormSchemaRequest,
 )

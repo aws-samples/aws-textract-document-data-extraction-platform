@@ -4,7 +4,7 @@
 #
 from typing import Dict, Union, Generic, TypeVar
 
-from api_python_client.api.default_api_operation_config import (
+from api_python_client.apis.tags.default_api_operation_config import (
     ApiResponse as LambdaApiResponse,
 )
 from api_python_client.model.api_error import ApiError
