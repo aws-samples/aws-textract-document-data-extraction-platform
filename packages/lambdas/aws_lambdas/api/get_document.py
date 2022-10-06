@@ -9,15 +9,14 @@ from api_python_client.apis.tags.default_api_operation_config import (
     GetDocumentRequest,
 )
 from api_python_client.model.api_error import ApiError
-
-from aws_lambdas.api.utils.api import api
+from api_python_client.api_client import JSONEncoder
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.document_metadata_store import DocumentMetadataStore
 from aws_lambdas.utils.s3.location import get_presigned_get_url_for_pdf
 
 
-@api
-@get_document_handler
+@get_document_handler(interceptors=[identity_interceptor])
 def handler(input: GetDocumentRequest, **kwargs) -> ApiResponse[DocumentMetadata]:
     """
     Handler for retrieving document metadata
@@ -29,7 +28,8 @@ def handler(input: GetDocumentRequest, **kwargs) -> ApiResponse[DocumentMetadata
             ApiError(message="No document found with id {}".format(document_id))
         )
 
+    document = JSONEncoder().default(document)
     # Add a presigned GET url
-    document.url = get_presigned_get_url_for_pdf(document.location)
-
+    document["url"] = get_presigned_get_url_for_pdf(document["location"])
+    document = DocumentMetadata(**document)
     return Response.success(document)

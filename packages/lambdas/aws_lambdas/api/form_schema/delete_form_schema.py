@@ -2,7 +2,6 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-
 from api_python_client.model.form_schema import FormSchema
 from api_python_client.apis.tags.default_api_operation_config import (
     delete_form_schema_handler,
@@ -10,13 +9,12 @@ from api_python_client.apis.tags.default_api_operation_config import (
 )
 from api_python_client.model.api_error import ApiError
 
-from aws_lambdas.api.utils.api import api
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.form_schema_store import FormSchemaStore
 
 
-@api
-@delete_form_schema_handler
+@delete_form_schema_handler(interceptors=[identity_interceptor])
 def handler(input: DeleteFormSchemaRequest, **kwargs) -> ApiResponse[FormSchema]:
     """
     Handler for deleting a form schema

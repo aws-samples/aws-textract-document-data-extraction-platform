@@ -26,12 +26,12 @@ export const flattenFormSchema = (documentForm: FormMetadata) => {
 
 export const buildFlattenedFormSchema = (formData: any, formMetadata: any, schema: FormJSONSchema, key: string = ''): FormValue[] => {
 
-  if (schema.typeOf === 'object') {
-    return getOrderedPropertyKeys(schema.properties!).flatMap(propertyKey => {
-      return buildFlattenedFormSchema(formData, formMetadata, schema.properties![propertyKey], `${key}${key ? '.' : ''}${propertyKey}`);
+  if (schema['typeOf'] === 'object') {
+    return getOrderedPropertyKeys(schema['properties']!).flatMap(propertyKey => {
+      return buildFlattenedFormSchema(formData, formMetadata, schema['properties']![propertyKey], `${key}${key ? '.' : ''}${propertyKey}`);
     });
 
-  } else if (schema.typeOf === 'array') {
+  } else if (schema['typeOf'] === 'array') {
     const values = (_.get(formData, key) || []);
     return values.flatMap((_value: any, i: number) => {
       return buildFlattenedFormSchema(formData, formMetadata, schema.items!, `${key}[${i}]`);
@@ -84,11 +84,11 @@ export const stringifySchema = (schema: FormJSONSchema) => JSON.stringify(schema
  * Sort the given data that conforms to the schema based on the order defined by the schema
  */
 export const sortDataAccordingToSchema = (data: any, schema: FormJSONSchema): any => {
-  if (schema.typeOf === 'object') {
-    return Object.fromEntries(getOrderedPropertyKeys(schema.properties!).map((key) => [
-      key, sortDataAccordingToSchema(data[key], schema.properties![key]),
+  if (schema['typeOf'] === 'object') {
+    return Object.fromEntries(getOrderedPropertyKeys(schema['properties']!).map((key) => [
+      key, sortDataAccordingToSchema(data[key], schema['properties']![key]),
     ]));
-  } else if (schema.typeOf === 'array') {
+  } else if (schema['typeOf'] === 'array') {
     return data.map((item: any) => sortDataAccordingToSchema(item, schema.items!));
   }
   // No sorting for primitive types

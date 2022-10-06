@@ -20,18 +20,18 @@ def _mean_accuracy(values: List[ExtractionAccuracy]) -> ExtractionAccuracy:
     """
     if len(values) > 0:
         return ExtractionAccuracy(
-            field_distance_percentage=statistics.mean(
-                [value.field_distance_percentage for value in values]
+            fieldDistancePercentage=statistics.mean(
+                [value["fieldDistancePercentage"] for value in values]
             ),
-            field_correctness_percentage=statistics.mean(
-                [value.field_correctness_percentage for value in values]
+            fieldCorrectnessPercentage=statistics.mean(
+                [value["field_correctness_percentage"] for value in values]
             ),
         )
 
     # When there are no values (ie comparing two empty objects or empty lists), they are identically empty!
     return ExtractionAccuracy(
-        field_distance_percentage=100.0,
-        field_correctness_percentage=100.0,
+        fieldDistancePercentage=100.0,
+        fieldCorrectnessPercentage=100.0,
     )
 
 
@@ -66,10 +66,10 @@ def _compute_extraction_accuracy_percentage(
 
     # Primitive type, eg int/string/etc.
     return ExtractionAccuracy(
-        field_distance_percentage=float(
+        fieldDistancePercentage=float(
             fuzz.ratio(str(original_extracted_data), str(reviewed_extracted_data))
         ),
-        field_correctness_percentage=100.0
+        fieldCorrectnessPercentage=100.0
         if original_extracted_data == reviewed_extracted_data
         else 0.0,
     )
@@ -81,12 +81,12 @@ def compute_extraction_accuracy_percentage(form: FormMetadata) -> ExtractionAccu
     """
     try:
         return _compute_extraction_accuracy_percentage(
-            form.original_extracted_data, form.extracted_data
+            form["originalExtractedData"], form["extractedData"]
         )
     except Exception as e:
         log.exception(e)
         log.error("Failed to compute extraction accuracy for form: {}".format(form))
         return ExtractionAccuracy(
-            field_distance_percentage=0.0,
-            field_correctness_percentage=0.0,
+            fieldDistancePercentage=0.0,
+            fieldCorrectnessPercentage=0.0,
         )

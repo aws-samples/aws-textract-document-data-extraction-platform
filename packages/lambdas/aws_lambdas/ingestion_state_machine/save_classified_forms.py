@@ -15,9 +15,9 @@ from api_python_client.model.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
 from api_python_client.model.status_transition import StatusTransition
+from api_python_client.model.document_metadata import DocumentMetadata
 
-
-from aws_lambdas.api.utils.api import CallingUserDict
+from aws_lambdas.api.utils.api import CallingUserDict, _get_caller
 from aws_lambdas.ingestion_state_machine.classify_forms import ClassifiedForm
 from aws_lambdas.ingestion_state_machine.split_document import (
     ClassifiedSplitForm,
@@ -32,7 +32,7 @@ from aws_lambdas.utils.s3.location import (
 )
 from aws_lambdas.utils.time import utc_now
 from aws_lambdas.utils.metrics.metrics import metric_publisher
-
+from api_python_client.api_client import JSONEncoder
 from aws_lambdas.utils.pdf import read_pdf_from_s3
 
 
@@ -56,9 +56,9 @@ def _handle_processed_form(
     """
     form_location: S3Location = {
         "bucket": document_location["bucket"],
-        "key": get_document_key(
+        "objectKey": get_document_key(
             document_id,
-            get_file_name_from_document_key(document_location["key"]),
+            get_file_name_from_document_key(document_location["objectKey"]),
         ),
     }
 
@@ -80,22 +80,27 @@ def handler(event: SaveClassifiedFormsInput, context):
 
     document_id = event["document_id"]
     schema_id = event["schema_id"]
-    username = event["caller"]["username"]
+    caller = _get_caller(event)
+    print("event : {}".format(event))
+    print("event caller: {}".format(caller))
+    username = caller.username
 
     document = document_store.get_document_metadata(document_id)
 
     if document is None:
         raise Exception("No document found with id {}".format(document_id))
 
+    document = JSONEncoder().default(document)
+
     schemas: Dict[str, FormSchema] = {}
 
     document_location = event["document_location"]
 
     document_pdf = read_pdf_from_s3(
-        document_location["bucket"], document_location["key"]
+        document_location["bucket"], document_location["objectKey"]
     )
 
-    document.number_of_pages = document_pdf.numPages
+    document["numberOfPages"] = document_pdf.numPages
 
     classified_forms: List[ClassifiedSplitForm] = []
     processed_forms: List[ClassifiedSplitForm] = []
@@ -106,7 +111,7 @@ def handler(event: SaveClassifiedFormsInput, context):
             form_id="{}_{}".format(schema_id.replace(" ", "_"), 0),
             location=S3Location(
                 bucket=event["document_location"]["bucket"],
-                key=event["document_location"]["key"],
+                objectKey=event["document_location"]["objectKey"],
             ),
             start_page=0,
             end_page=document_pdf.numPages - 1,
@@ -129,29 +134,30 @@ def handler(event: SaveClassifiedFormsInput, context):
         form_store.put_form_metadata(
             username,
             FormMetadata(
-                document_id=document_id,
-                document_name=document.name,
-                form_id=form["form_id"],
-                schema_id=form["schema_id"],
-                start_page_index=form["start_page"],
-                end_page_index=form["end_page"],
-                number_of_pages=form["end_page"]
+                documentId=document_id,
+                documentName=document["name"],
+                formId=form["form_id"],
+                schemaId=form["schema_id"],
+                startPageIndex=form["start_page"],
+                endPageIndex=form["end_page"],
+                numberOfPages=form["end_page"]
                 - form["start_page"]
                 + 1,  # Start/end page indices are inclusive so add 1 for total pages
                 location=S3Location(
-                    bucket=form["location"]["bucket"], key=form["location"]["key"]
+                    bucket=form["location"]["bucket"],
+                    objectKey=form["location"]["objectKey"],
                 ),
-                extraction_execution=ExtractionExecution(
+                extractionExecution=ExtractionExecution(
                     status=ExtractionExecutionStatus("NOT_STARTED"),
-                    execution_id="not_started_yet",
+                    executionId="not_started_yet",
                 ),
                 # Store a snapshot of the schema at the time of extraction, since these may evolve over time
-                schema_snapshot=schema.schema,
-                status_transition_log=[
+                schemaSnapshot=schema["schema"],
+                statusTransitionLog=[
                     StatusTransition(
                         timestamp=utc_now(),
                         status="CLASSIFICATION_SUCCEEDED",
-                        acting_user=username,
+                        actingUser=username,
                     )
                 ],
             ),
@@ -162,21 +168,28 @@ def handler(event: SaveClassifiedFormsInput, context):
         )
 
     # Update the ingestion status to success
-    document.ingestion_execution.status = ExecutionStatus("SUCCEEDED")
-    document.number_of_classified_forms = len(classified_forms)
+    document["ingestionExecutionStatus"] = ExecutionStatus("SUCCEEDED")
+    document["numberOfClassifiedForms"] = len(classified_forms)
 
-    document.status_transition_log.append(
+    status_transition_log = list(document["statusTransitionLog"])
+    status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="CLASSIFICATION_SUCCEEDED",
-            acting_user=username,
+            actingUser=username,
         )
     )
-    document_store.put_document_metadata(username, document)
+
+    new_document = DocumentMetadata(**document)
+
+    # TODO: remove print
+    print("new_document: {}".format(new_document))
+    print("document id: {}".format(new_document.documentId))
+    document_store.put_document_metadata(username, new_document)
 
     # Write the classification time metrics
     with metric_publisher() as m:
-        m.add_classification_time(document)
-        m.add_document_count(document)
+        m.add_classification_time(new_document)
+        m.add_document_count(new_document)
 
     return {"forms": processed_forms}

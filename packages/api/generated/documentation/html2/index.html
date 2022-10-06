@@ -1168,9 +1168,6 @@ ul.nav-tabs {
       "type" : "string",
       "enum" : [ "array", "boolean", "integer", "number", "object", "string" ]
     },
-    "notOf" : {
-      "$ref" : "#/components/schemas/FormJSONSchema"
-    },
     "allOf" : {
       "type" : "array",
       "items" : {
@@ -1462,13 +1459,13 @@ ul.nav-tabs {
   }
 };
     defs["S3Location"] = {
-  "required" : [ "bucket", "key" ],
+  "required" : [ "bucket", "objectKey" ],
   "type" : "object",
   "properties" : {
     "bucket" : {
       "type" : "string"
     },
-    "key" : {
+    "objectKey" : {
       "type" : "string"
     }
   },
@@ -6623,7 +6620,7 @@ Passed to continue retrieving pages of results
   &quot;documentId&quot; : &quot;documentId&quot;,
   &quot;location&quot; : {
     &quot;bucket&quot; : &quot;bucket&quot;,
-    &quot;key&quot; : &quot;key&quot;
+    &quot;objectKey&quot; : &quot;objectKey&quot;
   }
 }'
 </code></pre>
@@ -9371,7 +9368,7 @@ var JSONSchemaView = (function () {
     // Determine if a schema is an array
     this.isArray = !this.isAny && this.schema && this.schema.type === 'array';
 
-    this.isObject = this.schema && (this.schema.type === 'object' || this.schema.properties || this.schema.anyOf || this.schema.oneof || this.schema.allOf);
+    this.isObject = this.schema && (this.schema.type === 'object' || this.schema['properties'] || this.schema.anyOf || this.schema.oneof || this.schema.allOf);
 
     // Determine if a schema is a primitive
     this.isPrimitive = !this.isAny && !this.isArray && !this.isObject;
@@ -9382,8 +9379,8 @@ var JSONSchemaView = (function () {
     // populate isRequired property down to properties
     if (this.schema && Array.isArray(this.schema.required)) {
       this.schema.required.forEach(function (requiredProperty) {
-        if (typeof _this.schema.properties[requiredProperty] === 'object') {
-          _this.schema.properties[requiredProperty].isRequired = true;
+        if (typeof _this.schema['properties'][requiredProperty] === 'object') {
+          _this.schema['properties'][requiredProperty].isRequired = true;
         }
       });
     }
@@ -9510,9 +9507,9 @@ var JSONSchemaView = (function () {
         inner.appendChild(view.render());
       }
 
-      if (typeof this.schema.properties === 'object') {
-        Object.keys(this.schema.properties).forEach(function (propertyName) {
-          var property = _this2.schema.properties[propertyName];
+      if (typeof this.schema['properties'] === 'object') {
+        Object.keys(this.schema['properties']).forEach(function (propertyName) {
+          var property = _this2.schema['properties'][propertyName];
           var tempDiv = document.createElement('div');;
           tempDiv.innerHTML = '<div class="property">\n          <span class="name">' + propertyName + ':</span>\n        </div>';
           var view = new JSONSchemaView(property, _this2.open - 1);

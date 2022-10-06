@@ -24,7 +24,6 @@ Name | Type | Description | Notes
 **required** | **[str]** |  | [optional] 
 **enum** | **[bool, date, datetime, dict, float, int, list, str, none_type]** |  | [optional] 
 **typeOf** | **str** |  | [optional] 
-**notOf** | [**FormJSONSchema**](FormJSONSchema.md) |  | [optional] 
 **allOf** | **[FormJSONSchema]** |  | [optional] 
 **oneOf** | **[FormJSONSchema]** |  | [optional] 
 **anyOf** | **[FormJSONSchema]** |  | [optional] 

@@ -30,7 +30,7 @@ export interface S3Location {
      * @type {string}
      * @memberof S3Location
      */
-    key: string;
+    objectKey: string;
 }
 
 
@@ -45,7 +45,7 @@ export function S3LocationFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     return {
         
         'bucket': json['bucket'],
-        'key': json['key'],
+        'objectKey': json['objectKey'],
     };
 }
 
@@ -59,7 +59,7 @@ export function S3LocationToJSON(value?: S3Location | null): any {
     return {
         
         'bucket': value.bucket,
-        'key': value.key,
+        'objectKey': value.objectKey,
     };
 }
 

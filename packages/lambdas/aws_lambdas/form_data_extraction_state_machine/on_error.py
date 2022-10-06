@@ -2,12 +2,14 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
+from api_python_client.api_client import JSONEncoder
 from typing import TypedDict, Dict
 
 from api_python_client.model.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
 from api_python_client.model.status_transition import StatusTransition
+from api_python_client.model.form_metadata import FormMetadata
 
 from aws_lambdas.utils.sfn.errors import SfnErrorDetails, get_sfn_error_message
 from aws_lambdas.utils.ddb.form_metadata_store import FormMetadataStore
@@ -42,22 +44,27 @@ def handler(event: OnErrorInput, context):
         raise Exception(
             "No form found in document {} with id {}".format(document_id, form_id)
         )
+    form_dict = JSONEncoder().default(obj=form)
+    print("form_dict", form_dict)
 
     # Mark the document execution as failed
-    form.extraction_execution.status = ExtractionExecutionStatus("FAILED")
-    form.extraction_execution.status_reason = get_sfn_error_message(
+    form_dict["extractionExecution"]["status"] = ExtractionExecutionStatus("FAILED")
+    form_dict["extractionExecution"]["statusReason"] = get_sfn_error_message(
         event["error_details"]
     )
-    form.status_transition_log.append(
+    status_transition_log = list(form_dict["statusTransitionLog"])
+    status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="EXTRACTION_FAILED",
-            acting_user=form.updated_by,
+            actingUser=form_dict["updatedBy"],
         )
     )
-    form_store.put_form_metadata(form.updated_by, form)
+    # form_dict.pop("_spec_property_naming")
+    form_dict = FormMetadata(**form_dict)
+    form_store.put_form_metadata(form_dict["updatedBy"], form_dict)
 
     with metric_publisher() as m:
-        m.add_form_count(form)
+        m.add_form_count(form_dict)
 
     return {}

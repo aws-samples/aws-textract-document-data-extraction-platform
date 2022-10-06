@@ -11,7 +11,7 @@ from api_python_client.apis.tags.default_api_operation_config import (
 from api_python_client.model.aggregate_metrics import AggregateMetrics
 from api_python_client.model.form_schema import FormSchema
 
-from aws_lambdas.api.utils.api import api
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.form_schema_store import FormSchemaStore
 from aws_lambdas.utils.ddb.store import PaginationParameters
@@ -39,8 +39,7 @@ def _list_all_schemas() -> List[FormSchema]:
     return schemas
 
 
-@api
-@get_metrics_handler
+@get_metrics_handler(interceptors=[identity_interceptor])
 def handler(input: GetMetricsRequest, **kwargs) -> ApiResponse[AggregateMetrics]:
     """
     Handler for retrieving aggregate metrics

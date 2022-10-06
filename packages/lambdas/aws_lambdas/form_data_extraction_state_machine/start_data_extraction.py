@@ -2,6 +2,7 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
+from api_python_client.api_client import JSONEncoder
 from typing import TypedDict, List, Dict
 
 from api_python_client.model.extraction_execution import ExtractionExecution
@@ -9,6 +10,7 @@ from api_python_client.model.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
 from api_python_client.model.status_transition import StatusTransition
+from api_python_client.model.form_metadata import FormMetadata
 
 from aws_lambdas.ingestion_state_machine.split_document import ClassifiedSplitForm
 from aws_lambdas.utils.ddb.form_metadata_store import FormMetadataStore
@@ -44,23 +46,27 @@ def handler(event: StartDataExtractionInput, context) -> StartDataExtractionOutp
                 event["form"]["document_id"], event["form"]["form_id"]
             )
         )
+    form = JSONEncoder().default(form)
 
     # Mark the form data extraction as in progress
-    form.extraction_execution = ExtractionExecution(
+    form["extractionExecution"] = ExtractionExecution(
         status=ExtractionExecutionStatus("IN_PROGRESS"),
-        execution_id=arn_to_execution_id(event["sfn_execution_arn"]),
+        executionId=arn_to_execution_id(event["sfn_execution_arn"]),
     )
-    form.status_transition_log.append(
+    status_transition_log = list(form["statusTransitionLog"])
+    status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="STARTED_EXTRACTION",
-            acting_user=form.updated_by,
+            actingUser=form["updatedBy"],
         )
     )
-    store.put_form_metadata(form.updated_by, form)
+    # form.pop("_spec_property_naming")
+    form = FormMetadata(**form)
+    store.put_form_metadata(form["updatedBy"], form)
 
     # Find any queries we should execute based on the schema
-    schema_queries = get_queries_from_schema(form.schema_snapshot)
+    schema_queries = get_queries_from_schema(form["schemaSnapshot"])
 
     textract_feature_types = ["FORMS", "TABLES"]
     textract_extra_args = {}

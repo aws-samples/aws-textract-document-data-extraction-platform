@@ -9,25 +9,24 @@ from api_python_client.apis.tags.default_api_operation_config import (
 from api_python_client.model.form_schema import FormSchema
 from api_python_client.model.api_error import ApiError
 
-from aws_lambdas.api.utils.api import api, CallingUser, DefaultCallingUser
+from aws_lambdas.api.utils.api import identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.form_schema_store import FormSchemaStore
 
 
-@api
-@update_form_schema_handler
+@update_form_schema_handler(interceptors=[identity_interceptor])
 def handler(
     input: UpdateFormSchemaRequest,
-    caller: CallingUser = DefaultCallingUser,
     **kwargs,
 ) -> ApiResponse[FormSchema]:
     """
     Handler for updating a form schema
     """
+    caller = input.interceptor_context["AuthenticatedUser"]
     schema_id = input.request_parameters["schemaId"]
     input_schema = input.body
 
-    if input_schema.schema_id != schema_id:
+    if input_schema.schemaId != schema_id:
         return Response.bad_request(
             ApiError("Schema id in path and payload must match!")
         )

@@ -31,7 +31,7 @@ class FormMetadataStore(Store):
         return {"documentId": document_id, "formId": form_id}
 
     def put_form_metadata(self, user: str, form: FormMetadata) -> FormMetadata:
-        return super().put(self._key(form.document_id, form.form_id), user, form)
+        return super().put(self._key(form.documentId, form.formId), user, form)
 
     def get_form_metadata(
         self, document_id: str, form_id: str

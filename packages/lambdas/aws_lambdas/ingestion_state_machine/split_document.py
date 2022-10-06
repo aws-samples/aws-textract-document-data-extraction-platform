@@ -43,9 +43,9 @@ def _write_split_form_to_s3(
     """
     form_location: S3Location = {
         "bucket": document_location["bucket"],
-        "key": get_form_key(
+        "objectKey": get_form_key(
             document_id,
-            get_file_name_from_document_key(document_location["key"]),
+            get_file_name_from_document_key(document_location["objectKey"]),
             form_id,
         ),
     }
@@ -70,7 +70,7 @@ def handler(event: SplitDocumentInput, context) -> SplitDocumentOutput:
     document_id = event["document_id"]
     document_location = event["document_location"]
     document_pdf = read_pdf_from_s3(
-        document_location["bucket"], document_location["key"]
+        document_location["bucket"], document_location["objectKey"]
     )
 
     for i in range(0, len(event["classified_forms"])):

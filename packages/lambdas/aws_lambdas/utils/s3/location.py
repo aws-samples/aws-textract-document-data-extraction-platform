@@ -10,7 +10,7 @@ from api_python_client.model.s3_location import S3Location as S3LocationModel
 
 class S3Location(TypedDict):
     bucket: str
-    key: str
+    objectKey: str
 
 
 def get_document_folder_key(document_id: str) -> str:
@@ -61,8 +61,8 @@ def get_presigned_get_url_for_pdf(location: S3LocationModel) -> str:
     ).generate_presigned_url(
         "get_object",
         Params={
-            "Bucket": location.bucket,
-            "Key": location.key,
+            "Bucket": location["bucket"],
+            "Key": location["objectKey"],
             "ResponseContentType": "application/pdf",
         },
     )

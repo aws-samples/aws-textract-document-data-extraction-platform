@@ -34,7 +34,7 @@ class DocumentMetadataStore(Store):
     def put_document_metadata(
         self, user: str, document: DocumentMetadata
     ) -> DocumentMetadata:
-        return super().put(self._key(document.document_id), user, document)
+        return super().put(self._key(document.documentId), user, document)
 
     def get_document_metadata(self, document_id: str) -> Optional[DocumentMetadata]:
         return super().get(self._key(document_id))

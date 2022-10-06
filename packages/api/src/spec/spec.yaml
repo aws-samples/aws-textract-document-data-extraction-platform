@@ -681,11 +681,11 @@ components:
       properties:
         bucket:
           type: string
-        key:
+        objectKey:
           type: string
       required:
         - bucket
-        - key
+        - objectKey
     PaginatedResponse:
       type: object
       properties:
@@ -862,8 +862,6 @@ components:
             - number
             - object
             - string
-        notOf:
-          $ref: '#/components/schemas/FormJSONSchema'
         allOf:
           type: array
           items:

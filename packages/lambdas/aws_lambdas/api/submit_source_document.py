@@ -18,27 +18,26 @@ from api_python_client.model.s3_location import S3Location
 from api_python_client.model.api_error import ApiError
 from api_python_client.model.status_transition import StatusTransition
 
-from aws_lambdas.api.utils.api import api, CallingUser, DefaultCallingUser
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.time import utc_now
 from aws_lambdas.utils.sfn.execution_id import arn_to_execution_id
 from aws_lambdas.utils.ddb.document_metadata_store import DocumentMetadataStore
 
 
-@api
-@submit_source_document_handler
+@submit_source_document_handler(interceptors=[identity_interceptor])
 def handler(
     input: SubmitSourceDocumentRequest,
-    caller: CallingUser = DefaultCallingUser,
     **kwargs,
 ) -> ApiResponse[DocumentMetadata]:
     """
     Handler for submitting a document for ingestion
     """
-    document_id = input.body.document_id
-    bucket = input.body.location.bucket
-    document_key = input.body.location.key
-    schema_id = input.body.schema_id
+    caller = input.interceptor_context["AuthenticatedUser"]
+    document_id = input.body["documentId"]
+    bucket = input.body["location"]["bucket"]
+    document_key = input.body["location"]["objectKey"]
+    schema_id = input.body["schemaId"]
 
     # Check the file exists in s3
     if "Contents" not in boto3.client("s3").list_objects_v2(
@@ -61,7 +60,7 @@ def handler(
                     "DocumentId": document_id,
                     "DocumentLocation": {
                         "bucket": bucket,
-                        "key": document_key,
+                        "objectKey": document_key,
                     },
                     "CallingUser": asdict(caller),
                     "SchemaId": schema_id,
@@ -71,25 +70,24 @@ def handler(
     )["executionArn"]
 
     execution_id = arn_to_execution_id(execution_arn)
-
-    document = DocumentMetadataStore().put_document_metadata(
-        caller.username,
-        DocumentMetadata(
-            document_id=document_id,
-            name=input.body.name,
-            location=S3Location(bucket=bucket, key=document_key),
-            ingestion_execution=IngestionExecution(
-                execution_id=execution_id,
-                status=ExecutionStatus("IN_PROGRESS"),
-            ),
-            status_transition_log=[
-                StatusTransition(
-                    timestamp=utc_now(),
-                    status="CLASSIFICATION_SUCCEEDED",
-                    acting_user=caller.username,
-                )
-            ],
+    document = DocumentMetadata(
+        documentId=document_id,
+        name=input.body["name"],
+        location=S3Location(bucket=bucket, objectKey=document_key),
+        ingestionExecution=IngestionExecution(
+            executionId=execution_id,
+            status=ExecutionStatus("IN_PROGRESS"),
         ),
+        statusTransitionLog=[
+            StatusTransition(
+                timestamp=utc_now(),
+                status="CLASSIFICATION_SUCCEEDED",
+                actingUser=caller.username,
+            )
+        ],
     )
+    print("document: {}".format(document))
+
+    document = DocumentMetadataStore().put_document_metadata(caller.username, document)
 
     return Response.success(document)

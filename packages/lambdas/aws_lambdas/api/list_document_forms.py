@@ -10,7 +10,7 @@ from api_python_client.apis.tags.default_api_operation_config import (
 )
 from api_python_client.model.api_error import ApiError
 
-from aws_lambdas.api.utils.api import api
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.form_metadata_store import FormMetadataStore
 from aws_lambdas.utils.ddb.document_metadata_store import DocumentMetadataStore
@@ -20,8 +20,7 @@ from aws_lambdas.utils.ddb.store import (
 )
 
 
-@api
-@list_document_forms_handler
+@list_document_forms_handler(interceptors=[identity_interceptor])
 def handler(
     input: ListDocumentFormsRequest, **kwargs
 ) -> ApiResponse[ListFormsResponse]:
@@ -36,11 +35,11 @@ def handler(
             ApiError(message="No document found with id {}".format(document_id))
         )
 
-    if document.ingestion_execution.status != ExecutionStatus("SUCCEEDED"):
+    if document["ingestionExecution"]["status"] != ExecutionStatus("SUCCEEDED"):
         return Response.bad_request(
             ApiError(
                 message="Cannot retrieve forms for document with ingestion status {}".format(
-                    document.ingestion_execution.status
+                    document["ingestionExecution"]["status"]
                 )
             )
         )

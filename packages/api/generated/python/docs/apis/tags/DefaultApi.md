@@ -171,7 +171,6 @@ with api_python_client.ApiClient(configuration) as api_client:
                 None
             ],
             type_of="array",
-            not_of=FormJSONSchema(),
             all_of=[
                 FormJSONSchema()
             ],
@@ -1470,7 +1469,7 @@ with api_python_client.ApiClient(configuration) as api_client:
         name="name_example",
         location=S3Location(
             bucket="bucket_example",
-            key="key_example",
+            object_key="object_key_example",
         ),
     )
     try:

@@ -9,7 +9,7 @@ from api_python_client.apis.tags.default_api_operation_config import (
 )
 from api_python_client.model.api_error import ApiError
 
-from aws_lambdas.api.utils.api import api
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.form_metadata_store import FormMetadataStore
 from aws_lambdas.utils.ddb.store import (
@@ -18,8 +18,7 @@ from aws_lambdas.utils.ddb.store import (
 )
 
 
-@api
-@list_forms_handler
+@list_forms_handler(interceptors=[identity_interceptor])
 def handler(input: ListFormsRequest, **kwargs) -> ApiResponse[ListFormsResponse]:
     """
     Handler for listing all nested forms in all documents

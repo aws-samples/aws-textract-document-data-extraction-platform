@@ -23,15 +23,15 @@ def get_queries_from_schema(
     query configuration for textract.
     """
 
-    if schema.typeOf == "object":
+    if schema["typeOf"] == "object":
         queries = []
         for property_key in ordered_object_schema_property_keys(schema):
             queries += get_queries_from_schema(
-                schema.properties[property_key],
+                schema["properties"][property_key],
                 alias + ("" if len(alias) == 0 else ".") + property_key,
             )
         return queries
-    elif schema.typeOf == "array":
+    elif schema["typeOf"] == "array":
         # Ignore any queries specified in array types. Queries are for a single question, single answer extraction, and
         # we don't know how many items we need to query for upfront. If min/max lengths are set for the array it might
         # be possible to ask a variant of the query for each individual item.
@@ -40,14 +40,14 @@ def get_queries_from_schema(
     # Primitive types (string, integer etc)
     if (
         "extraction_metadata" in schema
-        and "textract_query" in schema.extraction_metadata
-        and schema.extraction_metadata.textract_query is not None
+        and "textract_query" in schema["extractionMetadata"]
+        and schema["extractionMetadata"]["textractQuery"] is not None
     ):
         return [
             {
                 "Alias": alias,
                 "Pages": ["*"],  # all pages
-                "Text": schema.extraction_metadata.textract_query,
+                "Text": schema["extractionMetadata"]["textractQuery"],
             }
         ]
 

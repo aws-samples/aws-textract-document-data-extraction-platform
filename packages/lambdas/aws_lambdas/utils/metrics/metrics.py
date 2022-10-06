@@ -250,7 +250,7 @@ class Metrics:
         Return the different dimensions for which to publish form metrics
         """
         # No dimensions, and by schema
-        return [[], [MetricDimension(name="SchemaId", value=form.schema_id)]]
+        return [[], [MetricDimension(name="SchemaId", value=form["schemaId"])]]
 
     def add_classification_time(self, document: DocumentMetadata):
         """
@@ -259,20 +259,20 @@ class Metrics:
         self._add_duration_metrics(
             Metric.CLASSIFICATION_TIME,
             [],
-            document.status_transition_log,
-            document.number_of_pages if "number_of_pages" in document else 1,
+            document["statusTransitionLog"],
+            document["numberOfPages"] if "numberOfPages" in document else 1,
         )
 
     def add_extraction_time(self, form: FormMetadata):
         """
-        Add a metric for the time taken to extract data from the form (once classified)
+        Add a metric for the time n to extract data from the form (once classified)
         """
         for dimensions in self._dimensions_for_form(form):
             self._add_duration_metrics(
                 Metric.EXTRACTION_TIME,
                 dimensions,
-                form.status_transition_log,
-                form.number_of_pages,
+                form["statusTransitionLog"],
+                form["numberOfPages"],
             )
 
     def add_processing_time(self, document: DocumentMetadata, form: FormMetadata):
@@ -280,13 +280,13 @@ class Metrics:
         Add a metric for the total time taken from the document upload to form data extraction
         """
         # Concatenate both status transition logs for a full timeline from the beginning of uploading the document to the form finishing extraction
-        full_status_log = document.status_transition_log + form.status_transition_log
+        full_status_log = document["statusTransitionLog"] + form["statusTransitionLog"]
         for dimensions in self._dimensions_for_form(form):
             self._add_duration_metrics(
                 Metric.PROCESSING_TIME,
                 dimensions,
                 full_status_log,
-                form.number_of_pages,
+                form["numberOfPages"],
             )
 
     def add_wait_time(self, form: FormMetadata):
@@ -297,8 +297,8 @@ class Metrics:
             self._add_duration_metrics(
                 Metric.WAIT_FOR_REVIEW_TIME,
                 dimensions,
-                form.status_transition_log,
-                form.number_of_pages,
+                form["statusTransitionLog"],
+                form["numberOfPages"],
             )
 
     def add_review_time(self, form: FormMetadata):
@@ -309,8 +309,8 @@ class Metrics:
             self._add_duration_metrics(
                 Metric.REVIEW_TIME,
                 dimensions,
-                form.status_transition_log,
-                form.number_of_pages,
+                form["statusTransitionLog"],
+                form["numberOfPages"],
             )
 
     def add_end_to_end_time(self, document: DocumentMetadata, form: FormMetadata):
@@ -318,13 +318,13 @@ class Metrics:
         Add a metric for the total time taken from the document upload to review completed
         """
         # Concatenate both status transition logs for a full timeline from the beginning of uploading the document to the form being reviewed
-        full_status_log = document.status_transition_log + form.status_transition_log
+        full_status_log = document["statusTransitionLog"] + form["statusTransitionLog"]
         for dimensions in self._dimensions_for_form(form):
             self._add_duration_metrics(
                 Metric.END_TO_END_TIME,
                 dimensions,
                 full_status_log,
-                form.number_of_pages,
+                form["numberOfPages"],
             )
 
     def add_document_count(self, document: DocumentMetadata):
@@ -332,12 +332,15 @@ class Metrics:
         Add a counter metric for the total number of documents processed, and the number of successful/failed documents
         depending on status
         """
+        # TODO: remove print
+        print("value: {}".format(document["ingestionExecution"]["status"]))
         self._add_count_metric(Metric.DOCUMENT_COUNT, [])
         self._add_count_metric(
             Metric.DOCUMENT_COUNT,
             [
                 MetricDimension(
-                    name="Status", value=document.ingestion_execution.status.value
+                    name="Status",
+                    value=document["ingestionExecution"]["status"],
                 )
             ],
         )
@@ -350,9 +353,7 @@ class Metrics:
         # For consistency with the document count metrics we publish either success/failed for extraction.
         # In the success case here we would otherwise report "READY_FOR_REVIEW"
         status = (
-            "FAILED"
-            if form.extraction_execution.status.value == "FAILED"
-            else "SUCCESS"
+            "FAILED" if form["extractionExecution"]["status"] == "FAILED" else "SUCCESS"
         )
 
         for dimensions in self._dimensions_for_form(form):
@@ -370,12 +371,12 @@ class Metrics:
         for dimensions in self._dimensions_for_form(form):
             self._add_metric(
                 Metric.EXTRACTION_ACCURACY_DISTANCE,
-                form.extraction_accuracy.field_distance_percentage,
+                form["extractionAccuracy"]["fieldDistancePercentage"],
                 dimensions,
             )
             self._add_metric(
                 Metric.EXTRACTION_ACCURACY_CORRECTNESS,
-                form.extraction_accuracy.field_correctness_percentage,
+                form["extractionAccuracy"]["fieldDistancePercentage"],
                 dimensions,
             )
 
@@ -386,7 +387,7 @@ class Metrics:
         for dimensions in self._dimensions_for_form(form):
             self._add_metric(
                 Metric.AVERAGE_CONFIDENCE,
-                form.average_confidence,
+                form["averageConfidence"],
                 dimensions,
             )
 
@@ -473,91 +474,91 @@ class Metrics:
                             _fetch_stat,
                             [
                                 _get_stat(
-                                    "average_extraction_accuracy_distance",
+                                    "averageExtractionAccuracyDistance",
                                     Metric.EXTRACTION_ACCURACY_DISTANCE,
                                     "Average",
                                     float,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_extraction_accuracy_correctness",
+                                    "averageExtractionAccuracyCorrectness",
                                     Metric.EXTRACTION_ACCURACY_CORRECTNESS,
                                     "Average",
                                     float,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_confidence",
+                                    "averageConfidence",
                                     Metric.AVERAGE_CONFIDENCE,
                                     "Average",
                                     float,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_extraction_time_milliseconds",
+                                    "averageExtractionTimeMilliseconds",
                                     Metric.EXTRACTION_TIME,
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_extraction_time_per_page_milliseconds",
+                                    "averageExtractionAccuracyPerPageMilliseconds",
                                     self._per_page(Metric.EXTRACTION_TIME),
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_processing_time_milliseconds",
+                                    "averageProcessingTimeMilliseconds",
                                     Metric.PROCESSING_TIME,
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_processing_time_per_page_milliseconds",
+                                    "averageProcessingTimePerPageMilliseconds",
                                     self._per_page(Metric.PROCESSING_TIME),
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_wait_for_review_time_milliseconds",
+                                    "averageWaitForReviewTimeMilliseconds",
                                     Metric.WAIT_FOR_REVIEW_TIME,
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_wait_for_review_time_per_page_milliseconds",
+                                    "averageWaitForReviewTimePerPageMilliseconds",
                                     self._per_page(Metric.WAIT_FOR_REVIEW_TIME),
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_review_time_milliseconds",
+                                    "averageReviewTimeMilliseconds",
                                     Metric.REVIEW_TIME,
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_review_time_per_page_milliseconds",
+                                    "averageReviewTimePerPageMilliseconds",
                                     self._per_page(Metric.REVIEW_TIME),
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_end_to_end_time_milliseconds",
+                                    "averageEndToEndTimeMilliseconds",
                                     Metric.END_TO_END_TIME,
                                     "Average",
                                     int,
                                     dimensions,
                                 ),
                                 _get_stat(
-                                    "average_end_to_end_time_per_page_milliseconds",
+                                    "averageEndToEndTimePerPageMilliseconds",
                                     self._per_page(Metric.END_TO_END_TIME),
                                     "Average",
                                     int,
@@ -579,13 +580,13 @@ class Metrics:
                                     _fetch_stat,
                                     [
                                         _get_stat(
-                                            "total_processed_document_count",
+                                            "totalProcessedDocumentCount",
                                             Metric.DOCUMENT_COUNT,
                                             "Sum",
                                             int,
                                         ),
                                         _get_stat(
-                                            "total_successful_document_count",
+                                            "totalSuccessfulDocumentCount",
                                             Metric.DOCUMENT_COUNT,
                                             "Sum",
                                             int,
@@ -596,7 +597,7 @@ class Metrics:
                                             ],
                                         ),
                                         _get_stat(
-                                            "total_failed_document_count",
+                                            "totalFailedDocumentCount",
                                             Metric.DOCUMENT_COUNT,
                                             "Sum",
                                             int,
@@ -607,13 +608,13 @@ class Metrics:
                                             ],
                                         ),
                                         _get_stat(
-                                            "total_processed_form_count",
+                                            "totalProcessedFormCount",
                                             Metric.FORM_COUNT,
                                             "Sum",
                                             int,
                                         ),
                                         _get_stat(
-                                            "total_successful_form_count",
+                                            "totalSuccessfulFormCount",
                                             Metric.FORM_COUNT,
                                             "Sum",
                                             int,
@@ -624,7 +625,7 @@ class Metrics:
                                             ],
                                         ),
                                         _get_stat(
-                                            "total_failed_form_count",
+                                            "totalFailedFormCount",
                                             Metric.FORM_COUNT,
                                             "Sum",
                                             int,
@@ -635,13 +636,13 @@ class Metrics:
                                             ],
                                         ),
                                         _get_stat(
-                                            "average_classification_time_milliseconds",
+                                            "averageClassificationTimeMilliseconds",
                                             Metric.CLASSIFICATION_TIME,
                                             "Average",
                                             int,
                                         ),
                                         _get_stat(
-                                            "average_classification_time_per_page_milliseconds",
+                                            "averageClassificationTimePerPageMilliseconds",
                                             self._per_page(Metric.CLASSIFICATION_TIME),
                                             "Average",
                                             int,
@@ -651,7 +652,7 @@ class Metrics:
                             }
                         ),
                         **_get_form_statistics([]),
-                        "by_schema_id": only_defined_values(
+                        "bySchemaId": only_defined_values(
                             {
                                 schema_id: _get_form_statistics(
                                     [MetricDimension(name="SchemaId", value=schema_id)]

@@ -10,7 +10,7 @@ from api_python_client.apis.tags.default_api_operation_config import (
 from api_python_client.model.api_error import ApiError
 from api_python_client.model.list_documents_response import ListDocumentsResponse
 
-from aws_lambdas.api.utils.api import api
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.ddb.document_metadata_store import DocumentMetadataStore
 from aws_lambdas.utils.ddb.store import (
@@ -19,8 +19,7 @@ from aws_lambdas.utils.ddb.store import (
 )
 
 
-@api
-@list_documents_handler
+@list_documents_handler(interceptors=[identity_interceptor])
 def handler(
     input: ListDocumentsRequest, **kwargs
 ) -> ApiResponse[ListDocumentsResponse]:

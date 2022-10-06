@@ -27,7 +27,7 @@ def handler(event: StartJobRequest, context: Any):
         DocumentLocation={
             "S3Object": {
                 "Bucket": event["document_location"]["bucket"],
-                "Name": event["document_location"]["key"],
+                "Name": event["document_location"]["objectKey"],
             },
         },
         FeatureTypes=event["feature_types"],

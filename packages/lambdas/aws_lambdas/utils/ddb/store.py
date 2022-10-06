@@ -8,7 +8,7 @@ import decimal
 import json
 from typing import Optional, Dict, Mapping, Any, Generic, TypeVar, TypedDict, List
 from aws_lambdas.utils.base64 import base64_decode, base64_encode
-
+from api_python_client.api_client import JSONEncoder
 
 from api_python_client.schemas import DictSchema
 
@@ -203,6 +203,8 @@ def _sanitise_ddb_document_response(item):
     elif isinstance(item, dict):
         for k in item.keys():
             item[k] = _sanitise_ddb_document_response(item[k])
+            # setattr(item, k, _sanitise_ddb_document_response(item[k]))
+            # item.update({ k: _sanitise_ddb_document_response(item[k]) })
         return item
     elif isinstance(item, decimal.Decimal):
         if item % 1 == 0:
@@ -221,15 +223,13 @@ def _sanitise_dict_for_ddb(item):
     Sanitise floats for storage in dynamodb as decimals
     """
     if isinstance(item, list):
-        new_list = []
         for i in range(0, len(item)):
-            new_list[i] = _sanitise_dict_for_ddb(item[i])
-        return new_list
+            item[i] = _sanitise_dict_for_ddb(item[i])
+        return item
     elif isinstance(item, dict):
-        new_dict = {}
         for k in item.keys():
-            new_dict[k] = _sanitise_dict_for_ddb(item[k])
-        return new_dict
+            item[k] = _sanitise_dict_for_ddb(item[k])
+        return item
     elif isinstance(item, float):
         return decimal_context.create_decimal_from_float(item)
     else:
@@ -255,12 +255,12 @@ class Store(Generic[Document]):
     def _deserialize(self, document_dict: Dict):
         return self.model(
             **_sanitise_ddb_document_response(document_dict),
-            _spec_property_naming=True,
+            # _spec_property_naming=True,
             _configuration=Configuration()
         )
 
     def _serialize(self, document: Document) -> Dict:
-        return _sanitise_dict_for_ddb(document)
+        return _sanitise_dict_for_ddb(JSONEncoder().default(document))
 
     def get(self, key: Dict) -> Optional[Document]:
         item = self._get(key)

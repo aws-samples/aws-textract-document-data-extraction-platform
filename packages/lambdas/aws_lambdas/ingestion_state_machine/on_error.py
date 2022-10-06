@@ -6,12 +6,14 @@ from typing import TypedDict, Dict
 
 from api_python_client.model.execution_status import ExecutionStatus
 from api_python_client.model.status_transition import StatusTransition
+from api_python_client.model.document_metadata import DocumentMetadata
 
 from aws_lambdas.utils.sfn.errors import SfnErrorDetails, get_sfn_error_message
 from aws_lambdas.utils.ddb.document_metadata_store import DocumentMetadataStore
 from aws_lambdas.utils.time import utc_now
 from aws_lambdas.utils.metrics.metrics import metric_publisher
 from aws_lambdas.utils.logger import get_logger
+from api_python_client.api_client import JSONEncoder
 
 log = get_logger(__name__)
 
@@ -37,22 +39,25 @@ def handler(event: OnErrorInput, context):
     if document is None:
         raise Exception("No document found with id {}".format(document_id))
 
+    document_dict = JSONEncoder().default(document)
     # Mark the document execution as failed
-    document.ingestion_execution.status = ExecutionStatus("FAILED")
-    document.ingestion_execution.status_reason = get_sfn_error_message(
+    document_dict["ingestionExecution"]["status"] = ExecutionStatus("FAILED")
+    document_dict["ingestionExecution"]["statusReason"] = get_sfn_error_message(
         event["error_details"]
     )
-    document.status_transition_log.append(
+    status_transition_log = list(document_dict["statusTransitionLog"])
+    status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="CLASSIFICATION_FAILED",
-            acting_user=document.updated_by,
+            actingUser=document_dict["updatedBy"],
         )
     )
-    document_store.put_document_metadata(document.updated_by, document)
+    document_dict = DocumentMetadata(**document_dict)
+    document_store.put_document_metadata(document.updatedBy, document_dict)
 
     with metric_publisher() as m:
         # Publish document count metrics for this failed document, but no timing metrics
-        m.add_document_count(document)
+        m.add_document_count(document_dict)
 
     return {}

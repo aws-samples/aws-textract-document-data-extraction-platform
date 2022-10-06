@@ -182,11 +182,6 @@ class FormJSONSchema(
                 @property
                 def STRING(cls):
                     return cls("string")
-        
-            @classmethod
-            @property
-            def notOf(cls) -> typing.Type['FormJSONSchema']:
-                return FormJSONSchema
             
             
             class allOf(
@@ -335,7 +330,6 @@ class FormJSONSchema(
                 "required": required,
                 "enum": enum,
                 "typeOf": typeOf,
-                "notOf": notOf,
                 "allOf": allOf,
                 "oneOf": oneOf,
                 "anyOf": anyOf,
@@ -410,9 +404,6 @@ class FormJSONSchema(
     def __getitem__(self, name: typing.Literal["typeOf"]) -> MetaOapg.properties.typeOf: ...
     
     @typing.overload
-    def __getitem__(self, name: typing.Literal["notOf"]) -> 'FormJSONSchema': ...
-    
-    @typing.overload
     def __getitem__(self, name: typing.Literal["allOf"]) -> MetaOapg.properties.allOf: ...
     
     @typing.overload
@@ -457,7 +448,7 @@ class FormJSONSchema(
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing.Literal["order", "extractionMetadata", "title", "multipleOf", "maximum", "exclusiveMaximum", "minimum", "exclusiveMinimum", "maxLength", "minLength", "pattern", "maxItems", "minItems", "uniqueItems", "maxProperties", "minProperties", "required", "enum", "typeOf", "notOf", "allOf", "oneOf", "anyOf", "items", "properties", "additionalProperties", "description", "formatType", "default", "nullable", "readOnly", "writeOnly", "example", "deprecated", ], str]):
+    def __getitem__(self, name: typing.Union[typing.Literal["order", "extractionMetadata", "title", "multipleOf", "maximum", "exclusiveMaximum", "minimum", "exclusiveMinimum", "maxLength", "minLength", "pattern", "maxItems", "minItems", "uniqueItems", "maxProperties", "minProperties", "required", "enum", "typeOf", "allOf", "oneOf", "anyOf", "items", "properties", "additionalProperties", "description", "formatType", "default", "nullable", "readOnly", "writeOnly", "example", "deprecated", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -520,9 +511,6 @@ class FormJSONSchema(
     def get_item_oapg(self, name: typing.Literal["typeOf"]) -> typing.Union[MetaOapg.properties.typeOf, schemas.Unset]: ...
     
     @typing.overload
-    def get_item_oapg(self, name: typing.Literal["notOf"]) -> typing.Union['FormJSONSchema', schemas.Unset]: ...
-    
-    @typing.overload
     def get_item_oapg(self, name: typing.Literal["allOf"]) -> typing.Union[MetaOapg.properties.allOf, schemas.Unset]: ...
     
     @typing.overload
@@ -567,7 +555,7 @@ class FormJSONSchema(
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing.Literal["order", "extractionMetadata", "title", "multipleOf", "maximum", "exclusiveMaximum", "minimum", "exclusiveMinimum", "maxLength", "minLength", "pattern", "maxItems", "minItems", "uniqueItems", "maxProperties", "minProperties", "required", "enum", "typeOf", "notOf", "allOf", "oneOf", "anyOf", "items", "properties", "additionalProperties", "description", "formatType", "default", "nullable", "readOnly", "writeOnly", "example", "deprecated", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing.Literal["order", "extractionMetadata", "title", "multipleOf", "maximum", "exclusiveMaximum", "minimum", "exclusiveMinimum", "maxLength", "minLength", "pattern", "maxItems", "minItems", "uniqueItems", "maxProperties", "minProperties", "required", "enum", "typeOf", "allOf", "oneOf", "anyOf", "items", "properties", "additionalProperties", "description", "formatType", "default", "nullable", "readOnly", "writeOnly", "example", "deprecated", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -593,7 +581,6 @@ class FormJSONSchema(
         required: typing.Union[MetaOapg.properties.required, tuple, schemas.Unset] = schemas.unset,
         enum: typing.Union[MetaOapg.properties.enum, tuple, schemas.Unset] = schemas.unset,
         typeOf: typing.Union[MetaOapg.properties.typeOf, str, schemas.Unset] = schemas.unset,
-        notOf: typing.Union['FormJSONSchema', schemas.Unset] = schemas.unset,
         allOf: typing.Union[MetaOapg.properties.allOf, tuple, schemas.Unset] = schemas.unset,
         oneOf: typing.Union[MetaOapg.properties.oneOf, tuple, schemas.Unset] = schemas.unset,
         anyOf: typing.Union[MetaOapg.properties.anyOf, tuple, schemas.Unset] = schemas.unset,
@@ -633,7 +620,6 @@ class FormJSONSchema(
             required=required,
             enum=enum,
             typeOf=typeOf,
-            notOf=notOf,
             allOf=allOf,
             oneOf=oneOf,
             anyOf=anyOf,

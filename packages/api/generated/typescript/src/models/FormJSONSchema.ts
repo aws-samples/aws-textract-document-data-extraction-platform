@@ -142,12 +142,6 @@ export interface FormJSONSchema {
     typeOf?: FormJSONSchemaTypeOfEnum;
     /**
      * 
-     * @type {FormJSONSchema}
-     * @memberof FormJSONSchema
-     */
-    notOf?: FormJSONSchema;
-    /**
-     * 
      * @type {Array<FormJSONSchema>}
      * @memberof FormJSONSchema
      */
@@ -275,7 +269,6 @@ export function FormJSONSchemaFromJSONTyped(json: any, ignoreDiscriminator: bool
         'required': !exists(json, 'required') ? undefined : json['required'],
         '_enum': !exists(json, 'enum') ? undefined : json['enum'],
         'typeOf': !exists(json, 'typeOf') ? undefined : json['typeOf'],
-        'notOf': !exists(json, 'notOf') ? undefined : FormJSONSchemaFromJSON(json['notOf']),
         'allOf': !exists(json, 'allOf') ? undefined : ((json['allOf'] as Array<any>).map(FormJSONSchemaFromJSON)),
         'oneOf': !exists(json, 'oneOf') ? undefined : ((json['oneOf'] as Array<any>).map(FormJSONSchemaFromJSON)),
         'anyOf': !exists(json, 'anyOf') ? undefined : ((json['anyOf'] as Array<any>).map(FormJSONSchemaFromJSON)),
@@ -321,7 +314,6 @@ export function FormJSONSchemaToJSON(value?: FormJSONSchema | null): any {
         'required': value.required,
         'enum': value._enum,
         'typeOf': value.typeOf,
-        'notOf': FormJSONSchemaToJSON(value.notOf),
         'allOf': value.allOf === undefined ? undefined : ((value.allOf as Array<any>).map(FormJSONSchemaToJSON)),
         'oneOf': value.oneOf === undefined ? undefined : ((value.oneOf as Array<any>).map(FormJSONSchemaToJSON)),
         'anyOf': value.anyOf === undefined ? undefined : ((value.anyOf as Array<any>).map(FormJSONSchemaToJSON)),

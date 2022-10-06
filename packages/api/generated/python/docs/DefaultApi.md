@@ -141,11 +141,11 @@ with api_python_client.ApiClient(configuration) as api_client:
         schema=FormJSONSchema(
             order=1,
             extraction_metadata=FormFieldExtractionMetadata(
-                form_key="form_key_example",
-                table_position=1,
-                row_position=1,
-                column_position=1,
-                textract_query="textract_query_example",
+                formKey="form_key_example",
+                tablePosition=1,
+                rowPosition=1,
+                columnPosition=1,
+                textractQuery="textract_query_example",
             ),
             title="title_example",
             multiple_of=0,
@@ -1455,7 +1455,7 @@ with api_python_client.ApiClient(configuration) as api_client:
         name="name_example",
         location=S3Location(
             bucket="bucket_example",
-            key="key_example",
+            objectKey="key_example",
         ),
     )
     try:

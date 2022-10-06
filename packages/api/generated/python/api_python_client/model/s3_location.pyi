@@ -37,29 +37,29 @@ class S3Location(
     class MetaOapg:
         required = {
             "bucket",
-            "key",
+            "objectKey",
         }
         class properties:
             bucket = schemas.StrSchema
-            key = schemas.StrSchema
+            objectKey = schemas.StrSchema
             __annotations__ = {
                 "bucket": bucket,
-                "key": key,
+                "objectKey": objectKey,
             }
     
     bucket: MetaOapg.properties.bucket
-    key: MetaOapg.properties.key
+    objectKey: MetaOapg.properties.objectKey
     
     @typing.overload
     def __getitem__(self, name: typing.Literal["bucket"]) -> MetaOapg.properties.bucket: ...
     
     @typing.overload
-    def __getitem__(self, name: typing.Literal["key"]) -> MetaOapg.properties.key: ...
+    def __getitem__(self, name: typing.Literal["objectKey"]) -> MetaOapg.properties.objectKey: ...
     
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing.Literal["bucket", "key", ], str]):
+    def __getitem__(self, name: typing.Union[typing.Literal["bucket", "objectKey", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -68,12 +68,12 @@ class S3Location(
     def get_item_oapg(self, name: typing.Literal["bucket"]) -> MetaOapg.properties.bucket: ...
     
     @typing.overload
-    def get_item_oapg(self, name: typing.Literal["key"]) -> MetaOapg.properties.key: ...
+    def get_item_oapg(self, name: typing.Literal["objectKey"]) -> MetaOapg.properties.objectKey: ...
     
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing.Literal["bucket", "key", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing.Literal["bucket", "objectKey", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -81,7 +81,7 @@ class S3Location(
         cls,
         *args: typing.Union[dict, frozendict.frozendict, ],
         bucket: typing.Union[MetaOapg.properties.bucket, str, ],
-        key: typing.Union[MetaOapg.properties.key, str, ],
+        objectKey: typing.Union[MetaOapg.properties.objectKey, str, ],
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[schemas.AnyTypeSchema, dict, frozendict.frozendict, str, date, datetime, uuid.UUID, int, float, decimal.Decimal, None, list, tuple, bytes],
     ) -> 'S3Location':
@@ -89,7 +89,7 @@ class S3Location(
             cls,
             *args,
             bucket=bucket,
-            key=key,
+            objectKey=objectKey,
             _configuration=_configuration,
             **kwargs,
         )

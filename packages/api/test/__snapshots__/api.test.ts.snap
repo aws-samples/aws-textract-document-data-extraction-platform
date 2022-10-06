@@ -423,9 +423,6 @@ Object {
                     "minimum": 0,
                     "type": "number",
                   },
-                  "notOf": Object {
-                    "$ref": "#/components/schemas/FormJSONSchema",
-                  },
                   "nullable": Object {
                     "default": false,
                     "type": "boolean",
@@ -774,13 +771,13 @@ Object {
                   "bucket": Object {
                     "type": "string",
                   },
-                  "key": Object {
+                  "objectKey": Object {
                     "type": "string",
                   },
                 },
                 "required": Array [
                   "bucket",
-                  "key",
+                  "objectKey",
                 ],
                 "type": "object",
               },
@@ -2068,7 +2065,7 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "ApiTestDeployment59A5FA0380c6a661c156120d32cefc0f58fb9c13": Object {
+    "ApiTestDeployment59A5FA03726ac5cc30570131b1aad50e9ee391c4": Object {
       "Properties": Object {
         "Description": "Automatically created by the RestApi construct",
         "RestApiId": Object {
@@ -2080,7 +2077,7 @@ Object {
     "ApiTestDeploymentStageprod77F35FA8": Object {
       "Properties": Object {
         "DeploymentId": Object {
-          "Ref": "ApiTestDeployment59A5FA0380c6a661c156120d32cefc0f58fb9c13",
+          "Ref": "ApiTestDeployment59A5FA03726ac5cc30570131b1aad50e9ee391c4",
         },
         "RestApiId": Object {
           "Ref": "ApiTest0B514494",

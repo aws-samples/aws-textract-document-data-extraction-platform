@@ -17,13 +17,12 @@ from api_python_client.model.get_document_upload_url_response import (
     GetDocumentUploadUrlResponse,
 )
 
-from aws_lambdas.api.utils.api import api
+from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse
 from aws_lambdas.utils.s3.location import get_document_key
 
 
-@api
-@get_document_upload_url_handler
+@get_document_upload_url_handler(interceptors=[identity_interceptor])
 def handler(
     input: GetDocumentUploadUrlRequest,
     **kwargs,
@@ -34,6 +33,8 @@ def handler(
     document_id = str(uuid4())
     bucket = os.environ["SOURCE_DOCUMENT_BUCKET"]
     document_key = get_document_key(document_id, input.request_parameters["fileName"])
+
+    print("Getting signed url for document")
 
     # Other content types can be considered in the future, however splitting logic for such formats must be implemented
     if input.request_parameters["contentType"] != "application/pdf":
@@ -54,8 +55,8 @@ def handler(
 
     return Response.success(
         GetDocumentUploadUrlResponse(
-            document_id=document_id,
+            documentId=document_id,
             url=signed_url,
-            location=S3Location(bucket=bucket, key=document_key),
+            location=S3Location(bucket=bucket, objectKey=document_key),
         )
     )

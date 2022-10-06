@@ -73,8 +73,9 @@ def _get_caller(event: Any) -> CallingUser:
     # The API has been called by an authenticated system using IAM credentials not issued via cognito.
     # Here we assume that this system has already verified the user that originated the request, and specified it in
     # the x-username header, otherwise defaulting to an "unknown" user.
-    if "x-username" in event["headers"]:
-        return CallingUser(username=event["headers"]["x-username"])
+    if "headers" in event:
+        if "x-username" in event["headers"]:
+            return CallingUser(username=event["headers"]["x-username"])
 
     return DefaultCallingUser
 
@@ -82,6 +83,11 @@ def _get_caller(event: Any) -> CallingUser:
 class Handler(Protocol):
     def __call__(self, event: Any, context: Any, *args, **kwargs) -> Dict[str, Any]:
         ...
+
+
+def identity_interceptor(input: Any) -> Any:
+    input.interceptor_context["AuthenticatedUser"] = _get_caller(input.event)
+    return input.chain.next(input)
 
 
 def api(handler: Handler):
