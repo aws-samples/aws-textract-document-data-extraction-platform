@@ -33,6 +33,12 @@
         "target": "build",
         "projects": "dependencies"
       }
+    ],
+    "install-py": [
+      {
+        "target": "install-py",
+        "projects": "dependencies"
+      }
     ]
   },
   "affected": {

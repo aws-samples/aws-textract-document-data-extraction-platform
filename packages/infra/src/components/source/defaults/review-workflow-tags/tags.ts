@@ -7,18 +7,9 @@ import { CreateFormReviewWorkflowTagInput } from "@aws/api/generated/typescript"
  */
 export const REVIEW_WORKFLOW_TAGS: CreateFormReviewWorkflowTagInput[] = [
   {
-    tagText: "Supervisory Action Taken",
+    tagText: "URGENT ATTENTION",
   },
   {
     tagText: "Watchlist Item",
-  },
-  {
-    tagText: "Enforcement Item",
-  },
-  {
-    tagText: "Delay of Disclosure",
-  },
-  {
-    tagText: "Closed Period Trade",
   },
 ];

@@ -25,7 +25,7 @@
     },
     {
       "name": "aws-cdk",
-      "version": "2.23.0",
+      "version": "2.45.0",
       "type": "build"
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "name": "npm-check-updates",
-      "version": "^12",
+      "version": "^15",
       "type": "build"
     },
     {
@@ -96,6 +96,16 @@
       "type": "build"
     },
     {
+      "name": "@types/responselike",
+      "version": "1.0.0",
+      "type": "override"
+    },
+    {
+      "name": "got",
+      "version": "12.3.1",
+      "type": "override"
+    },
+    {
       "name": "@aws-prototyping-sdk/open-api-gateway",
       "type": "runtime"
     },
@@ -109,12 +119,12 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.23.0",
+      "version": "2.45.0",
       "type": "runtime"
     },
     {
       "name": "aws-prototyping-sdk",
-      "version": "0.10.0",
+      "version": "0.12.1",
       "type": "runtime"
     },
     {

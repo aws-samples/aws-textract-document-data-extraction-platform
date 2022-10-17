@@ -5,8 +5,6 @@
 import statistics
 from typing import List
 
-# from api_python_client.model.form_metadata import FormMetadata
-from api_python_client.model.form_metadata import FormMetadata
 from api_python_client.model.extraction_accuracy import ExtractionAccuracy
 from thefuzz import fuzz
 from aws_lambdas.utils.logger import get_logger
@@ -14,17 +12,17 @@ from aws_lambdas.utils.logger import get_logger
 log = get_logger(__name__)
 
 
-def _mean_accuracy(values: List[ExtractionAccuracy]) -> ExtractionAccuracy:
+def _mean_accuracy(values: List) -> ExtractionAccuracy:
     """
     Return the mean of the given extraction accuracy values
     """
     if len(values) > 0:
         return ExtractionAccuracy(
             fieldDistancePercentage=statistics.mean(
-                [value["fieldDistancePercentage"] for value in values]
+                [float(value["fieldDistancePercentage"]) for value in values]
             ),
             fieldCorrectnessPercentage=statistics.mean(
-                [value["field_correctness_percentage"] for value in values]
+                [float(value["fieldCorrectnessPercentage"]) for value in values]
             ),
         )
 
@@ -75,7 +73,7 @@ def _compute_extraction_accuracy_percentage(
     )
 
 
-def compute_extraction_accuracy_percentage(form: FormMetadata) -> ExtractionAccuracy:
+def compute_extraction_accuracy_percentage(form) -> ExtractionAccuracy:
     """
     Return the extraction accuracy percentage of a reviewed form
     """

@@ -38,5 +38,4 @@ def handler(input: GetDocumentFormRequest, **kwargs) -> ApiResponse[FormMetadata
     # Add a presigned GET url
     form_dict["url"] = get_presigned_get_url_for_pdf(form["location"])
     form_dict = FormMetadata(**form_dict)
-    print("form: {}".format(form_dict))
     return Response.success(form_dict)

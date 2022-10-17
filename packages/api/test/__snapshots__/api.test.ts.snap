@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Api should synthesize 1`] = `
-Object {
-  "Outputs": Object {
-    "ApiTestEndpointC91A82E8": Object {
-      "Value": Object {
-        "Fn::Join": Array [
+{
+  "Outputs": {
+    "ApiTestEndpoint34A72375": {
+      "Value": {
+        "Fn::Join": [
           "",
-          Array [
+          [
             "https://",
-            Object {
-              "Ref": "ApiTest0B514494",
+            {
+              "Ref": "ApiTestEE73F324",
             },
             ".execute-api.",
-            Object {
+            {
               "Ref": "AWS::Region",
             },
             ".",
-            Object {
+            {
               "Ref": "AWS::URLSuffix",
             },
             "/",
-            Object {
-              "Ref": "ApiTestDeploymentStageprod77F35FA8",
+            {
+              "Ref": "ApiTestDeploymentStageprod660267A6",
             },
             "/",
           ],
@@ -30,2031 +30,209 @@ Object {
       },
     },
   },
-  "Parameters": Object {
-    "BootstrapVersion": Object {
+  "Parameters": {
+    "BootstrapVersion": {
       "Default": "/cdk-bootstrap/hnb659fds/version",
       "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
-  "Resources": Object {
-    "ApiTest0B514494": Object {
-      "Properties": Object {
-        "Body": Object {
-          "components": Object {
-            "parameters": Object {
-              "nextToken": Object {
-                "description": "Passed to continue retrieving pages of results",
-                "in": "query",
-                "name": "nextToken",
-                "required": false,
-                "schema": Object {
-                  "type": "string",
-                },
-              },
-              "pageSize": Object {
-                "description": "The number of results to return in a page",
-                "in": "query",
-                "name": "pageSize",
-                "required": true,
-                "schema": Object {
-                  "type": "integer",
-                },
-              },
-            },
-            "schemas": Object {
-              "AggregateDocumentMetrics": Object {
-                "description": "Aggregated metrics for documents",
-                "properties": Object {
-                  "averageClassificationTimeMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageClassificationTimePerPageMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "totalFailedDocumentCount": Object {
-                    "type": "integer",
-                  },
-                  "totalProcessedDocumentCount": Object {
-                    "type": "integer",
-                  },
-                  "totalSuccessfulDocumentCount": Object {
-                    "type": "integer",
-                  },
-                },
-                "type": "object",
-              },
-              "AggregateFormMetrics": Object {
-                "description": "Aggregated metrics for forms",
-                "properties": Object {
-                  "averageConfidence": Object {
-                    "type": "number",
-                  },
-                  "averageEndToEndTimeMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageEndToEndTimePerPageMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageExtractionAccuracyCorrectness": Object {
-                    "type": "number",
-                  },
-                  "averageExtractionAccuracyDistance": Object {
-                    "type": "number",
-                  },
-                  "averageExtractionTimeMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageExtractionTimePerPageMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageProcessingTimeMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageProcessingTimePerPageMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageReviewTimeMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageReviewTimePerPageMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageWaitForReviewTimeMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "averageWaitForReviewTimePerPageMilliseconds": Object {
-                    "type": "integer",
-                  },
-                  "totalFailedFormCount": Object {
-                    "type": "integer",
-                  },
-                  "totalProcessedFormCount": Object {
-                    "type": "integer",
-                  },
-                  "totalSuccessfulFormCount": Object {
-                    "type": "integer",
-                  },
-                },
-                "type": "object",
-              },
-              "AggregateMetrics": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/AggregateDocumentMetrics",
-                  },
-                  Object {
-                    "$ref": "#/components/schemas/AggregateFormMetrics",
-                  },
-                ],
-                "description": "Aggregated metrics for disclosure data extraction",
-                "properties": Object {
-                  "bySchemaId": Object {
-                    "additionalProperties": Object {
-                      "$ref": "#/components/schemas/AggregateFormMetrics",
-                    },
-                    "type": "object",
-                  },
-                },
-                "required": Array [
-                  "bySchemaId",
-                ],
-                "type": "object",
-              },
-              "ApiError": Object {
-                "description": "Returned when an error occurs",
-                "properties": Object {
-                  "message": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "message",
-                ],
-                "type": "object",
-              },
-              "CreateFormReviewWorkflowTagInput": Object {
-                "description": "Describes the input for creating a new form review workflow tag",
-                "properties": Object {
-                  "tagText": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "tagText",
-                ],
-                "type": "object",
-              },
-              "CreateUpdateDetails": Object {
-                "description": "Metadata about when an item was created/updated",
-                "properties": Object {
-                  "createdBy": Object {
-                    "type": "string",
-                  },
-                  "createdTimestamp": Object {
-                    "type": "string",
-                  },
-                  "updatedBy": Object {
-                    "type": "string",
-                  },
-                  "updatedTimestamp": Object {
-                    "type": "string",
-                  },
-                },
-                "type": "object",
-              },
-              "DocumentMetadata": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/CreateUpdateDetails",
-                  },
-                ],
-                "description": "Metadata about a document",
-                "properties": Object {
-                  "documentId": Object {
-                    "type": "string",
-                  },
-                  "ingestionExecution": Object {
-                    "$ref": "#/components/schemas/IngestionExecution",
-                  },
-                  "location": Object {
-                    "$ref": "#/components/schemas/S3Location",
-                  },
-                  "name": Object {
-                    "description": "The name of the document",
-                    "type": "string",
-                  },
-                  "numberOfClassifiedForms": Object {
-                    "description": "The number of forms discovered within the document",
-                    "type": "integer",
-                  },
-                  "numberOfPages": Object {
-                    "description": "The number of pages in the document, discovered during classification",
-                    "type": "integer",
-                  },
-                  "statusTransitionLog": Object {
-                    "description": "A log of status transitions",
-                    "items": Object {
-                      "$ref": "#/components/schemas/StatusTransition",
-                    },
-                    "type": "array",
-                  },
-                  "url": Object {
-                    "description": "Presigned url for fetching the document (returned on get individual document only)",
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "documentId",
-                  "name",
-                  "location",
-                  "statusTransitionLog",
-                ],
-                "type": "object",
-              },
-              "ExecutionStatus": Object {
-                "enum": Array [
-                  "IN_PROGRESS",
-                  "SUCCEEDED",
-                  "FAILED",
-                ],
-                "type": "string",
-              },
-              "ExtractionAccuracy": Object {
-                "description": "A collection of measures of the accuracy of data extracted for the form, computed once the form has been reviewed by a human",
-                "properties": Object {
-                  "fieldCorrectnessPercentage": Object {
-                    "description": "The percentage of fields that were not changed during review",
-                    "type": "number",
-                  },
-                  "fieldDistancePercentage": Object {
-                    "description": "A percentage based on the Levenshtein Distance between the original extracted values and the human corrected values. Since it computes the minimum number of single-character edits (substitutions, insertions, deletions) required to transform the original to the reviewed, it acts as a measure much like 'how much manual work was required for the review?' See https://en.wikipedia.org/wiki/Levenshtein_distance",
-                    "type": "number",
-                  },
-                },
-                "required": Array [
-                  "fieldDistancePercentage",
-                  "fieldCorrectnessPercentage",
-                ],
-                "type": "object",
-              },
-              "ExtractionExecution": Object {
-                "description": "Describes the execution of the form data extraction pipeline",
-                "properties": Object {
-                  "executionId": Object {
-                    "type": "string",
-                  },
-                  "status": Object {
-                    "$ref": "#/components/schemas/ExtractionExecutionStatus",
-                  },
-                  "statusReason": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "executionId",
-                  "status",
-                ],
-                "type": "object",
-              },
-              "ExtractionExecutionStatus": Object {
-                "enum": Array [
-                  "NOT_STARTED",
-                  "IN_PROGRESS",
-                  "READY_FOR_REVIEW",
-                  "REVIEWING",
-                  "REVIEWED",
-                  "FAILED",
-                ],
-                "type": "string",
-              },
-              "FormFieldExtractionMetadata": Object {
-                "description": "Metadata to assist with the extraction of this form field from a document",
-                "properties": Object {
-                  "columnPosition": Object {
-                    "description": "The 1-indexed column number within the table in which this field appears.",
-                    "type": "integer",
-                  },
-                  "formKey": Object {
-                    "description": "The literal text uses as the key for this field in a form, eg 'Name of Entity'. Capitalisation should be the same as appears in the form.",
-                    "type": "string",
-                  },
-                  "rowPosition": Object {
-                    "description": "The 1-indexed row number within the table in which this field appears",
-                    "type": "integer",
-                  },
-                  "tablePosition": Object {
-                    "description": "The 1-indexed table number in which this field appears.",
-                    "type": "integer",
-                  },
-                  "textractQuery": Object {
-                    "description": "When specified, try to extract the field using this textract query before falling back to other means",
-                    "type": "string",
-                  },
-                },
-                "type": "object",
-              },
-              "FormJSONSchema": Object {
-                "description": "Schema for a json schema for a form, an extended definition of a standard JSON schema. See  See https://github.com/OAI/OpenAPI-Specification/blob/main/schemas/v3.0/schema.yaml",
-                "properties": Object {
-                  "additionalProperties": Object {
-                    "default": true,
-                    "type": "boolean",
-                  },
-                  "allOf": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/FormJSONSchema",
-                    },
-                    "type": "array",
-                  },
-                  "anyOf": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/FormJSONSchema",
-                    },
-                    "type": "array",
-                  },
-                  "default": Object {},
-                  "deprecated": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                  "description": Object {
-                    "type": "string",
-                  },
-                  "enum": Object {
-                    "items": Object {},
-                    "minItems": 1,
-                    "type": "array",
-                    "uniqueItems": false,
-                  },
-                  "example": Object {},
-                  "exclusiveMaximum": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                  "exclusiveMinimum": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                  "extractionMetadata": Object {
-                    "$ref": "#/components/schemas/FormFieldExtractionMetadata",
-                  },
-                  "formatType": Object {
-                    "type": "string",
-                  },
-                  "items": Object {
-                    "$ref": "#/components/schemas/FormJSONSchema",
-                  },
-                  "maxItems": Object {
-                    "minimum": 0,
-                    "type": "integer",
-                  },
-                  "maxLength": Object {
-                    "minimum": 0,
-                    "type": "integer",
-                  },
-                  "maxProperties": Object {
-                    "minimum": 0,
-                    "type": "integer",
-                  },
-                  "maximum": Object {
-                    "type": "number",
-                  },
-                  "minItems": Object {
-                    "default": 0,
-                    "minimum": 0,
-                    "type": "integer",
-                  },
-                  "minLength": Object {
-                    "default": 0,
-                    "minimum": 0,
-                    "type": "integer",
-                  },
-                  "minProperties": Object {
-                    "default": 0,
-                    "minimum": 0,
-                    "type": "integer",
-                  },
-                  "minimum": Object {
-                    "type": "number",
-                  },
-                  "multipleOf": Object {
-                    "exclusiveMinimum": true,
-                    "minimum": 0,
-                    "type": "number",
-                  },
-                  "nullable": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                  "oneOf": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/FormJSONSchema",
-                    },
-                    "type": "array",
-                  },
-                  "order": Object {
-                    "description": "The relative order of this property (for use in object types)",
-                    "type": "integer",
-                  },
-                  "pattern": Object {
-                    "format": "regex",
-                    "type": "string",
-                  },
-                  "properties": Object {
-                    "additionalProperties": Object {
-                      "$ref": "#/components/schemas/FormJSONSchema",
-                    },
-                    "type": "object",
-                  },
-                  "readOnly": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                  "required": Object {
-                    "items": Object {
-                      "type": "string",
-                    },
-                    "minItems": 1,
-                    "type": "array",
-                  },
-                  "title": Object {
-                    "type": "string",
-                  },
-                  "typeOf": Object {
-                    "enum": Array [
-                      "array",
-                      "boolean",
-                      "integer",
-                      "number",
-                      "object",
-                      "string",
-                    ],
-                    "type": "string",
-                  },
-                  "uniqueItems": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                  "writeOnly": Object {
-                    "default": false,
-                    "type": "boolean",
-                  },
-                },
-                "type": "object",
-              },
-              "FormMetadata": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/CreateUpdateDetails",
-                  },
-                ],
-                "description": "Metadata about a form within a document",
-                "properties": Object {
-                  "averageConfidence": Object {
-                    "description": "The average confidence computed by textract for all fields in the form",
-                    "type": "number",
-                  },
-                  "documentId": Object {
-                    "type": "string",
-                  },
-                  "documentName": Object {
-                    "type": "string",
-                  },
-                  "endPageIndex": Object {
-                    "type": "integer",
-                  },
-                  "extractedData": Object {
-                    "description": "Data extracted from the form - has any type, will be of the shape of the schema. This can be modified by reviewers who may correct data that has been inaccurately extracted",
-                  },
-                  "extractedDataMetadata": Object {
-                    "description": "Metadata of extracted data values, of same shape as the data above, but leaf values contain confidence and bounding box metadata.",
-                  },
-                  "extractionAccuracy": Object {
-                    "$ref": "#/components/schemas/ExtractionAccuracy",
-                  },
-                  "extractionExecution": Object {
-                    "$ref": "#/components/schemas/ExtractionExecution",
-                  },
-                  "formId": Object {
-                    "type": "string",
-                  },
-                  "location": Object {
-                    "$ref": "#/components/schemas/S3Location",
-                  },
-                  "notes": Object {
-                    "type": "string",
-                  },
-                  "numberOfPages": Object {
-                    "description": "The number of pages in the form",
-                    "type": "integer",
-                  },
-                  "originalExtractedData": Object {
-                    "description": "The original data extracted from the form - has any type, will be of the shape of the schema. This is what was originally extracted by the system, prior to any human review.",
-                  },
-                  "schemaId": Object {
-                    "type": "string",
-                  },
-                  "schemaSnapshot": Object {
-                    "$ref": "#/components/schemas/FormJSONSchema",
-                  },
-                  "startPageIndex": Object {
-                    "type": "integer",
-                  },
-                  "statusTransitionLog": Object {
-                    "description": "A log of status transitions",
-                    "items": Object {
-                      "$ref": "#/components/schemas/StatusTransition",
-                    },
-                    "type": "array",
-                  },
-                  "tags": Object {
-                    "items": Object {
-                      "type": "string",
-                    },
-                    "type": "array",
-                  },
-                  "textractOutputLocation": Object {
-                    "$ref": "#/components/schemas/S3Location",
-                  },
-                  "url": Object {
-                    "description": "Presigned url for fetching the document (returned on get individual form only)",
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "documentId",
-                  "documentName",
-                  "formId",
-                  "schemaId",
-                  "numberOfPages",
-                  "startPageIndex",
-                  "endPageIndex",
-                  "location",
-                  "extractionExecution",
-                  "schemaSnapshot",
-                  "statusTransitionLog",
-                ],
-                "type": "object",
-              },
-              "FormReviewWorkflowTag": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/CreateFormReviewWorkflowTagInput",
-                  },
-                  Object {
-                    "$ref": "#/components/schemas/CreateUpdateDetails",
-                  },
-                ],
-                "description": "Describes the object of a form review workflow tag",
-                "properties": Object {
-                  "tagId": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "tagId",
-                ],
-                "type": "object",
-              },
-              "FormSchema": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/FormSchemaInput",
-                  },
-                  Object {
-                    "$ref": "#/components/schemas/CreateUpdateDetails",
-                  },
-                ],
-                "description": "A schema defining the structured data expected for a form",
-                "properties": Object {
-                  "schemaId": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "schemaId",
-                ],
-                "type": "object",
-              },
-              "FormSchemaInput": Object {
-                "description": "A schema defining the structured data expected for a form (without an id)",
-                "properties": Object {
-                  "description": Object {
-                    "description": "A description of the form and schema",
-                    "type": "string",
-                  },
-                  "schema": Object {
-                    "$ref": "#/components/schemas/FormJSONSchema",
-                  },
-                  "title": Object {
-                    "description": "The title of the form, as it appears in the form, eg 'Appendix 3x'",
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "title",
-                  "schema",
-                ],
-                "type": "object",
-              },
-              "GetDocumentUploadUrlResponse": Object {
-                "description": "Response to getting a document upload url",
-                "properties": Object {
-                  "documentId": Object {
-                    "type": "string",
-                  },
-                  "location": Object {
-                    "$ref": "#/components/schemas/S3Location",
-                  },
-                  "url": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "documentId",
-                  "url",
-                  "location",
-                ],
-                "type": "object",
-              },
-              "IngestionExecution": Object {
-                "description": "Describes the execution of the document ingestion pipeline",
-                "properties": Object {
-                  "executionId": Object {
-                    "type": "string",
-                  },
-                  "status": Object {
-                    "$ref": "#/components/schemas/ExecutionStatus",
-                  },
-                  "statusReason": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "executionId",
-                  "status",
-                ],
-                "type": "object",
-              },
-              "ListDocumentsResponse": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/PaginatedResponse",
-                  },
-                ],
-                "description": "A list of documents",
-                "properties": Object {
-                  "documents": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/DocumentMetadata",
-                    },
-                    "type": "array",
-                  },
-                },
-                "required": Array [
-                  "documents",
-                ],
-                "type": "object",
-              },
-              "ListFormReviewWorkflowTagsResponse": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/PaginatedResponse",
-                  },
-                ],
-                "description": "A list of form review workflow tags",
-                "properties": Object {
-                  "tags": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/FormReviewWorkflowTag",
-                    },
-                    "type": "array",
-                  },
-                },
-                "required": Array [
-                  "tags",
-                ],
-                "type": "object",
-              },
-              "ListFormSchemasResponse": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/PaginatedResponse",
-                  },
-                ],
-                "description": "A list of form schemas",
-                "properties": Object {
-                  "schemas": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/FormSchema",
-                    },
-                    "type": "array",
-                  },
-                },
-                "required": Array [
-                  "schemas",
-                ],
-                "type": "object",
-              },
-              "ListFormsResponse": Object {
-                "allOf": Array [
-                  Object {
-                    "$ref": "#/components/schemas/PaginatedResponse",
-                  },
-                ],
-                "description": "A list of forms",
-                "properties": Object {
-                  "forms": Object {
-                    "items": Object {
-                      "$ref": "#/components/schemas/FormMetadata",
-                    },
-                    "type": "array",
-                  },
-                },
-                "required": Array [
-                  "forms",
-                ],
-                "type": "object",
-              },
-              "PaginatedResponse": Object {
-                "properties": Object {
-                  "nextToken": Object {
-                    "type": "string",
-                  },
-                },
-                "type": "object",
-              },
-              "S3Location": Object {
-                "description": "A location in s3",
-                "properties": Object {
-                  "bucket": Object {
-                    "type": "string",
-                  },
-                  "objectKey": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "bucket",
-                  "objectKey",
-                ],
-                "type": "object",
-              },
-              "StatusTransition": Object {
-                "description": "Defines an item in a status transition log",
-                "properties": Object {
-                  "actingUser": Object {
-                    "description": "The user that triggered the change of status",
-                    "type": "string",
-                  },
-                  "status": Object {
-                    "description": "The status that was transitioned to",
-                    "type": "string",
-                  },
-                  "timestamp": Object {
-                    "description": "The time at which the status transition occurred",
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "timestamp",
-                  "status",
-                  "actingUser",
-                ],
-                "type": "object",
-              },
-              "SubmitSourceDocumentInput": Object {
-                "description": "Request to submit a document",
-                "properties": Object {
-                  "documentId": Object {
-                    "type": "string",
-                  },
-                  "location": Object {
-                    "$ref": "#/components/schemas/S3Location",
-                  },
-                  "name": Object {
-                    "description": "Name of the document",
-                    "type": "string",
-                  },
-                  "schemaId": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "documentId",
-                  "name",
-                  "location",
-                  "schemaId",
-                ],
-                "type": "object",
-              },
-              "UpdateFormInput": Object {
-                "description": "A schema defining the extracted data input",
-                "properties": Object {
-                  "extractedData": Object {
-                    "description": "an object representing the extracted data to be updated",
-                    "type": "object",
-                  },
-                  "notes": Object {
-                    "description": "optional reviewer entered notes",
-                    "type": "string",
-                  },
-                  "tags": Object {
-                    "description": "an optional array of tagIds to support review tagging",
-                    "items": Object {
-                      "type": "string",
-                    },
-                    "type": "array",
-                  },
-                },
-                "required": Array [
-                  "extractedData",
-                ],
-                "type": "object",
-              },
-              "UpdateStatusInput": Object {
-                "description": "An object that represents the updated status of the document form",
-                "properties": Object {
-                  "newStatus": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "newStatus",
-                ],
-                "type": "object",
-              },
-            },
-            "securitySchemes": Object {},
-          },
-          "info": Object {
-            "description": "API for AWS Docs",
-            "title": "AWS Docs API",
-            "version": "1.0.0",
-          },
-          "openapi": "3.0.3",
-          "paths": Object {
-            "/documents": Object {
-              "get": Object {
-                "description": "List all documents",
-                "operationId": "listDocuments",
-                "parameters": Array [
-                  Object {
-                    "$ref": "#/components/parameters/pageSize",
-                  },
-                  Object {
-                    "$ref": "#/components/parameters/nextToken",
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ListDocumentsResponse",
-                        },
-                      },
-                    },
-                    "description": "Returns a list of documents",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "listDocumentsLambdaA37EF1B8",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/documents/upload-url": Object {
-              "get": Object {
-                "description": "Get a presigned url for uploading a document",
-                "operationId": "getDocumentUploadUrl",
-                "parameters": Array [
-                  Object {
-                    "in": "query",
-                    "name": "fileName",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                  Object {
-                    "in": "query",
-                    "name": "contentType",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/GetDocumentUploadUrlResponse",
-                        },
-                      },
-                    },
-                    "description": "Returned presigned url for uploading a document",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "getDocumentUploadUrlLambda18CE0743",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/documents/{documentId}": Object {
-              "get": Object {
-                "description": "Get details about a document being ingested",
-                "operationId": "getDocument",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "documentId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/DocumentMetadata",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful retrieval of document metadata",
-                    "headers": Object {},
-                  },
-                  "404": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ApiError",
-                        },
-                      },
-                    },
-                    "description": "Returned when a document is not found",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "getDocumentLambdaD4B182D8",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/documents/{documentId}/forms": Object {
-              "get": Object {
-                "description": "Get details about the forms within a processed document",
-                "operationId": "listDocumentForms",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "documentId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                  Object {
-                    "$ref": "#/components/parameters/pageSize",
-                  },
-                  Object {
-                    "$ref": "#/components/parameters/nextToken",
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ListFormsResponse",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful retrieval of document forms",
-                    "headers": Object {},
-                  },
-                  "404": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ApiError",
-                        },
-                      },
-                    },
-                    "description": "Returned when a document is not found",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "listDocumentFormsLambdaAF0DFC27",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/documents/{documentId}/forms/{formId}": Object {
-              "get": Object {
-                "description": "Get details about a form within a processed document",
-                "operationId": "getDocumentForm",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "documentId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                  Object {
-                    "in": "path",
-                    "name": "formId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormMetadata",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful retrieval of the form",
-                    "headers": Object {},
-                  },
-                  "404": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ApiError",
-                        },
-                      },
-                    },
-                    "description": "Returned when a document is not found",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "getDocumentFormLambdaD7292B95",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/documents/{documentId}/forms/{formId}/review": Object {
-              "put": Object {
-                "description": "Update the extracted data details object from a document form",
-                "operationId": "updateFormReview",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "documentId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                  Object {
-                    "in": "path",
-                    "name": "formId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "$ref": "#/components/schemas/UpdateFormInput",
-                      },
-                    },
-                  },
-                  "required": true,
-                },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormMetadata",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful update of the form",
-                    "headers": Object {},
-                  },
-                  "404": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ApiError",
-                        },
-                      },
-                    },
-                    "description": "Returned when a document is not found",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "updateFormReviewLambdaAA54EE7D",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/documents/{documentId}/forms/{formId}/status": Object {
-              "put": Object {
-                "description": "start a new review",
-                "operationId": "updateStatus",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "documentId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                  Object {
-                    "in": "path",
-                    "name": "formId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "$ref": "#/components/schemas/UpdateStatusInput",
-                      },
-                    },
-                  },
-                  "required": true,
-                },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormMetadata",
-                        },
-                      },
-                    },
-                    "description": "The newly updated form metadata",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "updateStatusLambda7B641729",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/forms": Object {
-              "get": Object {
-                "description": "List all forms within documents",
-                "operationId": "listForms",
-                "parameters": Array [
-                  Object {
-                    "$ref": "#/components/parameters/pageSize",
-                  },
-                  Object {
-                    "$ref": "#/components/parameters/nextToken",
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ListFormsResponse",
-                        },
-                      },
-                    },
-                    "description": "Returns a list of forms",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "listFormsLambda04A84401",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/metrics": Object {
-              "get": Object {
-                "description": "Retrieve average aggregate metrics for disclosure data extraction for the given time period",
-                "operationId": "getMetrics",
-                "parameters": Array [
-                  Object {
-                    "in": "query",
-                    "name": "startTimestamp",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                  Object {
-                    "in": "query",
-                    "name": "endTimestamp",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/AggregateMetrics",
-                        },
-                      },
-                    },
-                    "description": "Aggregate metrics",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "getMetricsLambdaD03F8C6C",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/schemas": Object {
-              "get": Object {
-                "description": "List all schemas for forms",
-                "operationId": "listFormSchemas",
-                "parameters": Array [
-                  Object {
-                    "$ref": "#/components/parameters/pageSize",
-                  },
-                  Object {
-                    "$ref": "#/components/parameters/nextToken",
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ListFormSchemasResponse",
-                        },
-                      },
-                    },
-                    "description": "List all registered form schemas",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "listFormSchemasLambda3C0EA7FA",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-              "post": Object {
-                "description": "Create a new form schema",
-                "operationId": "createFormSchema",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "$ref": "#/components/schemas/FormSchemaInput",
-                      },
-                    },
-                  },
-                  "required": true,
-                },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormSchema",
-                        },
-                      },
-                    },
-                    "description": "The newly created schema",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "createFormSchemaLambda7AD289FC",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/schemas/{schemaId}": Object {
-              "delete": Object {
-                "description": "Delete a form schema",
-                "operationId": "deleteFormSchema",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "schemaId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormSchema",
-                        },
-                      },
-                    },
-                    "description": "The deleted schema",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "deleteFormSchemaLambda82A566B0",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-              "get": Object {
-                "description": "Retrieve a specific form schema",
-                "operationId": "getFormSchema",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "schemaId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormSchema",
-                        },
-                      },
-                    },
-                    "description": "The newly created schema",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "getFormSchemaLambda797104D8",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-              "put": Object {
-                "description": "Update an existing form schema",
-                "operationId": "updateFormSchema",
-                "parameters": Array [
-                  Object {
-                    "in": "path",
-                    "name": "schemaId",
-                    "required": true,
-                    "schema": Object {
-                      "type": "string",
-                    },
-                  },
-                ],
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "$ref": "#/components/schemas/FormSchema",
-                      },
-                    },
-                  },
-                  "required": true,
-                },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormSchema",
-                        },
-                      },
-                    },
-                    "description": "The updated schema",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "updateFormSchemaLambda69854AA8",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/sources/document": Object {
-              "post": Object {
-                "description": "Submit a document for processing",
-                "operationId": "submitSourceDocument",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "$ref": "#/components/schemas/SubmitSourceDocumentInput",
-                      },
-                    },
-                  },
-                  "required": true,
-                },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/DocumentMetadata",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful submission of a form",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "submitSourceDocumentLambdaA214DCA0",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-            "/tags": Object {
-              "get": Object {
-                "description": "List all form review workflow tags",
-                "operationId": "listFormReviewWorkflowTags",
-                "parameters": Array [
-                  Object {
-                    "$ref": "#/components/parameters/pageSize",
-                  },
-                  Object {
-                    "$ref": "#/components/parameters/nextToken",
-                  },
-                ],
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/ListFormReviewWorkflowTagsResponse",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful list of all form review workflow tags",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "listFormReviewWorkflowTagsLambda1C747356",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-              "post": Object {
-                "description": "create a form review workflow tag",
-                "operationId": "createFormReviewWorkflowTag",
-                "requestBody": Object {
-                  "content": Object {
-                    "application/json": Object {
-                      "schema": Object {
-                        "$ref": "#/components/schemas/CreateFormReviewWorkflowTagInput",
-                      },
-                    },
-                  },
-                  "required": true,
-                },
-                "responses": Object {
-                  "200": Object {
-                    "content": Object {
-                      "application/json": Object {
-                        "schema": Object {
-                          "$ref": "#/components/schemas/FormReviewWorkflowTag",
-                        },
-                      },
-                    },
-                    "description": "Returned on successful addition of a form review workflow tag",
-                    "headers": Object {},
-                  },
-                },
-                "x-amazon-apigateway-auth": Object {
-                  "type": "NONE",
-                },
-                "x-amazon-apigateway-integration": Object {
-                  "httpMethod": "POST",
-                  "passthroughBehavior": "WHEN_NO_MATCH",
-                  "type": "AWS_PROXY",
-                  "uri": Object {
-                    "Fn::Join": Array [
-                      "",
-                      Array [
-                        "arn:",
-                        Object {
-                          "Ref": "AWS::Partition",
-                        },
-                        ":apigateway:",
-                        Object {
-                          "Ref": "AWS::Region",
-                        },
-                        ":lambda:path/2015-03-31/functions/",
-                        Object {
-                          "Fn::GetAtt": Array [
-                            "createFormReviewWorkflowTagLambdaF851F454",
-                            "Arn",
-                          ],
-                        },
-                        "/invocations",
-                      ],
-                    ],
-                  },
-                },
-              },
-            },
-          },
-          "x-amazon-apigateway-gateway-responses": Object {
-            "BAD_REQUEST_BODY": Object {
-              "responseTemplates": Object {
-                "application/json": "{\\"message\\": \\"$context.error.validationErrorString\\"}",
-              },
-              "statusCode": 400,
-            },
-          },
-          "x-amazon-apigateway-request-validator": "all",
-          "x-amazon-apigateway-request-validators": Object {
-            "all": Object {
-              "validateRequestBody": true,
-              "validateRequestParameters": true,
-            },
-          },
-        },
-        "Name": "ApiTest",
+  "Resources": {
+    "AccessLogs8B620ECA": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "RetentionInDays": 731,
       },
-      "Type": "AWS::ApiGateway::RestApi",
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
     },
-    "ApiTestAccount2AC853EB": Object {
-      "DependsOn": Array [
-        "ApiTest0B514494",
+    "ApiTestAccount272B5CDD": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "ApiTestEE73F324",
+        "ApiTestPrepareSpecCustomResourceC9800EE6",
       ],
-      "Properties": Object {
-        "CloudWatchRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "ApiTestCloudWatchRole49F4F360",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "ApiTestCloudWatchRole56ED0814",
             "Arn",
           ],
         },
       },
       "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
     },
-    "ApiTestCloudWatchRole49F4F360": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "ApiTestApiTestAclWebACL9E75156F": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {},
+        },
+        "Name": "Default--ApiTest-Acl-WebAcl",
+        "Rules": [
+          {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "None": {},
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "Default--ApiTest-Acl-WebAcl-AWS-AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+        ],
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "Default--ApiTest-Acl-WebAcl",
+          "SampledRequestsEnabled": true,
+        },
+      },
+      "Type": "AWS::WAFv2::WebACL",
+    },
+    "ApiTestApiTestAclWebACLAssociation54801610": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "ResourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region",
+              },
+              "::/restapis/",
+              {
+                "Ref": "ApiTestEE73F324",
+              },
+              "/stages/",
+              {
+                "Ref": "ApiTestDeploymentStageprod660267A6",
+              },
+            ],
+          ],
+        },
+        "WebACLArn": {
+          "Fn::GetAtt": [
+            "ApiTestApiTestAclWebACL9E75156F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::WAFv2::WebACLAssociation",
+    },
+    "ApiTestCloudWatchRole56ED0814": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "ApiTestPrepareSpecCustomResourceC9800EE6",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "apigateway.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
@@ -2064,668 +242,2123 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
     },
-    "ApiTestDeployment59A5FA03726ac5cc30570131b1aad50e9ee391c4": Object {
-      "Properties": Object {
+    "ApiTestDeployment153EC47888e54f9306af66fbe30bd7c587ff8208": {
+      "DependsOn": [
+        "ApiTestPrepareSpecCustomResourceC9800EE6",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Description": "Automatically created by the RestApi construct",
-        "RestApiId": Object {
-          "Ref": "ApiTest0B514494",
+        "RestApiId": {
+          "Ref": "ApiTestEE73F324",
         },
       },
       "Type": "AWS::ApiGateway::Deployment",
     },
-    "ApiTestDeploymentStageprod77F35FA8": Object {
-      "Properties": Object {
-        "DeploymentId": Object {
-          "Ref": "ApiTestDeployment59A5FA03726ac5cc30570131b1aad50e9ee391c4",
+    "ApiTestDeploymentStageprod660267A6": {
+      "DependsOn": [
+        "ApiTestPrepareSpecCustomResourceC9800EE6",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
         },
-        "RestApiId": Object {
-          "Ref": "ApiTest0B514494",
+      },
+      "Properties": {
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "AccessLogs8B620ECA",
+              "Arn",
+            ],
+          },
+          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId",
+        },
+        "DeploymentId": {
+          "Ref": "ApiTestDeployment153EC47888e54f9306af66fbe30bd7c587ff8208",
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": {
+          "Ref": "ApiTestEE73F324",
         },
         "StageName": "prod",
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "ApiTestLambdaPermissioncreateFormReviewWorkflowTag8493EACF": Object {
-      "Properties": Object {
+    "ApiTestEE73F324": {
+      "DependsOn": [
+        "ApiTestPrepareSpecCustomResourceC9800EE6",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BodyS3Location": {
+          "Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "Key": {
+            "Fn::GetAtt": [
+              "ApiTestPrepareSpecCustomResourceC9800EE6",
+              "outputSpecKey",
+            ],
+          },
+        },
+        "Name": "ApiTest",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "ApiTestLambdaPermissioncreateFormReviewWorkflowTag8493EACF": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "createFormReviewWorkflowTagLambdaF851F454",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/POST/tags",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissioncreateFormSchema31A09279": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissioncreateFormSchema31A09279": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "createFormSchemaLambda7AD289FC",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/POST/schemas",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissiondeleteFormSchema1813622C": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissiondeleteFormSchema1813622C": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "deleteFormSchemaLambda82A566B0",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/DELETE/schemas/*",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissiongetDocument2B1C76D9": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissiongetDocument2B1C76D9": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "getDocumentLambdaD4B182D8",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/documents/*",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissiongetDocumentForm3FB4A5CE": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissiongetDocumentForm3FB4A5CE": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "getDocumentFormLambdaD7292B95",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/documents/*/forms/*",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissiongetDocumentUploadUrl09A647AA": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissiongetDocumentUploadUrl09A647AA": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "getDocumentUploadUrlLambda18CE0743",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/documents/upload-url",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissiongetFormSchema562131EE": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissiongetFormSchema562131EE": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "getFormSchemaLambda797104D8",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/schemas/*",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissiongetMetricsCF13AE28": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissiongetMetricsCF13AE28": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "getMetricsLambdaD03F8C6C",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/metrics",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionlistDocumentFormsD28B85A5": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionlistDocumentFormsD28B85A5": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "listDocumentFormsLambdaAF0DFC27",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/documents/*/forms",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionlistDocumentsE53DD0B2": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionlistDocumentsE53DD0B2": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "listDocumentsLambdaA37EF1B8",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/documents",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionlistFormReviewWorkflowTagsE3F0AEF8": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionlistFormReviewWorkflowTagsE3F0AEF8": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "listFormReviewWorkflowTagsLambda1C747356",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/tags",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionlistFormSchemasA7BDA33D": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionlistFormSchemasA7BDA33D": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "listFormSchemasLambda3C0EA7FA",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/schemas",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionlistFormsE173C217": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionlistFormsE173C217": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "listFormsLambda04A84401",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/GET/forms",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionsubmitSourceDocument84F01611": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionsubmitSourceDocument84F01611": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "submitSourceDocumentLambdaA214DCA0",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/POST/sources/document",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionupdateFormReview3284B764": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionupdateFormReview3284B764": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "updateFormReviewLambdaAA54EE7D",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/PUT/documents/*/forms/*/review",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionupdateFormSchemaA1785553": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionupdateFormSchemaA1785553": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "updateFormSchemaLambda69854AA8",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/PUT/schemas/*",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "ApiTestLambdaPermissionupdateStatus3B5E9D8D": Object {
-      "Properties": Object {
+    "ApiTestLambdaPermissionupdateStatus3B5E9D8D": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "updateStatusLambda7B641729",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
-                "Ref": "ApiTest0B514494",
+              {
+                "Ref": "ApiTestEE73F324",
               },
-              "/*/*",
+              "/*/PUT/documents/*/forms/*/status",
             ],
           ],
         },
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "createFormReviewWorkflowTagLambdaF851F454": Object {
-      "DependsOn": Array [
+    "ApiTestPrepareSpecA3536D2B": {
+      "DependsOn": [
+        "ApiTestPrepareSpecRole44D562E5",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "7e0b646807e5ff55e634d8c598d0622db410e8a408794f469d70fe488dfd2381.zip",
+        },
+        "FunctionName": "Default-PrepareSpec",
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiTestPrepareSpecRole44D562E5",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs16.x",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiTestPrepareSpecCustomResourceC9800EE6": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "ApiTestPrepareSpecProviderframeworkonEvent2FA9E188",
+            "Arn",
+          ],
+        },
+        "inputSpecLocation": {
+          "bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "key": "59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json",
+        },
+        "integrations": {
+          "createFormReviewWorkflowTag": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "createFormReviewWorkflowTagLambdaF851F454",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "createFormSchema": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "createFormSchemaLambda7AD289FC",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "deleteFormSchema": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "deleteFormSchemaLambda82A566B0",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "getDocument": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "getDocumentLambdaD4B182D8",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "getDocumentForm": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "getDocumentFormLambdaD7292B95",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "getDocumentUploadUrl": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "getDocumentUploadUrlLambda18CE0743",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "getFormSchema": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "getFormSchemaLambda797104D8",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "getMetrics": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "getMetricsLambdaD03F8C6C",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "listDocumentForms": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "listDocumentFormsLambdaAF0DFC27",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "listDocuments": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "listDocumentsLambdaA37EF1B8",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "listFormReviewWorkflowTags": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "listFormReviewWorkflowTagsLambda1C747356",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "listFormSchemas": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "listFormSchemasLambda3C0EA7FA",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "listForms": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "listFormsLambda04A84401",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "submitSourceDocument": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "submitSourceDocumentLambdaA214DCA0",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "updateFormReview": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "updateFormReviewLambdaAA54EE7D",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "updateFormSchema": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "updateFormSchemaLambda69854AA8",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+          "updateStatus": {
+            "integration": {
+              "httpMethod": "POST",
+              "passthroughBehavior": "WHEN_NO_MATCH",
+              "type": "AWS_PROXY",
+              "uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":apigateway:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::GetAtt": [
+                        "updateStatusLambda7B641729",
+                        "Arn",
+                      ],
+                    },
+                    "/invocations",
+                  ],
+                ],
+              },
+            },
+          },
+        },
+        "operationLookup": {
+          "createFormReviewWorkflowTag": {
+            "method": "POST",
+            "path": "/tags",
+          },
+          "createFormSchema": {
+            "method": "POST",
+            "path": "/schemas",
+          },
+          "deleteFormSchema": {
+            "method": "DELETE",
+            "path": "/schemas/{schemaId}",
+          },
+          "getDocument": {
+            "method": "GET",
+            "path": "/documents/{documentId}",
+          },
+          "getDocumentForm": {
+            "method": "GET",
+            "path": "/documents/{documentId}/forms/{formId}",
+          },
+          "getDocumentUploadUrl": {
+            "method": "GET",
+            "path": "/documents/upload-url",
+          },
+          "getFormSchema": {
+            "method": "GET",
+            "path": "/schemas/{schemaId}",
+          },
+          "getMetrics": {
+            "method": "GET",
+            "path": "/metrics",
+          },
+          "listDocumentForms": {
+            "method": "GET",
+            "path": "/documents/{documentId}/forms",
+          },
+          "listDocuments": {
+            "method": "GET",
+            "path": "/documents",
+          },
+          "listFormReviewWorkflowTags": {
+            "method": "GET",
+            "path": "/tags",
+          },
+          "listFormSchemas": {
+            "method": "GET",
+            "path": "/schemas",
+          },
+          "listForms": {
+            "method": "GET",
+            "path": "/forms",
+          },
+          "submitSourceDocument": {
+            "method": "POST",
+            "path": "/sources/document",
+          },
+          "updateFormReview": {
+            "method": "PUT",
+            "path": "/documents/{documentId}/forms/{formId}/review",
+          },
+          "updateFormSchema": {
+            "method": "PUT",
+            "path": "/schemas/{schemaId}",
+          },
+          "updateStatus": {
+            "method": "PUT",
+            "path": "/documents/{documentId}/forms/{formId}/status",
+          },
+        },
+        "outputSpecLocation": {
+          "bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "key": "59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json-prepared",
+        },
+        "securitySchemes": {},
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ApiTestPrepareSpecProviderRoleDefaultPolicy99662E78": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ApiTestPrepareSpecA3536D2B",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ApiTestPrepareSpecA3536D2B",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiTestPrepareSpecProviderRoleDefaultPolicy99662E78",
+        "Roles": [
+          {
+            "Ref": "ApiTestPrepareSpecProviderRoleF47822B8",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiTestPrepareSpecProviderRoleF47822B8": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/Default-PrepareSpec-Provider",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/Default-PrepareSpec-Provider:*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiTestPrepareSpecProviderframeworkonEvent2FA9E188": {
+      "DependsOn": [
+        "ApiTestPrepareSpecProviderRoleDefaultPolicy99662E78",
+        "ApiTestPrepareSpecProviderRoleF47822B8",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the Provider construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "e7c95e1a12d903d913ebdd526c735f1ac58b2024882a5562110221fe685ebe85.zip",
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (Default/ApiTest/PrepareSpecProvider)",
+        "Environment": {
+          "Variables": {
+            "USER_ON_EVENT_FUNCTION_ARN": {
+              "Fn::GetAtt": [
+                "ApiTestPrepareSpecA3536D2B",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "FunctionName": "Default-PrepareSpec-Provider",
+        "Handler": "framework.onEvent",
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiTestPrepareSpecProviderRoleF47822B8",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiTestPrepareSpecRole44D562E5": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/Default-PrepareSpec:*/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/Default-PrepareSpec",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/Default-PrepareSpec:*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "s3:getObject",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":s3:::",
+                        {
+                          "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                        },
+                        "/59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json",
+                      ],
+                    ],
+                  },
+                },
+                {
+                  "Action": "s3:putObject",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":s3:::",
+                        {
+                          "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                        },
+                        "/59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json-prepared/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "s3",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "createFormReviewWorkflowTagLambdaF851F454": {
+      "DependsOn": [
         "createFormReviewWorkflowTagLambdaServiceRole42D71378",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "createFormReviewWorkflowTagLambdaServiceRole42D71378",
             "Arn",
           ],
@@ -2734,27 +2367,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "createFormReviewWorkflowTagLambdaServiceRole42D71378": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "createFormReviewWorkflowTagLambdaServiceRole42D71378": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -2765,17 +2398,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "createFormSchemaLambda7AD289FC": Object {
-      "DependsOn": Array [
+    "createFormSchemaLambda7AD289FC": {
+      "DependsOn": [
         "createFormSchemaLambdaServiceRoleC8B1ABCE",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "createFormSchemaLambdaServiceRoleC8B1ABCE",
             "Arn",
           ],
@@ -2784,27 +2417,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "createFormSchemaLambdaServiceRoleC8B1ABCE": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "createFormSchemaLambdaServiceRoleC8B1ABCE": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -2815,17 +2448,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "deleteFormSchemaLambda82A566B0": Object {
-      "DependsOn": Array [
+    "deleteFormSchemaLambda82A566B0": {
+      "DependsOn": [
         "deleteFormSchemaLambdaServiceRole34313DB3",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "deleteFormSchemaLambdaServiceRole34313DB3",
             "Arn",
           ],
@@ -2834,27 +2467,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "deleteFormSchemaLambdaServiceRole34313DB3": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "deleteFormSchemaLambdaServiceRole34313DB3": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -2865,17 +2498,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "getDocumentFormLambdaD7292B95": Object {
-      "DependsOn": Array [
+    "getDocumentFormLambdaD7292B95": {
+      "DependsOn": [
         "getDocumentFormLambdaServiceRole8383A8DF",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "getDocumentFormLambdaServiceRole8383A8DF",
             "Arn",
           ],
@@ -2884,27 +2517,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "getDocumentFormLambdaServiceRole8383A8DF": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "getDocumentFormLambdaServiceRole8383A8DF": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -2915,17 +2548,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "getDocumentLambdaD4B182D8": Object {
-      "DependsOn": Array [
+    "getDocumentLambdaD4B182D8": {
+      "DependsOn": [
         "getDocumentLambdaServiceRoleC2162A01",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "getDocumentLambdaServiceRoleC2162A01",
             "Arn",
           ],
@@ -2934,27 +2567,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "getDocumentLambdaServiceRoleC2162A01": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "getDocumentLambdaServiceRoleC2162A01": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -2965,17 +2598,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "getDocumentUploadUrlLambda18CE0743": Object {
-      "DependsOn": Array [
+    "getDocumentUploadUrlLambda18CE0743": {
+      "DependsOn": [
         "getDocumentUploadUrlLambdaServiceRoleE0A5064A",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "getDocumentUploadUrlLambdaServiceRoleE0A5064A",
             "Arn",
           ],
@@ -2984,27 +2617,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "getDocumentUploadUrlLambdaServiceRoleE0A5064A": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "getDocumentUploadUrlLambdaServiceRoleE0A5064A": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3015,17 +2648,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "getFormSchemaLambda797104D8": Object {
-      "DependsOn": Array [
+    "getFormSchemaLambda797104D8": {
+      "DependsOn": [
         "getFormSchemaLambdaServiceRole86A100D1",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "getFormSchemaLambdaServiceRole86A100D1",
             "Arn",
           ],
@@ -3034,27 +2667,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "getFormSchemaLambdaServiceRole86A100D1": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "getFormSchemaLambdaServiceRole86A100D1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3065,17 +2698,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "getMetricsLambdaD03F8C6C": Object {
-      "DependsOn": Array [
+    "getMetricsLambdaD03F8C6C": {
+      "DependsOn": [
         "getMetricsLambdaServiceRole208C4AD4",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "getMetricsLambdaServiceRole208C4AD4",
             "Arn",
           ],
@@ -3084,27 +2717,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "getMetricsLambdaServiceRole208C4AD4": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "getMetricsLambdaServiceRole208C4AD4": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3115,17 +2748,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "listDocumentFormsLambdaAF0DFC27": Object {
-      "DependsOn": Array [
+    "listDocumentFormsLambdaAF0DFC27": {
+      "DependsOn": [
         "listDocumentFormsLambdaServiceRole5A51F525",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "listDocumentFormsLambdaServiceRole5A51F525",
             "Arn",
           ],
@@ -3134,27 +2767,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "listDocumentFormsLambdaServiceRole5A51F525": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "listDocumentFormsLambdaServiceRole5A51F525": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3165,17 +2798,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "listDocumentsLambdaA37EF1B8": Object {
-      "DependsOn": Array [
+    "listDocumentsLambdaA37EF1B8": {
+      "DependsOn": [
         "listDocumentsLambdaServiceRole9CC0C0C1",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "listDocumentsLambdaServiceRole9CC0C0C1",
             "Arn",
           ],
@@ -3184,27 +2817,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "listDocumentsLambdaServiceRole9CC0C0C1": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "listDocumentsLambdaServiceRole9CC0C0C1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3215,17 +2848,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "listFormReviewWorkflowTagsLambda1C747356": Object {
-      "DependsOn": Array [
+    "listFormReviewWorkflowTagsLambda1C747356": {
+      "DependsOn": [
         "listFormReviewWorkflowTagsLambdaServiceRole18713536",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "listFormReviewWorkflowTagsLambdaServiceRole18713536",
             "Arn",
           ],
@@ -3234,27 +2867,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "listFormReviewWorkflowTagsLambdaServiceRole18713536": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "listFormReviewWorkflowTagsLambdaServiceRole18713536": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3265,17 +2898,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "listFormSchemasLambda3C0EA7FA": Object {
-      "DependsOn": Array [
+    "listFormSchemasLambda3C0EA7FA": {
+      "DependsOn": [
         "listFormSchemasLambdaServiceRole9D85886A",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "listFormSchemasLambdaServiceRole9D85886A",
             "Arn",
           ],
@@ -3284,27 +2917,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "listFormSchemasLambdaServiceRole9D85886A": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "listFormSchemasLambdaServiceRole9D85886A": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3315,17 +2948,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "listFormsLambda04A84401": Object {
-      "DependsOn": Array [
+    "listFormsLambda04A84401": {
+      "DependsOn": [
         "listFormsLambdaServiceRole5E9F0F29",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "listFormsLambdaServiceRole5E9F0F29",
             "Arn",
           ],
@@ -3334,27 +2967,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "listFormsLambdaServiceRole5E9F0F29": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "listFormsLambdaServiceRole5E9F0F29": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3365,17 +2998,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "submitSourceDocumentLambdaA214DCA0": Object {
-      "DependsOn": Array [
+    "submitSourceDocumentLambdaA214DCA0": {
+      "DependsOn": [
         "submitSourceDocumentLambdaServiceRole52F6521B",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "submitSourceDocumentLambdaServiceRole52F6521B",
             "Arn",
           ],
@@ -3384,27 +3017,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "submitSourceDocumentLambdaServiceRole52F6521B": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "submitSourceDocumentLambdaServiceRole52F6521B": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3415,17 +3048,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "updateFormReviewLambdaAA54EE7D": Object {
-      "DependsOn": Array [
+    "updateFormReviewLambdaAA54EE7D": {
+      "DependsOn": [
         "updateFormReviewLambdaServiceRole16D0911E",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "updateFormReviewLambdaServiceRole16D0911E",
             "Arn",
           ],
@@ -3434,27 +3067,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "updateFormReviewLambdaServiceRole16D0911E": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "updateFormReviewLambdaServiceRole16D0911E": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3465,17 +3098,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "updateFormSchemaLambda69854AA8": Object {
-      "DependsOn": Array [
+    "updateFormSchemaLambda69854AA8": {
+      "DependsOn": [
         "updateFormSchemaLambdaServiceRoleCB53DF54",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "updateFormSchemaLambdaServiceRoleCB53DF54",
             "Arn",
           ],
@@ -3484,27 +3117,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "updateFormSchemaLambdaServiceRoleCB53DF54": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "updateFormSchemaLambdaServiceRoleCB53DF54": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3515,17 +3148,17 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "updateStatusLambda7B641729": Object {
-      "DependsOn": Array [
+    "updateStatusLambda7B641729": {
+      "DependsOn": [
         "updateStatusLambdaServiceRoleB3EF2D58",
       ],
-      "Properties": Object {
-        "Code": Object {
+      "Properties": {
+        "Code": {
           "ZipFile": "test",
         },
         "Handler": "test",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "updateStatusLambdaServiceRoleB3EF2D58",
             "Arn",
           ],
@@ -3534,27 +3167,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "updateStatusLambdaServiceRoleB3EF2D58": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "updateStatusLambdaServiceRoleB3EF2D58": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -3566,22 +3199,22 @@ Object {
       "Type": "AWS::IAM::Role",
     },
   },
-  "Rules": Object {
-    "CheckBootstrapVersion": Object {
-      "Assertions": Array [
-        Object {
-          "Assert": Object {
-            "Fn::Not": Array [
-              Object {
-                "Fn::Contains": Array [
-                  Array [
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
                   ],
-                  Object {
+                  {
                     "Ref": "BootstrapVersion",
                   },
                 ],

@@ -26,6 +26,19 @@ The solution includes a front-end web interface implemented as a single page Rea
 * a registry of form description schemas
 * storage of data extracted from those forms mapped to the form structure schema
 
+## Solution Web Application
+On the home page, you will see a dashboard that has metrics that give clarity about the platform's performance in general. For example, `Average Extraction Accuracy` reflects the average accuracy of all forms processed by the platform. 
+
+Central to the application is the schema registry where you can register schemas that you want textract data to map to. It also tracks a Average Accuracy metric which is the average accuracy of all forms that belong to this schema type.
+![Schemas](/readme//document-schemas.png)
+
+Once a document has been uploaded, it will automatically appear to be extracted in the `form` tab. There are tags which you can add and use as a filter in the search. Clicking the status will send you to the review page and set the form to be in "In Review" status. 
+![Forms](/readme//forms.png)
+
+The review page shows a list of extracted fields where the **fields defined originate from the schema**, and the **values of a field are extracted from textract**. The right hand side is a pdf viewer. You can make edits to the individual fields, it will also draw a bounding box on where that field has been identified in the form. As part of the extraction metadata, you can tell which textract api was used to find the value of that field, whether it was query, form or table. 
+![Review](/readme//editable-review.png)
+
+
 ### Extraction, Review and Storage Backend:
 
 1. An upload of a document in the frontend webapp stores it in s3 prior to processing and triggers the Document Processing Step Functions Workflow.
@@ -33,7 +46,9 @@ The solution includes a front-end web interface implemented as a single page Rea
 3. Finally the Form Extraction Workflow* will make an API call to Textract to extract data from the form. Fields from the selected schema type will be matched with Textract's results. If Textract's results identifies a key that contains results from Textract's QUERY, FORM and TABLE API, preference for selecting the value of the key will be given in the order of QUERY, FORM AND then TABLE. DynamoDB will be updated to store the correlated results between keys defined in the schema definition and Textract.
 
 * Note: For the platform's extensibility, the Form Extraction Workflow can be invoked in parallel if the platform is extended to support extracting multiple forms within one document. Currently the platform is limited to one form per document and hence the Form Extraction workflow will only run once per document.
-
+### Lifecycle of an uploaded file:
+1. Uploaded files are recorded as a single instance of 'document'
+2. After extraction state machine is run, it will be stored as a 'form'. There is a distinction between form and document as a document may contain multiple forms. However that is not supported by this platform at the moment. See more in the section `Limitations of the platform`
 --- 
 ## Using the Platform
 
@@ -253,8 +268,11 @@ For more information refer to the spec.yaml's `FormJSONSchema`.
 ### Limitations of the platform
 - You can only extract a document once the appropriate schema has been added to the schema registry
 - In the real world, documents can contain multiple forms but the platform is limited to only extracting one document per form. Each page included in the document must be relevant to the schema defined. Do not include an illustrative cover for example as no meaningful data can be extracted. 
+- There is no frontend component built to add tags on the webapp. However tags are supported in the backend.
 
+### Adding workflow tags 
 
+- You can add tags to a form in review and default tags are defined in the REVIEW_WORKFLOW_TAGS const. 
 --- 
 ## Project Structure
 

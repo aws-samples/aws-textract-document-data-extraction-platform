@@ -69,7 +69,7 @@ export class PermissionsStack extends Stack {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["execute-api:Invoke"],
-        resources: [sourceApi.api.arnForExecuteApi("*", "/*", "*")],
+        resources: [sourceApi.api.api.arnForExecuteApi("*", "/*", "*")],
       })
     );
 

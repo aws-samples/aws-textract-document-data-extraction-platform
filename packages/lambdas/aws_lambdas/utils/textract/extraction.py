@@ -192,17 +192,17 @@ class StatefulDocumentLookupData:
         :return: the table cell (if present)
         """
         if not (
-            "extraction_metadata" in schema
-            and "table_position" in schema["extractionMetadata"]
-            and "row_position" in schema["extractionMetadata"]
-            and "column_position" in schema["extractionMetadata"]
+            "extractionMetadata" in schema
+            and "tablePosition" in schema["extractionMetadata"]
+            and "rowPosition" in schema["extractionMetadata"]
+            and "columnPosition" in schema["extractionMetadata"]
         ):
             return None
 
         # Positions in the schema are 1-indexed
-        t = schema["extractionMetadata"]["table_position"] - 1
-        r = schema["extractionMetadata"]["row_position"] - 1
-        c = schema["extractionMetadata"]["column_position"] - 1
+        t = int(schema["extractionMetadata"]["tablePosition"] - 1)
+        r = int(schema["extractionMetadata"]["rowPosition"] - 1)
+        c = int(schema["extractionMetadata"]["columnPosition"] - 1)
         if (
             0 <= t < len(self.tables)
             and 0 <= r < len(self.tables[t].table.rows)
@@ -328,11 +328,11 @@ def get_form_keys_from_schema(schema: FormJSONSchema) -> List[str]:
     """
     keys = []
     if (
-        "extraction_metadata" in schema
-        and "form_key" in schema["extractionMetadata"]
-        and schema["extractionMetadata"].form_key is not None
+        "extractionMetadata" in schema
+        and "formKey" in schema["extractionMetadata"]
+        and schema["extractionMetadata"]["formKey"] is not None
     ):
-        keys.append(schema["extractionMetadata"].form_key)
+        keys.append(schema["extractionMetadata"]["formKey"])
     if "title" in schema and schema["title"] is not None:
         keys.append(schema["title"])
     return keys
@@ -384,7 +384,7 @@ def _coerce_value(value: str, schema: FormJSONSchema):
             return value.lower() not in {"no", "false", ""}
         else:
             # Schema type is 'string'
-            if "format" in schema:
+            if "formatType" in schema:
                 # TODO: May wish to consider supporting full range of built in formats https://json-schema.org/understanding-json-schema/reference/string.html#built-in-formats
                 if schema["formatType"] in {"date", "date-time"}:
                     # Python's date parser handles lots of formats, but may wish to extend if there are other common formats not supported

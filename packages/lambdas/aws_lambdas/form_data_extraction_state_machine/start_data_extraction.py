@@ -11,6 +11,7 @@ from api_python_client.model.extraction_execution_status import (
 )
 from api_python_client.model.status_transition import StatusTransition
 from api_python_client.model.form_metadata import FormMetadata
+from api_python_client.model.form_json_schema import FormJSONSchema
 
 from aws_lambdas.ingestion_state_machine.split_document import ClassifiedSplitForm
 from aws_lambdas.utils.ddb.form_metadata_store import FormMetadataStore
@@ -61,13 +62,13 @@ def handler(event: StartDataExtractionInput, context) -> StartDataExtractionOutp
             actingUser=form["updatedBy"],
         )
     )
-    # form.pop("_spec_property_naming")
+    form["statusTransitionLog"] = status_transition_log
     form = FormMetadata(**form)
     store.put_form_metadata(form["updatedBy"], form)
 
     # Find any queries we should execute based on the schema
-    schema_queries = get_queries_from_schema(form["schemaSnapshot"])
-
+    newSchemaSnapshot = FormJSONSchema(**(form["schemaSnapshot"]))
+    schema_queries = get_queries_from_schema(newSchemaSnapshot)
     textract_feature_types = ["FORMS", "TABLES"]
     textract_extra_args = {}
 

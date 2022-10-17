@@ -332,8 +332,6 @@ class Metrics:
         Add a counter metric for the total number of documents processed, and the number of successful/failed documents
         depending on status
         """
-        # TODO: remove print
-        print("value: {}".format(document["ingestionExecution"]["status"]))
         self._add_count_metric(Metric.DOCUMENT_COUNT, [])
         self._add_count_metric(
             Metric.DOCUMENT_COUNT,

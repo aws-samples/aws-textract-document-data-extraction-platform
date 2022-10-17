@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { Authorizers } from "@aws-prototyping-sdk/open-api-gateway";
+import {
+  Authorizers,
+  Integrations,
+} from "@aws-prototyping-sdk/open-api-gateway";
 import { Stack } from "aws-cdk-lib";
 import { Cors } from "aws-cdk-lib/aws-apigateway";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
@@ -167,55 +170,55 @@ export class SourceApi extends Construct {
       },
       integrations: {
         createFormReviewWorkflowTag: {
-          function: createFormReviewWorkflowTagLambda,
+          integration: Integrations.lambda(createFormReviewWorkflowTagLambda),
         },
         listFormReviewWorkflowTags: {
-          function: listFormReviewWorkflowTagsLambda,
+          integration: Integrations.lambda(listFormReviewWorkflowTagsLambda),
         },
         getDocumentUploadUrl: {
-          function: getDocumentUploadUrlLambda,
+          integration: Integrations.lambda(getDocumentUploadUrlLambda),
         },
         submitSourceDocument: {
-          function: submitSourceDocumentLambda,
+          integration: Integrations.lambda(submitSourceDocumentLambda),
         },
         getDocument: {
-          function: getDocumentLambda,
+          integration: Integrations.lambda(getDocumentLambda),
         },
         listDocuments: {
-          function: listDocumentsLambda,
+          integration: Integrations.lambda(listDocumentsLambda),
         },
         listDocumentForms: {
-          function: listDocumentFormsLambda,
+          integration: Integrations.lambda(listDocumentFormsLambda),
         },
         listForms: {
-          function: listFormsLambda,
+          integration: Integrations.lambda(listFormsLambda),
         },
         getDocumentForm: {
-          function: getDocumentFormLambda,
+          integration: Integrations.lambda(getDocumentFormLambda),
         },
         createFormSchema: {
-          function: createFormSchemaLambda,
+          integration: Integrations.lambda(createFormSchemaLambda),
         },
         updateFormSchema: {
-          function: updateFormSchemaLambda,
+          integration: Integrations.lambda(updateFormSchemaLambda),
         },
         deleteFormSchema: {
-          function: deleteFormSchemaLambda,
+          integration: Integrations.lambda(deleteFormSchemaLambda),
         },
         getFormSchema: {
-          function: getFormSchemaLambda,
+          integration: Integrations.lambda(getFormSchemaLambda),
         },
         listFormSchemas: {
-          function: listFormSchemasLambda,
+          integration: Integrations.lambda(listFormSchemasLambda),
         },
         updateFormReview: {
-          function: updateFormReviewLambda,
+          integration: Integrations.lambda(updateFormReviewLambda),
         },
         updateStatus: {
-          function: updateStatusLambda,
+          integration: Integrations.lambda(updateStatusLambda),
         },
         getMetrics: {
-          function: getMetricsLambda,
+          integration: Integrations.lambda(getMetricsLambda),
         },
       },
       policy: new PolicyDocument({

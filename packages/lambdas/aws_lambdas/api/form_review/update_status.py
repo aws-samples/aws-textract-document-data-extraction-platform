@@ -60,6 +60,7 @@ def handler(
             actingUser=caller.username,
         )
     )
+    document_form["statusTransitionLog"] = status_transition_log
     document_form["extractionExecution"]["status"] = new_status
 
     # When a review has been completed, add the accuracy and review time metrics
@@ -68,6 +69,7 @@ def handler(
             document_form
         )
         document = DocumentMetadataStore().get_document_metadata(document_id)
+        document_form = FormMetadata(**document_form)
         if document is None:
             return Response.not_found(
                 ApiError(message="No document found with id {}".format(document_id))
@@ -76,7 +78,7 @@ def handler(
             m.add_review_time(document_form)
             m.add_end_to_end_time(document, document_form)
             m.add_extraction_accuracy(document_form)
-    # document_form.pop("_spec_property_naming")
+
     document_form = FormMetadata(**document_form)
     updated_document_form = store.put_form_metadata(caller.username, document_form)
     return Response.success(updated_document_form)

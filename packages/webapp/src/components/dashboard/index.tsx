@@ -160,14 +160,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
             <Column key="column2">
               <Stack>
                 <KeyValuePair
-                  label="Average Processing Time"
-                  value={friendlyDuration(metrics?.averageProcessingTimeMilliseconds)}
-                />
-                <KeyValuePair
-                  label="Average Processing Time Per Page"
-                  value={friendlyDuration(metrics?.averageProcessingTimePerPageMilliseconds)}
-                />
-                <KeyValuePair
                   label="Average Review Time"
                   value={friendlyDuration(metrics?.averageReviewTimeMilliseconds)}
                 />

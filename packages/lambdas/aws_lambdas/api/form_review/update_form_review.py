@@ -53,7 +53,6 @@ def handler(
     new_document_form["extractedData"] = extracted_data_update
 
     new_document_form = FormMetadata(**new_document_form)
-    print("Document: {}".format(new_document_form))
 
     updated_form_review = store.put_form_metadata(caller.username, new_document_form)
 

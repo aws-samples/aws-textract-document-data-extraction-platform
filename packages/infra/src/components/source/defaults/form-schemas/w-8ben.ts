@@ -3,7 +3,7 @@
 import { FormSchemaInput } from "@aws/api/generated/typescript";
 
 /**
- * Default form schema for an Appendix 3X
+ * Default form schema for an W-8BEN FORM
  */
 export const W_8BEN: FormSchemaInput = {
   title: "W-8BEN",
@@ -11,15 +11,15 @@ export const W_8BEN: FormSchemaInput = {
     title: "W-8BEN",
     description:
       "The W-8 form is a legal US Treasury document required by the Internal Revenue Service (IRS) that allows foreign investors to claim concessional tax treaty benefits, including a reduced rate of withholding tax",
-    type: "object",
+    typeOf: "object",
     properties: {
       part1: {
-        type: "object",
+        typeOf: "object",
         order: 1,
         properties: {
           name: {
             title: "Name of individual who is the beneficial owner",
-            type: "string",
+            typeOf: "string",
             order: 1,
             extractionMetadata: {
               formKey: "Name of individual who is the beneficial owner",
@@ -29,7 +29,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           countryOfCitizenship: {
             title: "Country of citizenship",
-            type: "string",
+            typeOf: "string",
             order: 2,
             extractionMetadata: {
               formKey: "Country of citizenship",
@@ -38,7 +38,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           address: {
             title: "Permanent residence address",
-            type: "string",
+            typeOf: "string",
             order: 3,
             extractionMetadata: {
               formKey: "Permanent residence address",
@@ -48,7 +48,7 @@ export const W_8BEN: FormSchemaInput = {
           city: {
             title:
               "City or town, state or province. Include postal code where appropriate.",
-            type: "string",
+            typeOf: "string",
             order: 4,
             extractionMetadata: {
               formKey:
@@ -59,7 +59,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           residenceAddressCountry: {
             title: "Country",
-            type: "string",
+            typeOf: "string",
             order: 5,
             extractionMetadata: {
               formKey: "Country",
@@ -68,7 +68,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           mailingAddress: {
             title: "Mailing address",
-            type: "string",
+            typeOf: "string",
             order: 6,
             extractionMetadata: {
               formKey: "Mailing address (if different from above)",
@@ -78,7 +78,7 @@ export const W_8BEN: FormSchemaInput = {
           mailingAddressCity: {
             title:
               "City or town, state or province. Include postal code where appropriate.",
-            type: "string",
+            typeOf: "string",
             order: 7,
             extractionMetadata: {
               formKey:
@@ -89,7 +89,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           mailingAddressCountry: {
             title: "Country",
-            type: "string",
+            typeOf: "string",
             order: 8,
             extractionMetadata: {
               formKey: "Country",
@@ -98,7 +98,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           ssn: {
             title: "U.S taxpayer identification number(SSN or ITIN)",
-            type: "string",
+            typeOf: "string",
             order: 9,
             extractionMetadata: {
               formKey:
@@ -109,7 +109,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           foreignTaxID: {
             title: "Foreign tax identifying number (see instructions)",
-            type: "string",
+            typeOf: "string",
             order: 10,
             extractionMetadata: {
               formKey: "Foreign tax identifying number (see instructions)",
@@ -118,7 +118,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           checkFTIN: {
             title: "Check if FTIN not legally required",
-            type: "boolean",
+            typeOf: "boolean",
             order: 10,
             extractionMetadata: {
               formKey: "Check if FTIN not legally required",
@@ -126,7 +126,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           referenceNumber: {
             title: "Reference number(s) (see instructions)",
-            type: "string",
+            typeOf: "string",
             order: 11,
             extractionMetadata: {
               formKey: "Reference number(s)",
@@ -135,9 +135,9 @@ export const W_8BEN: FormSchemaInput = {
           },
           dateOfBirth: {
             title: "Date of birth (see instructions)",
-            type: "string",
+            typeOf: "string",
             order: 12,
-            format: "date",
+            formatType: "date",
             extractionMetadata: {
               formKey: "Date of birth",
               textractQuery: "What is the Date of birth?",
@@ -157,12 +157,12 @@ export const W_8BEN: FormSchemaInput = {
         ],
       },
       part2: {
-        type: "object",
+        typeOf: "object",
         order: 2,
         properties: {
           beneficialOwnerResident: {
             title: "I certify that the beneficial owner is a resident of",
-            type: "string",
+            typeOf: "string",
             order: 1,
             extractionMetadata: {
               formKey: "I certify that the beneficial owner is a resident of",
@@ -171,7 +171,7 @@ export const W_8BEN: FormSchemaInput = {
           specialRatesConditions: {
             title:
               "The beneficial owner is claiming the provisions of Article and paragraph",
-            type: "string",
+            typeOf: "string",
             order: 2,
             extractionMetadata: {
               formKey:
@@ -182,7 +182,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           specialRatesPercent: {
             title: "of the treaty identified on line 9 above to claim a",
-            type: "string",
+            typeOf: "string",
             order: 3,
             extractionMetadata: {
               formKey: "of the treaty identified on line 9 above to claim a",
@@ -192,7 +192,7 @@ export const W_8BEN: FormSchemaInput = {
           },
           specialRatesTypeOfIncome: {
             title: "% rate of withholding on (specify type of income)",
-            type: "integer",
+            typeOf: "integer",
             order: 4,
             extractionMetadata: {
               formKey: "% rate of withholding on (specify type of income)",
@@ -202,7 +202,7 @@ export const W_8BEN: FormSchemaInput = {
           specialRatesAdditionalConditions: {
             title:
               "Explain the additional conditions in the Article and paragraph the beneficial owner meets to be eligible for the rate of withholding",
-            type: "string",
+            typeOf: "string",
             order: 5,
             extractionMetadata: {
               formKey:

@@ -45,7 +45,7 @@ export interface FormSchema {
      */
     schemaId: string;
     /**
-     * The title of the form, as it appears in the form, eg 'Appendix 3x'
+     * The title of the form, as it appears in the form
      * @type {string}
      * @memberof FormSchema
      */

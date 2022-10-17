@@ -8,7 +8,6 @@ import Table from 'aws-northstar/components/Table';
 import { Column as TableColumn } from 'aws-northstar/components/Table/types';
 import Grid from 'aws-northstar/layouts/Grid';
 import React, { useCallback, useState } from 'react';
-import { IngestionExecutionStatusIndicator } from '../../status/ingestionExecutionStatusIndicator';
 
 const documentListColumns: TableColumn<any>[] = [
   {
@@ -30,13 +29,6 @@ const documentListColumns: TableColumn<any>[] = [
     Header: 'Uploaded At',
     accessor: 'createdTimestamp',
     Cell: ({ value }) => <>{new Date(value).toLocaleString()}</>,
-  },
-  {
-    id: 'status',
-    width: 150,
-    Header: 'Status', // backlog/in review/reviewed
-    accessor: 'ingestionExecution.status',
-    Cell: ({ value, row }) => <IngestionExecutionStatusIndicator status={value} statusReason={row.original.ingestionExecution.statusReason} />,
   },
   {
     id: 'numberOfPages',

@@ -54,6 +54,7 @@ export class PythonLambda extends LambdaFunction {
       code: Code.fromAsset("../lambdas/dist"),
       handler: `aws_lambdas/${handler}.handler`,
       timeout: Duration.seconds(30),
+      memorySize: 256,
       ...props,
     });
   }

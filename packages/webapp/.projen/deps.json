@@ -77,7 +77,7 @@
     },
     {
       "name": "npm-check-updates",
-      "version": "^12",
+      "version": "^15",
       "type": "build"
     },
     {
@@ -92,6 +92,26 @@
       "name": "typescript",
       "version": "^4.0.3",
       "type": "build"
+    },
+    {
+      "name": "@types/express-serve-static-core",
+      "version": "4.17.30",
+      "type": "override"
+    },
+    {
+      "name": "@types/express",
+      "version": "4.17.13",
+      "type": "override"
+    },
+    {
+      "name": "@types/responselike",
+      "version": "1.0.0",
+      "type": "override"
+    },
+    {
+      "name": "got",
+      "version": "12.3.1",
+      "type": "override"
     },
     {
       "name": "@aws-amplify/api",

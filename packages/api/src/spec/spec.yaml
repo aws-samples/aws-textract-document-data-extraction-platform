@@ -761,7 +761,7 @@ components:
       properties:
         title:
           type: string
-          description: The title of the form, as it appears in the form, eg 'Appendix 3x'
+          description: The title of the form, as it appears in the form
         description:
           type: string
           description: A description of the form and schema

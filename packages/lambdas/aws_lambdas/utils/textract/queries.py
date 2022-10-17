@@ -39,8 +39,8 @@ def get_queries_from_schema(
 
     # Primitive types (string, integer etc)
     if (
-        "extraction_metadata" in schema
-        and "textract_query" in schema["extractionMetadata"]
+        "extractionMetadata" in schema
+        and "textractQuery" in schema["extractionMetadata"]
         and schema["extractionMetadata"]["textractQuery"] is not None
     ):
         return [

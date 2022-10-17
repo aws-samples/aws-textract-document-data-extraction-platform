@@ -1342,7 +1342,7 @@ ul.nav-tabs {
   "properties" : {
     "title" : {
       "type" : "string",
-      "description" : "The title of the form, as it appears in the form, eg 'Appendix 3x'"
+      "description" : "The title of the form, as it appears in the form"
     },
     "description" : {
       "type" : "string",
@@ -9368,7 +9368,7 @@ var JSONSchemaView = (function () {
     // Determine if a schema is an array
     this.isArray = !this.isAny && this.schema && this.schema.type === 'array';
 
-    this.isObject = this.schema && (this.schema.type === 'object' || this.schema['properties'] || this.schema.anyOf || this.schema.oneof || this.schema.allOf);
+    this.isObject = this.schema && (this.schema.type === 'object' || this.schema.properties || this.schema.anyOf || this.schema.oneof || this.schema.allOf);
 
     // Determine if a schema is a primitive
     this.isPrimitive = !this.isAny && !this.isArray && !this.isObject;
@@ -9379,8 +9379,8 @@ var JSONSchemaView = (function () {
     // populate isRequired property down to properties
     if (this.schema && Array.isArray(this.schema.required)) {
       this.schema.required.forEach(function (requiredProperty) {
-        if (typeof _this.schema['properties'][requiredProperty] === 'object') {
-          _this.schema['properties'][requiredProperty].isRequired = true;
+        if (typeof _this.schema.properties[requiredProperty] === 'object') {
+          _this.schema.properties[requiredProperty].isRequired = true;
         }
       });
     }
@@ -9507,9 +9507,9 @@ var JSONSchemaView = (function () {
         inner.appendChild(view.render());
       }
 
-      if (typeof this.schema['properties'] === 'object') {
-        Object.keys(this.schema['properties']).forEach(function (propertyName) {
-          var property = _this2.schema['properties'][propertyName];
+      if (typeof this.schema.properties === 'object') {
+        Object.keys(this.schema.properties).forEach(function (propertyName) {
+          var property = _this2.schema.properties[propertyName];
           var tempDiv = document.createElement('div');;
           tempDiv.innerHTML = '<div class="property">\n          <span class="name">' + propertyName + ':</span>\n        </div>';
           var view = new JSONSchemaView(property, _this2.open - 1);

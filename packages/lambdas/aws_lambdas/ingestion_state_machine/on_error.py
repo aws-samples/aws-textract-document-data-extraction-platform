@@ -53,6 +53,7 @@ def handler(event: OnErrorInput, context):
             actingUser=document_dict["updatedBy"],
         )
     )
+    document_dict["statusTransitionLog"] = status_transition_log
     document_dict = DocumentMetadata(**document_dict)
     document_store.put_document_metadata(document.updatedBy, document_dict)
 

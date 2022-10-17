@@ -75,7 +75,6 @@ const App: React.FC = () => {
                     { path: '/view/:documentId', exact: true, strict: true },
                     { path: '/view/:documentId/:formId', exact: true, strict: true },
                     { path: '/users', exact: true, strict: true },
-                    { path: '/admin', exact: true, strict: true },
                   ]}
                 />
               }
@@ -90,11 +89,6 @@ const App: React.FC = () => {
                       type: SideNavigationItemType.LINK,
                       text: 'Document Schemas',
                       href: '/docs',
-                    },
-                    {
-                      type: SideNavigationItemType.LINK,
-                      text: 'Admin',
-                      href: '/admin',
                     },
                     {
                       type: SideNavigationItemType.LINK,
@@ -136,12 +130,6 @@ const App: React.FC = () => {
                   path='/view/:documentId'
                   component={() => <Document/>}
                   key={'viewDocument'}
-                />
-                <Route
-                  exact
-                  path="/admin"
-                  component={() => <>other admin options</> }
-                  key={'admin'}
                 />
               </Switch>
             </AppLayout>

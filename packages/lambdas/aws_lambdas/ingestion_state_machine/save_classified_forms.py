@@ -81,8 +81,6 @@ def handler(event: SaveClassifiedFormsInput, context):
     document_id = event["document_id"]
     schema_id = event["schema_id"]
     caller = _get_caller(event)
-    print("event : {}".format(event))
-    print("event caller: {}".format(caller))
     username = caller.username
 
     document = document_store.get_document_metadata(document_id)
@@ -179,12 +177,10 @@ def handler(event: SaveClassifiedFormsInput, context):
             actingUser=username,
         )
     )
+    document["statusTransitionLog"] = status_transition_log
 
     new_document = DocumentMetadata(**document)
 
-    # TODO: remove print
-    print("new_document: {}".format(new_document))
-    print("document id: {}".format(new_document.documentId))
     document_store.put_document_metadata(username, new_document)
 
     # Write the classification time metrics

@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "name": "@aws-prototyping-sdk/open-api-gateway",
-      "version": "0.10.0",
+      "version": "0.12.1",
       "type": "build"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "aws-prototyping-sdk",
-      "version": "0.10.0",
+      "version": "0.12.1",
       "type": "build"
     },
     {
@@ -89,6 +89,16 @@
     {
       "name": "typescript",
       "type": "build"
+    },
+    {
+      "name": "@types/responselike",
+      "version": "1.0.0",
+      "type": "override"
+    },
+    {
+      "name": "got",
+      "version": "12.3.1",
+      "type": "override"
     },
     {
       "name": "aws-cdk-lib",

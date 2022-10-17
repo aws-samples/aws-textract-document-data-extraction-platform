@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import { Integrations } from '@aws-prototyping-sdk/open-api-gateway';
 import { OperationLookup } from '@aws/api-typescript';
 import { Stack } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
@@ -15,11 +16,10 @@ describe('Api', () => {
     new Api(stack, 'ApiTest', {
       // Create a dummy integration for every operation defined in the api
       integrations: Object.fromEntries(Object.keys(OperationLookup).map((operation) => [operation, {
-        function: new Function(stack, `${operation}Lambda`, {
+        integration: Integrations.lambda(new Function(stack, `${operation}Lambda`, {
           code: Code.fromInline('test'), handler: 'test', runtime: Runtime.NODEJS_14_X,
-        }),
-      }]),
-      ) as any,
+        })),
+      }])) as any,
     });
 
     const template = Template.fromStack(stack);

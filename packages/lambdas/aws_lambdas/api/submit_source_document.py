@@ -86,8 +86,6 @@ def handler(
             )
         ],
     )
-    print("document: {}".format(document))
-
     document = DocumentMetadataStore().put_document_metadata(caller.username, document)
 
     return Response.success(document)

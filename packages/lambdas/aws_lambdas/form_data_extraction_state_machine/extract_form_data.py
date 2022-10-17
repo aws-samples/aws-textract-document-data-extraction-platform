@@ -59,9 +59,7 @@ def handler(event: ExtractFormDataInput, context):
         raise Exception("No form found with id {}".format(form_id))
     if document_metadata is None:
         raise Exception("No document found with id {}".format(document_id))
-    # TODO: remove this
-    print("Document metadata: {}".format(document_metadata))
-    print("form metadata: {}".format(form_metadata))
+
     form_metadata_dict = JSONEncoder().default(obj=form_metadata)
 
     # Store the full textract result in s3. This is not used in the prototype but may be useful for implementing
@@ -77,10 +75,6 @@ def handler(event: ExtractFormDataInput, context):
         Key=form_metadata_dict["textractOutputLocation"]["objectKey"],
         Body=json.dumps(textract_result),
     )
-    print("form_metadata_dict before:{}".format(form_metadata_dict))
-    print("textract_result :{}".format(textract_result))
-    print("schemaSnapshot: {}".format(form_metadata_dict["schemaSnapshot"]))
-
     schemaSnapshot = form_metadata_dict["schemaSnapshot"]
     schema_snap = FormJSONSchema(**schemaSnapshot)
 
@@ -88,12 +82,10 @@ def handler(event: ExtractFormDataInput, context):
     extracted_data = extract_schema_fields_from_document(
         textract_result, form_metadata_dict["schemaSnapshot"]
     )
-    print("extracted_data: {}".format(extracted_data))
 
     extracted_data_schema_snap = extract_schema_fields_from_document(
         textract_result, schema_snap
     )
-    print("extracted_data_schema_snap: {}".format(extracted_data_schema_snap))
 
     log.info("Schema for extraction: %s", dict(form_metadata_dict["schemaSnapshot"]))
     log.info("Extracted data: %s", extracted_data)
@@ -117,10 +109,8 @@ def handler(event: ExtractFormDataInput, context):
         )
     )
     form_metadata_dict["statusTransitionLog"] = status_transition_log
-    print("form_metadata_dict before **:{}".format(form_metadata_dict))
 
     form_metadata_dict = FormMetadata(**form_metadata_dict)
-    print("form_metadata_dict after **:{}".format(form_metadata_dict))
 
     form_store.put_form_metadata(form_metadata_dict["updatedBy"], form_metadata_dict)
 

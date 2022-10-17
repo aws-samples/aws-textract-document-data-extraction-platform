@@ -45,7 +45,6 @@ def handler(event: OnErrorInput, context):
             "No form found in document {} with id {}".format(document_id, form_id)
         )
     form_dict = JSONEncoder().default(obj=form)
-    print("form_dict", form_dict)
 
     # Mark the document execution as failed
     form_dict["extractionExecution"]["status"] = ExtractionExecutionStatus("FAILED")
@@ -60,7 +59,8 @@ def handler(event: OnErrorInput, context):
             actingUser=form_dict["updatedBy"],
         )
     )
-    # form_dict.pop("_spec_property_naming")
+    form_dict["statusTransitionLog"] = status_transition_log
+
     form_dict = FormMetadata(**form_dict)
     form_store.put_form_metadata(form_dict["updatedBy"], form_dict)
 

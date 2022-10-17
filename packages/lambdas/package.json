@@ -3,6 +3,7 @@
   "private": true,
   "__pdk__": true,
   "scripts": {
+    "install-py": "npx projen install-py",
     "lint": "npx projen lint",
     "install": "npx projen install",
     "clobber": "npx projen clobber",

@@ -34,7 +34,7 @@ class FormReviewWorkflowTagStore(Store):
     def put_form_review_workflow_tag(
         self, user: str, formReviewTag: FormReviewWorkflowTag
     ) -> FormReviewWorkflowTag:
-        return super().put(self._key(formReviewTag.tag_id), user, formReviewTag)
+        return super().put(self._key(formReviewTag["tagId"]), user, formReviewTag)
 
     def get_form_review_workflow_tag(
         self, tag_id: str

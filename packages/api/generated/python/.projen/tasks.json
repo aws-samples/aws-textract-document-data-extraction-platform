@@ -75,7 +75,10 @@
     },
     "install": {
       "name": "install",
-      "description": "Install and upgrade dependencies",
+      "description": "Install and upgrade dependencies"
+    },
+    "install-py": {
+      "name": "install-py",
       "steps": [
         {
           "exec": "pip install --upgrade pip"

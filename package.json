@@ -12,6 +12,7 @@
     "default": "npx projen default",
     "eject": "npx projen eject",
     "eslint": "npx projen eslint",
+    "install": "npx projen install",
     "package": "npx projen package",
     "post-compile": "npx projen post-compile",
     "post-upgrade": "npx projen post-upgrade",
@@ -23,32 +24,32 @@
     "projen": "npx projen"
   },
   "devDependencies": {
-    "@aws-prototyping-sdk/open-api-gateway": "0.10.0",
-    "@nrwl/cli": "^14.4.3",
-    "@nrwl/workspace": "^14.4.3",
+    "@aws-prototyping-sdk/open-api-gateway": "0.12.1",
+    "@nrwl/cli": "^14.8.3",
+    "@nrwl/workspace": "^14.8.3",
     "@types/node": "^14",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
-    "aws-prototyping-sdk": "0.10.0",
+    "aws-prototyping-sdk": "0.12.1",
     "eslint": "^8",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-node": "^0.3.6",
-    "eslint-import-resolver-typescript": "^3.2.7",
+    "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "json-schema": "^0.4.0",
-    "npm-check-updates": "^15.3.4",
+    "npm-check-updates": "^16.3.8",
     "prettier": "^2.7.1",
-    "projen": "^0.58.33",
+    "projen": "^0.63.9",
     "syncpack": "^8.2.4",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.4"
   },
   "dependencies": {
-    "aws-cdk-lib": "^2.32.1",
-    "cdk-nag": "^2.15.16",
-    "constructs": "^10.1.49"
+    "aws-cdk-lib": "^2.45.0",
+    "cdk-nag": "^2.18.30",
+    "constructs": "^10.1.124"
   },
   "main": "lib/index.js",
   "license": "ASL",
@@ -66,7 +67,7 @@
     ]
   },
   "resolutions": {
-    "**/aws-cdk-lib": "2.23.0",
+    "**/aws-cdk-lib": "2.45.0",
     "**/constructs": "10.0.77",
     "**/@types/react": "^17",
     "**/react": "^17",

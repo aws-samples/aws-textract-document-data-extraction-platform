@@ -34,8 +34,6 @@ def handler(
     bucket = os.environ["SOURCE_DOCUMENT_BUCKET"]
     document_key = get_document_key(document_id, input.request_parameters["fileName"])
 
-    print("Getting signed url for document")
-
     # Other content types can be considered in the future, however splitting logic for such formats must be implemented
     if input.request_parameters["contentType"] != "application/pdf":
         return Response.bad_request(

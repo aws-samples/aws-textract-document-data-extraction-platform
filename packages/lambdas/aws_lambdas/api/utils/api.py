@@ -100,7 +100,6 @@ def api(handler: Handler):
     @wraps(handler)
     def inner(event, context):
         try:
-            print(event)
             return handler(event, context, caller=_get_caller(event))
         except UnauthorizedException as e:
             log.exception(str(e))

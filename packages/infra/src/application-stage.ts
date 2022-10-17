@@ -36,7 +36,7 @@ export class ApplicationStage extends Stage {
       "userPoolId": "${authStack.userPool.userPoolId}",
       "userPoolWebClientId": "${authStack.userPoolClient.userPoolClientId}",
       "identityPoolId": "${authStack.identityPool.ref}",
-      "sourceApiUrl": "${sourceStack.sourceApi.api.urlForPath()}",
+      "sourceApiUrl": "${sourceStack.sourceApi.api.api.urlForPath()}",
     };`;
 
     uploadWebsiteConfig(
