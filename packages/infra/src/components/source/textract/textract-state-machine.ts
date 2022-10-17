@@ -7,6 +7,7 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
+import { Key } from "aws-cdk-lib/aws-kms";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Topic } from "aws-cdk-lib/aws-sns";
 import { LambdaSubscription } from "aws-cdk-lib/aws-sns-subscriptions";
@@ -54,14 +55,21 @@ export class TextractStateMachine extends Construct {
     );
     sourceBucket.grantRead(startLambda);
 
+    const topicMasterKey = new Key(this, "MyKey", {
+      enableKeyRotation: true,
+    });
+
     // SNS topic for textract to report success to
-    const topic = new Topic(this, "TextractTopic", {});
+    const topic = new Topic(this, "TextractTopic", {
+      masterKey: topicMasterKey,
+    });
 
     // Role for textract to publish messages to the topic
     const publishRole = new Role(this, "PublishRole", {
       assumedBy: new ServicePrincipal("textract.amazonaws.com"),
     });
     topic.grantPublish(publishRole);
+    topicMasterKey.grantEncryptDecrypt(publishRole);
 
     // We create a lambda invoke task with the "wait for task token" service integration pattern, so that this step
     // is only marked as complete once reported with the task token
@@ -83,9 +91,9 @@ export class TextractStateMachine extends Construct {
       }),
       integrationPattern: IntegrationPattern.WAIT_FOR_TASK_TOKEN,
     });
-
     this.stateMachine = new StateMachine(this, "TextractStateMachine", {
       definition: runTextract,
+      tracingEnabled: true,
     });
 
     // Lambda called when a textract job completes, responsible for reporting success/failure

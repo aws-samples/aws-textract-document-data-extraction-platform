@@ -25,5 +25,6 @@ export class PipelineStack extends Stack {
       // Optional: if you use SonarQube, you can provide config to execute a code scan here
       sonarCodeScannerConfig: this.node.tryGetContext("sonarqubeScannerConfig"),
     });
+    this.pipeline.suppressCDKViolations();
   }
 }

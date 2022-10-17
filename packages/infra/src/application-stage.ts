@@ -8,6 +8,7 @@ import { Bucket } from "aws-cdk-lib/aws-s3";
 import { BucketDeployment } from "aws-cdk-lib/aws-s3-deployment";
 import { Provider } from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
+import { addNagSupressionsToStack } from "./cfn-nag";
 import { AuthStack } from "./components/auth/auth-stack";
 import { PermissionsStack } from "./components/auth/permissions-stack";
 import { SourceStack } from "./components/source/stack";
@@ -24,7 +25,7 @@ export class ApplicationStage extends Stage {
       userPool: authStack.userPool,
     });
     const websiteStack = new WebsiteStack(this, "WebsiteStack", {});
-    new PermissionsStack(this, "PermissionsStack", {
+    const permissionsStack = new PermissionsStack(this, "PermissionsStack", {
       userPool: authStack.userPool,
       identityPool: authStack.identityPool,
       sourceApi: sourceStack.sourceApi,
@@ -49,6 +50,8 @@ export class ApplicationStage extends Stage {
       },
       websiteStack
     );
+    const stacks = [sourceStack, authStack, websiteStack, permissionsStack];
+    stacks.forEach((stack) => addNagSupressionsToStack(stack));
   }
 }
 

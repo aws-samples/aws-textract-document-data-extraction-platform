@@ -153,6 +153,7 @@ export class DocumentIngestionStateMachine extends Construct {
             resultPath: "$.Payload.ExtractFormDataOutput",
           }).iterator(extractFormData)
         ),
+        tracingEnabled: true,
       }
     );
   }

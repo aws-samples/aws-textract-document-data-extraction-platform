@@ -145,6 +145,7 @@ export class FormDataExtractionStateMachine extends Construct {
 
     this.stateMachine = new StateMachine(this, "StateMachine", {
       definition: startDataExtraction.next(runTextract).next(extractFormData),
+      tracingEnabled: true,
     });
   }
 }

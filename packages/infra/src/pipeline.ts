@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { App } from "aws-cdk-lib";
+import { PDKNag } from "aws-prototyping-sdk/pdk-nag";
 import { ApplicationStage } from "./application-stage";
 import { PipelineStack } from "./pipeline-stack";
 
-const app = new App();
+const app = PDKNag.app();
 
 // The stack which defines the CI/CD Pipeline, deploying the below stages.
 const pipelineStack = new PipelineStack(app, "PipelineStack", {

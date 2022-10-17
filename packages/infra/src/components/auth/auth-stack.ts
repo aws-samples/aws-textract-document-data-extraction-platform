@@ -3,6 +3,7 @@
 import { Duration, Stack, StackProps } from "aws-cdk-lib";
 import {
   CfnIdentityPool,
+  CfnUserPool,
   UserPool,
   UserPoolClient,
   UserPoolDomain,
@@ -52,6 +53,11 @@ export class AuthStack extends Stack {
         tempPasswordValidity: Duration.days(7),
       },
     });
+
+    const cfnUserPool = this.userPool.node.defaultChild as CfnUserPool;
+    cfnUserPool.userPoolAddOns = {
+      advancedSecurityMode: "ENFORCED",
+    };
 
     this.userPoolDomain = new UserPoolDomain(this, "UserPoolDomain", {
       userPool: this.userPool,
