@@ -57,11 +57,6 @@ export const lambdasProject = ({
   // Add post compile tasks
   const postCompileTask = lambdas.tasks.tryFind("post-compile")!;
 
-  // Indicate that the python client has inline types by creating a py.typed file
-  // postCompileTask.exec(
-  //   `touch ${ENV_DIR}/lib/python3.9/site-packages/api_python_client/py.typed`
-  // );
-
   // Run type checking as a post compile step
   postCompileTask.exec(`mypy ${MODULE_NAME}`);
 
