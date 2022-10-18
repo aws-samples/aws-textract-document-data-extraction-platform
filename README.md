@@ -364,7 +364,7 @@ Make sure you have [`git-remote-codecommit`](https://github.com/aws/git-remote-c
 From the __root directory__:
 
 ```bash
-git init && git checkout -b mainline && git add --all && git commit -m "Initial Commit"
+git checkout -b mainline && git add --all && git commit -m "Initial Commit"
 git remote add awscodecommit codecommit://<AWS_PROFILE>@monorepo
 git push awscodecommit mainline -u
 ```
