@@ -65,7 +65,7 @@
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
+          "exec": "npx ts-node --project tsconfig.dev.json .projenrc.ts"
         }
       ]
     },

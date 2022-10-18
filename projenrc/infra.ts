@@ -54,11 +54,6 @@ export const infraProject = ({
     "esbuild@0"
   );
 
-  infra.tasks.tryFind("default")?.reset();
-  infra.tasks
-    .tryFind("default")
-    ?.exec("npx ts-node --project tsconfig.dev.json .projenrc.ts");
-
   // Configure linting etc
   configureProject(infra);
   configureTsProject(infra);

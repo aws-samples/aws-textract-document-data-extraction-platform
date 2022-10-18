@@ -40,6 +40,7 @@ export const lambdasProject = ({
       "moto",
       "boto3-stubs[s3]",
       "types-python-dateutil",
+      "pytest",
     ],
     venvOptions: {
       envdir: ENV_DIR,
@@ -53,6 +54,10 @@ export const lambdasProject = ({
     fileName: licenseHeader,
     variant: LicenseVariant.SHORT,
   });
+  // activate virtual environment task in pre-compile task
+  const activateVirtualEnvTask = lambdas.addTask("activate-env");
+  activateVirtualEnvTask.exec(`. ${ENV_DIR}/bin/activate`);
+  lambdas.tasks.tryFind("pre-compile")!.spawn(activateVirtualEnvTask);
 
   // Add post compile tasks
   const postCompileTask = lambdas.tasks.tryFind("post-compile")!;

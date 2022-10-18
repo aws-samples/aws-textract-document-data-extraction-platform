@@ -37,6 +37,10 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
   "**/react": "^17",
   "**/react-dom": "^17",
   "**/@types/react-dom": "^17",
+  "**/d3-color": "^3.1.0",
+  "**/axios": "^0.21.2",
+  "**/aws-sdk": "^2.814.0",
+  "**/nth-check": "^2.0.1",
 });
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
@@ -76,6 +80,12 @@ const infra = infraProject({
   awsPrototypingSdkVersion,
 });
 infra.addDeps(api.package.packageName);
+infra.addDeps(webapp.package.packageName);
 monorepo.addImplicitDependency(infra, lambdas);
+
+monorepo.tasks.tryFind("default")?.reset();
+monorepo.tasks
+  .tryFind("default")
+  ?.exec("npx ts-node --project tsconfig.dev.json .projenrc.ts");
 
 monorepo.synth();

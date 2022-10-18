@@ -89,6 +89,11 @@
       "type": "build"
     },
     {
+      "name": "react-scripts",
+      "version": "^5",
+      "type": "build"
+    },
+    {
       "name": "typescript",
       "version": "^4.0.3",
       "type": "build"

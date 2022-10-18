@@ -244,7 +244,7 @@ exports[`Api should synthesize 1`] = `
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
-    "ApiTestDeployment153EC47888e54f9306af66fbe30bd7c587ff8208": {
+    "ApiTestDeployment153EC47810f24423d8ec65132535663132fb235c": {
       "DependsOn": [
         "ApiTestPrepareSpecCustomResourceC9800EE6",
       ],
@@ -309,7 +309,7 @@ exports[`Api should synthesize 1`] = `
           "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId",
         },
         "DeploymentId": {
-          "Ref": "ApiTestDeployment153EC47888e54f9306af66fbe30bd7c587ff8208",
+          "Ref": "ApiTestDeployment153EC47810f24423d8ec65132535663132fb235c",
         },
         "MethodSettings": [
           {
@@ -1392,7 +1392,7 @@ exports[`Api should synthesize 1`] = `
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json",
+          "key": "dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json",
         },
         "integrations": {
           "createFormReviewWorkflowTag": {
@@ -1980,7 +1980,7 @@ exports[`Api should synthesize 1`] = `
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json-prepared",
+          "key": "dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json-prepared",
         },
         "securitySchemes": {},
       },
@@ -2314,7 +2314,7 @@ exports[`Api should synthesize 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json",
+                        "/dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json",
                       ],
                     ],
                   },
@@ -2334,7 +2334,7 @@ exports[`Api should synthesize 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/59e2b11242175471f37a986be3ba013d995ca23b2649d97d3ebc640f8ec0dadd.json-prepared/*",
+                        "/dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json-prepared/*",
                       ],
                     ],
                   },

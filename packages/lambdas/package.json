@@ -5,6 +5,7 @@
   "scripts": {
     "install-py": "npx projen install-py",
     "lint": "npx projen lint",
+    "activate-env": "npx projen activate-env",
     "install": "npx projen install",
     "clobber": "npx projen clobber",
     "build": "npx projen build",

@@ -26,6 +26,10 @@
       "type": "devenv"
     },
     {
+      "name": "pytest",
+      "type": "devenv"
+    },
+    {
       "name": "types-python-dateutil",
       "type": "devenv"
     },

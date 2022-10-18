@@ -22,8 +22,6 @@ export class PipelineStack extends Stack {
       synthShellStepPartialProps: {
         commands: ["npx projen && npx nx run @aws/infra:build"],
       },
-      // Optional: if you use SonarQube, you can provide config to execute a code scan here
-      sonarCodeScannerConfig: this.node.tryGetContext("sonarqubeScannerConfig"),
     });
     this.pipeline.suppressCDKViolations();
   }

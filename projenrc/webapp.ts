@@ -49,7 +49,9 @@ export const webappProject = ({
   configureProject(webapp);
   configureTsProject(webapp);
 
+  webapp.deps.removeDependency("react-scripts@^5");
   webapp.package.addDeps("react-router-dom@^5");
+  webapp.package.addDevDeps("react-scripts@^5");
   webapp.package.addDevDeps("@testing-library/react@^12");
   webapp.package.addDevDeps("@types/react@^17");
   webapp.package.addDevDeps("@types/react-router-dom@^5");
