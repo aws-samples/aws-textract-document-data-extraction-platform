@@ -26,7 +26,7 @@
     },
     {
       "name": "constructs",
-      "version": "10.0.77",
+      "version": "10.1.124",
       "type": "build"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "name": "npm-check-updates",
-      "version": "^15",
+      "version": "^16",
       "type": "build"
     },
     {
@@ -93,7 +93,7 @@
     },
     {
       "name": "constructs",
-      "version": "10.0.77",
+      "version": "10.1.124",
       "type": "peer"
     },
     {

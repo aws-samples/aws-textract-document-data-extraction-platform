@@ -68,7 +68,7 @@
   },
   "resolutions": {
     "**/aws-cdk-lib": "2.45.0",
-    "**/constructs": "10.0.77",
+    "**/constructs": "10.1.124",
     "**/@types/react": "^17",
     "**/react": "^17",
     "**/react-dom": "^17",

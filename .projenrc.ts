@@ -12,7 +12,7 @@ import { webappProject } from "./projenrc/webapp";
 
 const awsPrototypingSdkVersion = "0.12.1";
 const cdkVersion = "2.45.0";
-const constructsVersion = "10.0.77";
+const constructsVersion = "10.1.124";
 const monorepo = new nx_monorepo.NxMonorepoProject({
   defaultReleaseBranch: "main",
   devDeps: ["aws-prototyping-sdk", "eslint-plugin-header"],

@@ -73,29 +73,5 @@ export const apiProject = ({
     .tryFind("install")!
     .exec(`pip3 install . --target dist/layer/python`);
 
-  // // Include generators in tsconfig to ensure linting works correctly
-  // api.tsconfigDev?.addInclude("generators/**/*.ts");
-
-  // // Add scripts for generating api clients, docs, and the parsed spec used by the api construct
-  // api.setScript("generate:openapi", "ts-node ./generators/openapi/generate.ts");
-  // api.setScript(
-  //   "generate:openapi:client",
-  //   "ts-node ./generators/openapi/generate-client.ts"
-  // );
-  // api.setScript(
-  //   "generate:openapi:docs",
-  //   "ts-node ./generators/openapi/generate-docs.ts"
-  // );
-  // api.setScript(
-  //   "generate:openapi:spec",
-  //   "ts-node ./generators/openapi/generate-spec.ts"
-  // );
-
-  // // Generate the api clients etc prior to compiling source (ie the constructs), which depend on the generated code
-  // api.tasks.tryFind("pre-compile")!.exec("yarn generate:openapi");
-
-  // // Ignore generated output
-  // api.gitignore.addPatterns("build", "docs", "spec");
-
   return api;
 };

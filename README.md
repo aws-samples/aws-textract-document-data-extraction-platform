@@ -309,7 +309,18 @@ defined using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/)
 To build the prototype from scratch, use the following command:
 
 ```bash
-yarn && npx projen && npx nx run @aws/infra:build
+yarn && npx projen
+```
+
+Once a .env directory is created in the root of the project, run the following command:
+```bash
+source .env/bin/activate
+```
+This will activate the python virtual environment that contains python 3.9 that's required for this repository.
+
+To build all packages in this repository
+```bash
+yarn nx run-many --target=build --all --skip-nx-cache
 ```
 
 For subsequent builds, `yarn` need not be run. `npx projen` need only be run when the `.projenrc.ts` file (or files in the `projenrc` folder) is changed.
@@ -332,6 +343,18 @@ npx cdk deploy [--profile <AWS_PROFILE>]
 cd ../..
 ```
 
+#### Deploying locally to a sandbox environment
+* note you need bootstrap CDK to have been run before deploying in your aws account
+
+```bash
+npx cdk bootstrap [--profile <AWS_PROFILE>]
+```
+
+If CDK boostrap stack has already been deployed, run the following command from the root of the project:
+```bash
+cd packages/infra && yarn build && yarn deploy-sandbox --profile <AWS_PROFILE>
+```
+
 #### Configure the Pipeline Source
 
 The pipeline includes creation of a CodeCommit repository named `monorepo`.
@@ -342,8 +365,8 @@ From the __root directory__:
 
 ```bash
 git init && git checkout -b mainline && git add --all && git commit -m "Initial Commit"
-git remote add origin codecommit://<AWS_PROFILE>@monorepo
-git push origin mainline -u
+git remote add awscodecommit codecommit://<AWS_PROFILE>@monorepo
+git push awscodecommit mainline -u
 ```
 
 You can now visit the AWS console to find the CodePipeline and track its progress.

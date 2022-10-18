@@ -22,7 +22,7 @@
     },
     {
       "name": "projen",
-      "version": "0.63.9",
+      "version": "0.63.24",
       "type": "devenv"
     },
     {
