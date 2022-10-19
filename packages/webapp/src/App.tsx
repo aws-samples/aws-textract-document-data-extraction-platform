@@ -7,6 +7,7 @@ import { Auth } from 'aws-amplify';
 import {
   AppLayout,
   BreadcrumbGroup,
+  Button,
   ButtonDropdown,
   Header,
   Inline,
@@ -24,7 +25,9 @@ import PDFFormReview from './components/review';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<any>();
-
+  const openInNewTab = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
   return (
     <AmplifyAuthenticator
       handleAuthStateChange={async () => {
@@ -36,8 +39,8 @@ const App: React.FC = () => {
       }}
     >
       <AmplifySignIn slot="sign-in">
-        <div slot="secondary-footer-content"/>
-        <div slot="federated-buttons"/>
+        <div slot="secondary-footer-content" />
+        <div slot="federated-buttons" />
       </AmplifySignIn>
       {user ? (
         <NorthStarThemeProvider>
@@ -48,6 +51,9 @@ const App: React.FC = () => {
                   title="Document Data Extraction Platform"
                   rightContent={
                     <Inline>
+                      {/* 
+                      // @ts-ignore */}
+                      <Button onClick={(e) => openInNewTab('/api-docs/index.html')} style={{ color: 'white' }} icon="external">API Documentation Link</Button>
                       <NotificationButton onDismissNotification={console.log} />
                       <ButtonDropdown
                         darkTheme
@@ -90,11 +96,6 @@ const App: React.FC = () => {
                       text: 'Document Schemas',
                       href: '/docs',
                     },
-                    {
-                      type: SideNavigationItemType.LINK,
-                      text: 'API Documentation',
-                      href: '/api-docs/index.html',
-                    },
                   ]}
                 >
                 </SideNavigation>
@@ -116,19 +117,19 @@ const App: React.FC = () => {
                 <Route
                   exact
                   path='/review/:documentId/:formId'
-                  component={() => <PDFFormReview isReadOnly={false}/>}
+                  component={() => <PDFFormReview isReadOnly={false} />}
                   key={'review'}
                 />
                 <Route
                   exact
                   path='/view/:documentId/:formId'
-                  component={() => <PDFFormReview isReadOnly={true}/>}
+                  component={() => <PDFFormReview isReadOnly={true} />}
                   key={'view'}
                 />
                 <Route
                   exact
                   path='/view/:documentId'
-                  component={() => <Document/>}
+                  component={() => <Document />}
                   key={'viewDocument'}
                 />
               </Switch>

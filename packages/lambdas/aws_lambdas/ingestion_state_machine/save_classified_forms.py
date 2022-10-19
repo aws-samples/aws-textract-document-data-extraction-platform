@@ -88,7 +88,7 @@ def handler(event: SaveClassifiedFormsInput, context):
     if document is None:
         raise Exception("No document found with id {}".format(document_id))
 
-    document = JSONEncoder().default(document)
+    document_dict = JSONEncoder().default(document)
 
     schemas: Dict[str, FormSchema] = {}
 
@@ -98,7 +98,7 @@ def handler(event: SaveClassifiedFormsInput, context):
         document_location["bucket"], document_location["objectKey"]
     )
 
-    document["numberOfPages"] = document_pdf.numPages
+    document_dict["numberOfPages"] = document_pdf.numPages
 
     classified_forms: List[ClassifiedSplitForm] = []
     processed_forms: List[ClassifiedSplitForm] = []
@@ -133,7 +133,7 @@ def handler(event: SaveClassifiedFormsInput, context):
             username,
             FormMetadata(
                 documentId=document_id,
-                documentName=document["name"],
+                documentName=document_dict["name"],
                 formId=form["form_id"],
                 schemaId=form["schema_id"],
                 startPageIndex=form["start_page"],
@@ -166,10 +166,10 @@ def handler(event: SaveClassifiedFormsInput, context):
         )
 
     # Update the ingestion status to success
-    document["ingestionExecutionStatus"] = ExecutionStatus("SUCCEEDED")
-    document["numberOfClassifiedForms"] = len(classified_forms)
+    document_dict["ingestionExecutionStatus"] = ExecutionStatus("SUCCEEDED")
+    document_dict["numberOfClassifiedForms"] = len(classified_forms)
 
-    status_transition_log = list(document["statusTransitionLog"])
+    status_transition_log = list(document_dict["statusTransitionLog"])
     status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
@@ -177,9 +177,9 @@ def handler(event: SaveClassifiedFormsInput, context):
             actingUser=username,
         )
     )
-    document["statusTransitionLog"] = status_transition_log
+    document_dict["statusTransitionLog"] = status_transition_log
 
-    new_document = DocumentMetadata(**document)
+    new_document = DocumentMetadata(**document_dict)
 
     document_store.put_document_metadata(username, new_document)
 

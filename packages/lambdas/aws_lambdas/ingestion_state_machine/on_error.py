@@ -41,7 +41,7 @@ def handler(event: OnErrorInput, context):
 
     document_dict = JSONEncoder().default(document)
     # Mark the document execution as failed
-    document_dict["ingestionExecution"]["status"] = ExecutionStatus("FAILED")
+    document_dict["ingestionExecution"]["status"] = "FAILED"
     document_dict["ingestionExecution"]["statusReason"] = get_sfn_error_message(
         event["error_details"]
     )
@@ -54,11 +54,11 @@ def handler(event: OnErrorInput, context):
         )
     )
     document_dict["statusTransitionLog"] = status_transition_log
-    document_dict = DocumentMetadata(**document_dict)
-    document_store.put_document_metadata(document.updatedBy, document_dict)
+    new_document_dict = DocumentMetadata(**document_dict)
+    document_store.put_document_metadata(document_dict["updatedBy"], new_document_dict)
 
     with metric_publisher() as m:
         # Publish document count metrics for this failed document, but no timing metrics
-        m.add_document_count(document_dict)
+        m.add_document_count(new_document_dict)
 
     return {}

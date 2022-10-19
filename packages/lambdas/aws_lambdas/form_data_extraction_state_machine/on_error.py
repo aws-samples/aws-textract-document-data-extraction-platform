@@ -44,10 +44,10 @@ def handler(event: OnErrorInput, context):
         raise Exception(
             "No form found in document {} with id {}".format(document_id, form_id)
         )
-    form_dict = JSONEncoder().default(obj=form)
+    form_dict = JSONEncoder().default(form)
 
     # Mark the document execution as failed
-    form_dict["extractionExecution"]["status"] = ExtractionExecutionStatus("FAILED")
+    form_dict["extractionExecution"]["status"] = "FAILED"
     form_dict["extractionExecution"]["statusReason"] = get_sfn_error_message(
         event["error_details"]
     )

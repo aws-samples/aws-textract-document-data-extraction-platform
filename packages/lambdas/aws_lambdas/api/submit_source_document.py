@@ -76,7 +76,7 @@ def handler(
         location=S3Location(bucket=bucket, objectKey=document_key),
         ingestionExecution=IngestionExecution(
             executionId=execution_id,
-            status=ExecutionStatus("IN_PROGRESS"),
+            status=ExecutionStatus("SUCCEEDED"),
         ),
         statusTransitionLog=[
             StatusTransition(

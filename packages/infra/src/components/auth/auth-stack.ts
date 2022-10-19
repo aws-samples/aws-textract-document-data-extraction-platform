@@ -1,6 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { Duration, Stack, StackProps } from "aws-cdk-lib";
+import {
+  Duration,
+  Stack,
+  StackProps,
+  aws_apigateway as apigateway,
+} from "aws-cdk-lib";
 import {
   CfnIdentityPool,
   CfnUserPool,
@@ -8,6 +13,7 @@ import {
   UserPoolClient,
   UserPoolDomain,
 } from "aws-cdk-lib/aws-cognito";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 export interface AuthStackProps extends StackProps {}
@@ -23,6 +29,27 @@ export class AuthStack extends Stack {
 
   constructor(scope: Construct, id: string, props: AuthStackProps) {
     super(scope, id, props);
+
+    const cloudWatchRole = new iam.Role(this, "app_cloudwatchrole", {
+      assumedBy: new iam.CompositePrincipal(
+        new iam.ServicePrincipal("apigateway.amazonaws.com")
+      ),
+      roleName: "app_cloudwatchrole",
+    });
+
+    // this is to get around weird CDK deployment issues where the
+    // apigw resource deployment fails due to the absence of the
+    // account cw logs role being set
+
+    cloudWatchRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName(
+        "service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+      )
+    );
+
+    new apigateway.CfnAccount(this, "account", {
+      cloudWatchRoleArn: cloudWatchRole.roleArn,
+    });
 
     this.userPool = new UserPool(this, "UserPool", {
       userPoolName: "UserPool",
