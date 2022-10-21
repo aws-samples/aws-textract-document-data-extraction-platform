@@ -57,7 +57,8 @@ def get_presigned_get_url_for_pdf(location: S3LocationModel) -> str:
     Return a presigned url for getting a pdf from s3
     """
     return boto3.client(
-        "s3", config=Config(s3={'addressing_style': 'virtual'}, signature_version='s3v4')
+        "s3",
+        config=Config(s3={"addressing_style": "virtual"}, signature_version="s3v4"),
     ).generate_presigned_url(
         "get_object",
         Params={
