@@ -41,6 +41,7 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
   "**/axios": "^0.21.2",
   "**/aws-sdk": "^2.814.0",
   "**/nth-check": "^2.0.1",
+  "**/minimatch": "^3.0.5",
 });
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
