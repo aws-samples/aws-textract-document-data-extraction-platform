@@ -51,7 +51,7 @@ const App: React.FC = () => {
                   title="Document Data Extraction Platform"
                   rightContent={
                     <Inline>
-                      {/* 
+                      {/*
                       // @ts-ignore */}
                       <Button onClick={(e) => openInNewTab('/api-docs/index.html')} style={{ color: 'white' }} icon="external">API Documentation Link</Button>
                       <NotificationButton onDismissNotification={console.log} />

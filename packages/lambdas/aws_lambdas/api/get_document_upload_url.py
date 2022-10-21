@@ -41,7 +41,8 @@ def handler(
         )
 
     signed_url = boto3.client(
-        "s3", config=Config(s3={'addressing_style': 'virtual'}, signature_version='s3v4')
+        "s3",
+        config=Config(s3={"addressing_style": "virtual"}, signature_version="s3v4"),
     ).generate_presigned_url(
         "put_object",
         Params={
