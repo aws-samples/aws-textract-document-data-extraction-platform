@@ -418,3 +418,11 @@ this.pipeline = new pipeline.PDKPipeline(this, "ApplicationPipeline", {
 
 This project uses [projen](https://github.com/projen/projen) to manage project configuration files. They should not be manually edited, and instead are
 synthesized by code in `.projenrc.ts`.
+
+## Security
+
+See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+
+## License
+
+This library is licensed under the MIT-0 License. See the LICENSE file.
