@@ -46,4 +46,8 @@ jspm_packages/
 .vscode/*
 .env/*
 .DS_Store
+/packages/api/generated
+.nx/*
+nx.json
+syncpackrc.json
 !/packages/api/generated/README.md

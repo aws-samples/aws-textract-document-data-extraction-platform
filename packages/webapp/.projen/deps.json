@@ -134,10 +134,6 @@
       "type": "runtime"
     },
     {
-      "name": "@aws/api-typescript",
-      "type": "runtime"
-    },
-    {
       "name": "@material-ui/icons",
       "type": "runtime"
     },

@@ -41,11 +41,17 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
   "**/axios": "^0.21.2",
   "**/aws-sdk": "^2.814.0",
   "**/nth-check": "^2.0.1",
-  "**/minimatch": "^3.0.5",
+  "**/minimatch": "^3.1.0",
+  "**/loader-utils": "^3.2.1",
 });
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
 monorepo.gitignore.addPatterns(".DS_Store");
+monorepo.gitignore.addPatterns("/packages/api/generated");
+monorepo.gitignore.addPatterns(".nx/*");
+monorepo.gitignore.addPatterns("nx.json");
+monorepo.gitignore.addPatterns("syncpackrc.json");
+
 // Lint this file and other projen code as part of post synthesize
 monorepo.components.push(
   new (class extends Component {
@@ -69,7 +75,6 @@ const lambdas = lambdasProject({ monorepo });
 monorepo.addImplicitDependency(lambdas, api);
 
 const webapp = webappProject({ monorepo });
-webapp.addDeps(api.generatedTypescriptClient.package.packageName);
 
 monorepo.addImplicitDependency(webapp, api);
 
