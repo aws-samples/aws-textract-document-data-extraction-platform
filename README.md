@@ -316,7 +316,14 @@ defined using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/)
 To build the prototype from scratch, use the following command:
 
 ```bash
-yarn && npx projen
+yarn
+```
+
+This will install all dependencies for packages except for the generated package `api_python_client`. This package needs the .env to be able to install. So if there is an error,
+Error: Invalid projects: api_python_client, just continue with npx projen to create the .env necessary. Installation of api_python_client will be a few steps later.
+
+```bash
+npx projen
 ```
 
 Once a .env directory is created in the root of the project, run the following command:
@@ -330,7 +337,7 @@ This will activate the python virtual environment that contains python 3.9 that'
 To build all packages in this repository
 
 ```bash
-yarn build
+yarn && yarn build
 ```
 
 For subsequent builds, `yarn` need not be run. `npx projen` need only be run when the `.projenrc.ts` file (or files in the `projenrc` folder) is changed.
