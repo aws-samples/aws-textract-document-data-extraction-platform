@@ -43,6 +43,8 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
   "**/nth-check": "^2.0.1",
   "**/minimatch": "^3.1.0",
   "**/loader-utils": "^3.2.1",
+  "**/json5": "^2.2.2",
+  "**/decode-uri-component": "^0.2.1",
 });
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
