@@ -51,6 +51,7 @@
   "dependencies": {
     "@aws-prototyping-sdk/open-api-gateway": "^0.12.1",
     "@aws/api": "^0.0.0",
+    "@aws/api-typescript": "^0.0.0",
     "@aws/webapp": "^0.0.0",
     "aws-cdk-lib": "2.45.0",
     "aws-prototyping-sdk": "0.12.1",
