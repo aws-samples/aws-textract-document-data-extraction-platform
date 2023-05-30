@@ -4,6 +4,6 @@ boto3-stubs[s3]
 licenseheaders
 moto
 mypy
-projen==0.63.24
+projen==0.63.34
 pytest
 types-python-dateutil

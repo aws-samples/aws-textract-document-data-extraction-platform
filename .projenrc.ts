@@ -50,7 +50,6 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
 monorepo.gitignore.addPatterns(".DS_Store");
-monorepo.gitignore.addPatterns("/packages/api/generated");
 monorepo.gitignore.addPatterns(".nx/*");
 monorepo.gitignore.addPatterns("nx.json");
 monorepo.gitignore.addPatterns("syncpackrc.json");

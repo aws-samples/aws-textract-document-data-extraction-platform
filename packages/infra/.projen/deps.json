@@ -114,6 +114,10 @@
       "type": "runtime"
     },
     {
+      "name": "@aws/api-typescript",
+      "type": "runtime"
+    },
+    {
       "name": "@aws/webapp",
       "type": "runtime"
     },

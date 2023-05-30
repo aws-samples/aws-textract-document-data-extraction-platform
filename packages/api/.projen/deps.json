@@ -101,6 +101,10 @@
       "type": "runtime"
     },
     {
+      "name": "@aws/api-typescript",
+      "type": "runtime"
+    },
+    {
       "name": "aws-cdk-lib",
       "type": "runtime"
     },
