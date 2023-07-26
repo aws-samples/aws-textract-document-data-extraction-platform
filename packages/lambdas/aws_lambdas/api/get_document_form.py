@@ -3,13 +3,13 @@
 #   SPDX-License-Identifier: MIT-0
 #
 
-from api_python_client.model.form_metadata import FormMetadata
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.model.form_metadata import FormMetadata
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     get_document_form_handler,
     GetDocumentFormRequest,
 )
-from api_python_client.model.api_error import ApiError
-from api_python_client.api_client import JSONEncoder
+from aws_api_python_runtime.model.api_error import ApiError
+from aws_api_python_runtime.api_client import JSONEncoder
 
 from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse

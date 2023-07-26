@@ -4,16 +4,16 @@
 #
 from typing import TypedDict, Dict
 
-from api_python_client.model.execution_status import ExecutionStatus
-from api_python_client.model.status_transition import StatusTransition
-from api_python_client.model.document_metadata import DocumentMetadata
+from aws_api_python_runtime.model.execution_status import ExecutionStatus
+from aws_api_python_runtime.model.status_transition import StatusTransition
+from aws_api_python_runtime.model.document_metadata import DocumentMetadata
 
 from aws_lambdas.utils.sfn.errors import SfnErrorDetails, get_sfn_error_message
 from aws_lambdas.utils.ddb.document_metadata_store import DocumentMetadataStore
 from aws_lambdas.utils.time import utc_now
 from aws_lambdas.utils.metrics.metrics import metric_publisher
 from aws_lambdas.utils.logger import get_logger
-from api_python_client.api_client import JSONEncoder
+from aws_api_python_runtime.api_client import JSONEncoder
 
 log = get_logger(__name__)
 

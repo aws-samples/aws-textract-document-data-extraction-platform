@@ -13,7 +13,7 @@ from aws_lambdas.utils.ddb.store import (
     PaginatedItemsResponse,
     fetch_page_with_query_for_key_equals,
 )
-from api_python_client.model.form_metadata import FormMetadata
+from aws_api_python_runtime.model.form_metadata import FormMetadata
 
 
 class FormMetadataStore(Store):

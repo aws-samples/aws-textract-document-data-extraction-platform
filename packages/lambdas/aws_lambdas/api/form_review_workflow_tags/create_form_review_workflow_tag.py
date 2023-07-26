@@ -2,11 +2,11 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     create_form_review_workflow_tag_handler,
     CreateFormReviewWorkflowTagRequest,
 )
-from api_python_client.model.form_review_workflow_tag import FormReviewWorkflowTag
+from aws_api_python_runtime.model.form_review_workflow_tag import FormReviewWorkflowTag
 
 from aws_lambdas.api.utils.api import identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse

@@ -2,12 +2,12 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     list_form_schemas_handler,
     ListFormSchemasRequest,
 )
-from api_python_client.model.api_error import ApiError
-from api_python_client.model.list_form_review_workflow_tags_response import (
+from aws_api_python_runtime.model.api_error import ApiError
+from aws_api_python_runtime.model.list_form_review_workflow_tags_response import (
     ListFormReviewWorkflowTagsResponse,
 )
 

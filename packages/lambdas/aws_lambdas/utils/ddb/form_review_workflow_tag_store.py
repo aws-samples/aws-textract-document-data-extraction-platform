@@ -12,7 +12,7 @@ from aws_lambdas.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from api_python_client.model.form_review_workflow_tag import FormReviewWorkflowTag
+from aws_api_python_runtime.model.form_review_workflow_tag import FormReviewWorkflowTag
 
 
 class FormReviewWorkflowTagStore(Store):

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from functools import wraps
 from typing import Dict, Any, TypedDict, Protocol
 
-from api_python_client.model.api_error import ApiError
+from aws_api_python_runtime.model.api_error import ApiError
 
 from aws_lambdas.api.utils.response import Response
 from aws_lambdas.utils.logger import get_logger

@@ -12,7 +12,7 @@ from aws_lambdas.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from api_python_client.model.form_schema import FormSchema
+from aws_api_python_runtime.model.form_schema import FormSchema
 
 
 class FormSchemaStore(Store):

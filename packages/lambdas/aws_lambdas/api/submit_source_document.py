@@ -7,16 +7,16 @@ from dataclasses import asdict
 import json
 
 import boto3
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     submit_source_document_handler,
     SubmitSourceDocumentRequest,
 )
-from api_python_client.model.execution_status import ExecutionStatus
-from api_python_client.model.ingestion_execution import IngestionExecution
-from api_python_client.model.document_metadata import DocumentMetadata
-from api_python_client.model.s3_location import S3Location
-from api_python_client.model.api_error import ApiError
-from api_python_client.model.status_transition import StatusTransition
+from aws_api_python_runtime.model.execution_status import ExecutionStatus
+from aws_api_python_runtime.model.ingestion_execution import IngestionExecution
+from aws_api_python_runtime.model.document_metadata import DocumentMetadata
+from aws_api_python_runtime.model.s3_location import S3Location
+from aws_api_python_runtime.model.api_error import ApiError
+from aws_api_python_runtime.model.status_transition import StatusTransition
 
 from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse

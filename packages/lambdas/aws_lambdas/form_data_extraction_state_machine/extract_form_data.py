@@ -5,14 +5,14 @@
 import boto3
 import json
 from typing import TypedDict
-from api_python_client.api_client import JSONEncoder
-from api_python_client.model.extraction_execution_status import (
+from aws_api_python_runtime.api_client import JSONEncoder
+from aws_api_python_runtime.model.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
-from api_python_client.model.s3_location import S3Location
-from api_python_client.model.status_transition import StatusTransition
-from api_python_client.model.form_metadata import FormMetadata
-from api_python_client.model.form_json_schema import FormJSONSchema
+from aws_api_python_runtime.model.s3_location import S3Location
+from aws_api_python_runtime.model.status_transition import StatusTransition
+from aws_api_python_runtime.model.form_metadata import FormMetadata
+from aws_api_python_runtime.model.form_json_schema import FormJSONSchema
 
 from aws_lambdas.ingestion_state_machine.split_document import ClassifiedSplitForm
 from aws_lambdas.utils.textract.analysis import get_full_textract_document_analysis

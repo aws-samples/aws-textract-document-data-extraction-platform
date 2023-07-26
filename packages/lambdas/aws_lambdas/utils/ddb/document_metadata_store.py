@@ -12,7 +12,7 @@ from aws_lambdas.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from api_python_client.model.document_metadata import DocumentMetadata
+from aws_api_python_runtime.model.document_metadata import DocumentMetadata
 
 
 class DocumentMetadataStore(Store):

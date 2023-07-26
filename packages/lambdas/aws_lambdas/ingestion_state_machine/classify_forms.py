@@ -4,8 +4,8 @@
 #
 from typing import Any, TypedDict, List, Tuple, Set, Optional, Mapping
 
-from api_python_client.model.form_json_schema import FormJSONSchema
-from api_python_client.model.form_schema import FormSchema
+from aws_api_python_runtime.model.form_json_schema import FormJSONSchema
+from aws_api_python_runtime.model.form_schema import FormSchema
 from trp import Document
 
 from aws_lambdas.utils.textract.analysis import (

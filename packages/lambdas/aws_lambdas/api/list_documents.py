@@ -3,12 +3,12 @@
 #   SPDX-License-Identifier: MIT-0
 #
 
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     list_documents_handler,
     ListDocumentsRequest,
 )
-from api_python_client.model.api_error import ApiError
-from api_python_client.model.list_documents_response import ListDocumentsResponse
+from aws_api_python_runtime.model.api_error import ApiError
+from aws_api_python_runtime.model.list_documents_response import ListDocumentsResponse
 
 from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse

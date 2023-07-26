@@ -2,12 +2,12 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     update_form_schema_handler,
     UpdateFormSchemaRequest,
 )
-from api_python_client.model.form_schema import FormSchema
-from api_python_client.model.api_error import ApiError
+from aws_api_python_runtime.model.form_schema import FormSchema
+from aws_api_python_runtime.model.api_error import ApiError
 
 from aws_lambdas.api.utils.api import identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse

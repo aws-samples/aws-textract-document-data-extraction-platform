@@ -8,12 +8,12 @@ import decimal
 import json
 from typing import Optional, Dict, Mapping, Any, Generic, TypeVar, TypedDict, List
 from aws_lambdas.utils.base64 import base64_decode, base64_encode
-from api_python_client.api_client import JSONEncoder
+from aws_api_python_runtime.api_client import JSONEncoder
 
-from api_python_client.schemas import DictSchema
+from aws_api_python_runtime.schemas import DictSchema
 
 from aws_lambdas.utils.time import utc_now
-from api_python_client.configuration import Configuration
+from aws_api_python_runtime.configuration import Configuration
 
 Document = TypeVar("Document", bound=DictSchema)
 T = TypeVar("T")

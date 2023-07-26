@@ -6,16 +6,16 @@ import json
 from multiprocessing import process
 from typing import TypedDict, List, Dict, no_type_check
 
-from api_python_client.model.execution_status import ExecutionStatus
-from api_python_client.model.form_metadata import FormMetadata
-from api_python_client.model.form_schema import FormSchema
-from api_python_client.model.s3_location import S3Location
-from api_python_client.model.extraction_execution import ExtractionExecution
-from api_python_client.model.extraction_execution_status import (
+from aws_api_python_runtime.model.execution_status import ExecutionStatus
+from aws_api_python_runtime.model.form_metadata import FormMetadata
+from aws_api_python_runtime.model.form_schema import FormSchema
+from aws_api_python_runtime.model.s3_location import S3Location
+from aws_api_python_runtime.model.extraction_execution import ExtractionExecution
+from aws_api_python_runtime.model.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
-from api_python_client.model.status_transition import StatusTransition
-from api_python_client.model.document_metadata import DocumentMetadata
+from aws_api_python_runtime.model.status_transition import StatusTransition
+from aws_api_python_runtime.model.document_metadata import DocumentMetadata
 
 from aws_lambdas.api.utils.api import CallingUserDict, _get_caller
 from aws_lambdas.ingestion_state_machine.classify_forms import ClassifiedForm
@@ -32,7 +32,7 @@ from aws_lambdas.utils.s3.location import (
 )
 from aws_lambdas.utils.time import utc_now
 from aws_lambdas.utils.metrics.metrics import metric_publisher
-from api_python_client.api_client import JSONEncoder
+from aws_api_python_runtime.api_client import JSONEncoder
 from aws_lambdas.utils.pdf import read_pdf_from_s3
 
 

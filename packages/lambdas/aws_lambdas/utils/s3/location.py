@@ -5,7 +5,7 @@
 import boto3
 from botocore.config import Config
 from typing import TypedDict
-from api_python_client.model.s3_location import S3Location as S3LocationModel
+from aws_api_python_runtime.model.s3_location import S3Location as S3LocationModel
 
 
 class S3Location(TypedDict):

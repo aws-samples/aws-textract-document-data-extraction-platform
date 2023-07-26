@@ -10,11 +10,11 @@ from typing import List, Union, Any, Tuple, Callable, Optional, no_type_check
 import math
 
 import boto3
-from api_python_client import Configuration
-from api_python_client.model.aggregate_metrics import AggregateMetrics
-from api_python_client.model.status_transition import StatusTransition
-from api_python_client.model.document_metadata import DocumentMetadata
-from api_python_client.model.form_metadata import FormMetadata
+from aws_api_python_runtime import Configuration
+from aws_api_python_runtime.model.aggregate_metrics import AggregateMetrics
+from aws_api_python_runtime.model.status_transition import StatusTransition
+from aws_api_python_runtime.model.document_metadata import DocumentMetadata
+from aws_api_python_runtime.model.form_metadata import FormMetadata
 import botocore
 
 from aws_lambdas.utils.time import millis_between, utc_now_datetime, to_datetime

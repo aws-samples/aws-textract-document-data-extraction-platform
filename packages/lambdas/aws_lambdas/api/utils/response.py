@@ -4,10 +4,10 @@
 #
 from typing import Dict, Union, Generic, TypeVar
 
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     ApiResponse as LambdaApiResponse,
 )
-from api_python_client.model.api_error import ApiError
+from aws_api_python_runtime.model.api_error import ApiError
 
 CORS_HEADERS = {
     "Access-Control-Allow-Origin": "*",

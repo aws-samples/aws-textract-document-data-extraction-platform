@@ -2,14 +2,14 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from api_python_client.api_client import JSONEncoder
+from aws_api_python_runtime.api_client import JSONEncoder
 from typing import TypedDict, Dict
 
-from api_python_client.model.extraction_execution_status import (
+from aws_api_python_runtime.model.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
-from api_python_client.model.status_transition import StatusTransition
-from api_python_client.model.form_metadata import FormMetadata
+from aws_api_python_runtime.model.status_transition import StatusTransition
+from aws_api_python_runtime.model.form_metadata import FormMetadata
 
 from aws_lambdas.utils.sfn.errors import SfnErrorDetails, get_sfn_error_message
 from aws_lambdas.utils.ddb.form_metadata_store import FormMetadataStore

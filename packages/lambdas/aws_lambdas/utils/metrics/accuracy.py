@@ -5,7 +5,7 @@
 import statistics
 from typing import List
 
-from api_python_client.model.extraction_accuracy import ExtractionAccuracy
+from aws_api_python_runtime.model.extraction_accuracy import ExtractionAccuracy
 from thefuzz import fuzz
 from aws_lambdas.utils.logger import get_logger
 

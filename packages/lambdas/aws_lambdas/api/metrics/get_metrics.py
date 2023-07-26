@@ -4,12 +4,12 @@
 #
 from typing import List
 
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     get_metrics_handler,
     GetMetricsRequest,
 )
-from api_python_client.model.aggregate_metrics import AggregateMetrics
-from api_python_client.model.form_schema import FormSchema
+from aws_api_python_runtime.model.aggregate_metrics import AggregateMetrics
+from aws_api_python_runtime.model.form_schema import FormSchema
 
 from aws_lambdas.api.utils.api import api, identity_interceptor
 from aws_lambdas.api.utils.response import Response, ApiResponse

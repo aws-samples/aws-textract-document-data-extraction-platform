@@ -7,13 +7,13 @@ from uuid import uuid4
 
 import boto3
 from botocore.config import Config
-from api_python_client.apis.tags.default_api_operation_config import (
+from aws_api_python_runtime.apis.tags.default_api_operation_config import (
     get_document_upload_url_handler,
     GetDocumentUploadUrlRequest,
 )
-from api_python_client.model.s3_location import S3Location
-from api_python_client.model.api_error import ApiError
-from api_python_client.model.get_document_upload_url_response import (
+from aws_api_python_runtime.model.s3_location import S3Location
+from aws_api_python_runtime.model.api_error import ApiError
+from aws_api_python_runtime.model.get_document_upload_url_response import (
     GetDocumentUploadUrlResponse,
 )
 
