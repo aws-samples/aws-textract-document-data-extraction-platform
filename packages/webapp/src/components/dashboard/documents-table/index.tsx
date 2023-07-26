@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { DocumentMetadata, FormSchema } from '@aws/api-typescript';
 import { Button, Inline, Link, Modal, Select } from 'aws-northstar';
 import FileUpload from 'aws-northstar/components/FileUpload';
 import { SelectOption } from 'aws-northstar/components/Select/types';
@@ -8,6 +7,10 @@ import Table from 'aws-northstar/components/Table';
 import { Column as TableColumn } from 'aws-northstar/components/Table/types';
 import Grid from 'aws-northstar/layouts/Grid';
 import React, { useCallback, useState } from 'react';
+import {
+  DocumentMetadata,
+  FormSchema,
+} from '../../../../../api-old/generated/typescript/lib';
 
 const documentListColumns: TableColumn<any>[] = [
   {
@@ -15,7 +18,9 @@ const documentListColumns: TableColumn<any>[] = [
     width: 200,
     Header: 'Name',
     accessor: 'name',
-    Cell: ({ value, row }) => <Link href={`/view/${row.original.documentId}`}>{value}</Link>,
+    Cell: ({ value, row }) => (
+      <Link href={`/view/${row.original.documentId}`}>{value}</Link>
+    ),
   },
   {
     id: 'createdBy',
@@ -46,8 +51,15 @@ export interface DocumentsTableProps {
   readonly reloadAction?: any;
 }
 
-export const DocumentsTable: React.FC<DocumentsTableProps> = ({ dataLoaded, documents, upload, schemas, reloadAction }) => {
-  const [isUploadModalVisible, setIsUploadModalVisible] = useState<boolean>(false);
+export const DocumentsTable: React.FC<DocumentsTableProps> = ({
+  dataLoaded,
+  documents,
+  upload,
+  schemas,
+  reloadAction,
+}) => {
+  const [isUploadModalVisible, setIsUploadModalVisible] =
+    useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [file, setFile] = useState<File | undefined>();
   const [options, setOptions] = React.useState<SelectOption[]>([]);
@@ -66,7 +78,6 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({ dataLoaded, docu
     }, 1000);
   };
 
-
   const doUpload = useCallback(async () => {
     if (selectedOption) {
       setIsUploading(true);
@@ -81,7 +92,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({ dataLoaded, docu
       <Button variant="primary" onClick={() => setIsUploadModalVisible(true)}>
         Upload
       </Button>
-      {reloadAction ?
+      {reloadAction ? (
         <Button
           variant="icon"
           icon={'refresh'}
@@ -89,13 +100,20 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({ dataLoaded, docu
             await reloadAction();
           }}
           loading={!dataLoaded}
-        /> : <></>}
+        />
+      ) : (
+        <></>
+      )}
     </Inline>
   );
 
   return (
     <>
-      <Modal title='Upload a Document' visible={isUploadModalVisible} onClose={() => setIsUploadModalVisible(false)}>
+      <Modal
+        title="Upload a Document"
+        visible={isUploadModalVisible}
+        onClose={() => setIsUploadModalVisible(false)}
+      >
         <h4>Select the schema of the document you want to upload</h4>
         <Select
           placeholder="Choose a schema type"
@@ -103,9 +121,12 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({ dataLoaded, docu
           options={options}
           onFocus={onFocus}
           selectedOption={selectedOption}
-          onChange={(event) => setSelectedOption({ value: event.target.value } as any)}
+          onChange={(event) =>
+            setSelectedOption({ value: event.target.value } as any)
+          }
         />
-        <br></br><br></br>
+        <br></br>
+        <br></br>
         <FileUpload
           accept=".pdf"
           label="Select Document"
@@ -114,7 +135,14 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({ dataLoaded, docu
           onChange={(files) => files.length > 0 && setFile(files[0] as File)}
           multiple={false}
         />
-        <Button disabled={!file && !selectedOption} variant="primary" onClick={doUpload} loading={isUploading}>Upload</Button>
+        <Button
+          disabled={!file && !selectedOption}
+          variant="primary"
+          onClick={doUpload}
+          loading={isUploading}
+        >
+          Upload
+        </Button>
       </Modal>
       <Grid container spacing={1}>
         <Grid item xs={12}>

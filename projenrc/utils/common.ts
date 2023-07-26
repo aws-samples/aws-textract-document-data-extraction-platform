@@ -5,5 +5,5 @@ import { licenseFile } from "./license";
 
 export const configureProject = (project: Project) => {
   licenseFile({ project });
-  project.tryFindObjectFile("package.json")?.addOverride("license", "ASL");
+  project.tryFindObjectFile("package.json")?.addOverride("license", "MIT-0");
 };

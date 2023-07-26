@@ -6,7 +6,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^14",
+      "version": "^16",
       "type": "build"
     },
     {
@@ -63,11 +63,7 @@
     },
     {
       "name": "jest-junit",
-      "version": "^13",
-      "type": "build"
-    },
-    {
-      "name": "json-schema",
+      "version": "^15",
       "type": "build"
     },
     {
@@ -96,25 +92,19 @@
       "type": "build"
     },
     {
-      "name": "@types/responselike",
-      "version": "1.0.0",
-      "type": "override"
-    },
-    {
-      "name": "got",
-      "version": "12.3.1",
-      "type": "override"
-    },
-    {
       "name": "@aws-prototyping-sdk/open-api-gateway",
       "type": "runtime"
     },
     {
-      "name": "@aws/api",
+      "name": "@aws-prototyping-sdk/pdk-nag",
       "type": "runtime"
     },
     {
-      "name": "@aws/api-typescript",
+      "name": "@aws-prototyping-sdk/pipeline",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws/api-typescript-infra",
       "type": "runtime"
     },
     {
@@ -124,11 +114,6 @@
     {
       "name": "aws-cdk-lib",
       "version": "2.45.0",
-      "type": "runtime"
-    },
-    {
-      "name": "aws-prototyping-sdk",
-      "version": "0.12.1",
       "type": "runtime"
     },
     {

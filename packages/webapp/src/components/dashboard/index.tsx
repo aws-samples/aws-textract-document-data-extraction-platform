@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { FormSchema, DocumentMetadata, FormMetadata, AggregateMetrics } from '@aws/api-typescript';
 import {
   Button,
   Column,
@@ -13,11 +12,21 @@ import {
   Tabs,
 } from 'aws-northstar';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { API } from '../../api/client';
-import { friendlyDuration, friendlyPercent, getMetricsForLastThreeMonths } from '../../api/metrics';
-import { listAllPages } from '../../api/utils';
 import { DocumentsTable } from './documents-table';
 import { FormsTable } from './forms-table';
+import {
+  FormSchema,
+  DocumentMetadata,
+  FormMetadata,
+  AggregateMetrics,
+} from '../../../../api-old/generated/typescript/lib';
+import { API } from '../../api/client';
+import {
+  friendlyDuration,
+  friendlyPercent,
+  getMetricsForLastThreeMonths,
+} from '../../api/metrics';
+import { listAllPages } from '../../api/utils';
 
 export interface DashboardProps {}
 
@@ -45,14 +54,20 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   const fetchDocuments = useCallback(async () => {
     setDocumentsLoaded(false);
-    const documentsResponse = await listAllPages(API.listDocuments.bind(API), 'documents');
+    const documentsResponse = await listAllPages(
+      API.listDocuments.bind(API),
+      'documents',
+    );
     setDocuments(documentsResponse);
     setDocumentsLoaded(true);
   }, []);
 
   const fetchSchemas = useCallback(async () => {
     setSchemasLoaded(false);
-    const schemasResponse = await listAllPages(API.listFormSchemas.bind(API), 'schemas');
+    const schemasResponse = await listAllPages(
+      API.listFormSchemas.bind(API),
+      'schemas',
+    );
     setSchemas(schemasResponse);
     setSchemasLoaded(true);
   }, []);
@@ -66,7 +81,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   const fetchData = useCallback(async () => {
     setDataLoaded(false);
-    await Promise.all([fetchDocuments(), fetchSchemas(), fetchForms(), fetchMetrics()]);
+    await Promise.all([
+      fetchDocuments(),
+      fetchSchemas(),
+      fetchForms(),
+      fetchMetrics(),
+    ]);
     setDataLoaded(true);
   }, []);
 
@@ -93,7 +113,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   }, []);
 
   useEffect(() => {
-    fetchData().catch((err:any) => console.log(err));
+    fetchData().catch((err: any) => console.log(err));
   }, []);
 
   // tabs for the documents and forms views
@@ -102,27 +122,37 @@ const Dashboard: React.FC<DashboardProps> = () => {
       {
         label: 'Documents',
         id: defaultTab,
-        content:
+        content: (
           <DocumentsTable
             dataLoaded={documentsLoaded}
             reloadAction={fetchDocuments}
             documents={documents}
             upload={submitDocument}
             schemas={schemas}
-          />,
+          />
+        ),
       },
       {
         label: 'Forms',
         id: 'forms',
-        content:
+        content: (
           <FormsTable
             forms={forms}
             reloadAction={fetchForms}
             dataLoaded={formsLoaded}
-          />,
+          />
+        ),
       },
     ];
-  }, [forms, documents, fetchDocuments, documentsLoaded, fetchForms, formsLoaded, fetchSchemas]);
+  }, [
+    forms,
+    documents,
+    fetchDocuments,
+    documentsLoaded,
+    fetchForms,
+    formsLoaded,
+    fetchSchemas,
+  ]);
 
   return (
     <Grid container spacing={1}>
@@ -161,7 +191,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <Stack>
                 <KeyValuePair
                   label="Average Review Time"
-                  value={friendlyDuration(metrics?.averageReviewTimeMilliseconds)}
+                  value={friendlyDuration(
+                    metrics?.averageReviewTimeMilliseconds,
+                  )}
                 />
               </Stack>
             </Column>
@@ -169,7 +201,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <Stack>
                 <KeyValuePair
                   label="Average Extraction Accuracy"
-                  value={friendlyPercent(metrics?.averageExtractionAccuracyDistance)}
+                  value={friendlyPercent(
+                    metrics?.averageExtractionAccuracyDistance,
+                  )}
                 />
                 <KeyValuePair
                   label="Average Extraction Confidence"
@@ -180,7 +214,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
           </ColumnLayout>
         </Container>
         <Tabs
-          onChange={(activeTabId: string) => localStorage.setItem(tabHistoryKey, activeTabId)}
+          onChange={(activeTabId: string) =>
+            localStorage.setItem(tabHistoryKey, activeTabId)
+          }
           activeId={localStorage.getItem(tabHistoryKey) ?? defaultTab}
           tabs={tabs}
           variant={'container'}

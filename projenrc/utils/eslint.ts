@@ -10,6 +10,13 @@ const addEslintHeaderConfig = (project: TypeScriptProject) => {
   project.eslint?.addPlugins("header");
   project.eslint?.addRules({
     "header/header": [2, "line", [...getShortLicense()]],
+    "import/no-extraneous-dependencies": ["off"],
+  });
+};
+
+const addEslintRulesConfig = (project: TypeScriptProject) => {
+  project.eslint?.addRules({
+    "import/no-extraneous-dependencies": ["off"],
   });
 };
 
@@ -18,4 +25,5 @@ const addEslintHeaderConfig = (project: TypeScriptProject) => {
  */
 export const configureEslint = (project: TypeScriptProject) => {
   addEslintHeaderConfig(project);
+  addEslintRulesConfig(project);
 };

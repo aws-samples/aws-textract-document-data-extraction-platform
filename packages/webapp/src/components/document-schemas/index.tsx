@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { AggregateMetrics, CreateFormSchemaRequest, FormJSONSchema, FormSchema } from '@aws/api-typescript';
 import {
   Alert,
   Button,
@@ -12,14 +11,23 @@ import {
 } from 'aws-northstar';
 import Table, { Column as TableColumn } from 'aws-northstar/components/Table';
 import React, { useCallback, useEffect, useState } from 'react';
-import { API } from '../../api/client';
-import { friendlyPercent, getMetricsForLastThreeMonths } from '../../api/metrics';
-import { listAllPages } from '../../api/utils';
-import { stringifySchema } from '../../utils/review-panel/schema-helper';
 import { ModalButtons } from './modal-buttons';
 import { SchemaEditor } from './schema-editor';
+import {
+  AggregateMetrics,
+  CreateFormSchemaRequest,
+  FormJSONSchema,
+  FormSchema,
+} from '../../../../api-old/generated/typescript/lib';
+import { API } from '../../api/client';
+import {
+  friendlyPercent,
+  getMetricsForLastThreeMonths,
+} from '../../api/metrics';
+import { listAllPages } from '../../api/utils';
+import { stringifySchema } from '../../utils/review-panel/schema-helper';
 
-export interface DocumentSchemaProps { }
+export interface DocumentSchemaProps {}
 
 const SCHEMA_TEMPLATE: FormJSONSchema = {
   description: '',
@@ -51,10 +59,13 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
   const [selectedRow, setSelectedRow] = useState<FormSchema>();
   const [schemas, setSchemas] = useState<FormSchema[]>([]);
   const [metrics, setMetrics] = useState<AggregateMetrics>();
-  const [isSchemaModalVisible, setIsSchemaModalVisible] = useState<boolean>(false);
+  const [isSchemaModalVisible, setIsSchemaModalVisible] =
+    useState<boolean>(false);
   const [isSubmittingSchema, setIsSubmittingSchema] = useState<boolean>(false);
-  const [isSubmittingAddSchema, setIsSubmittingAddSchema] = useState<boolean>(false);
-  const [isAddSchemaModalVisible, setIsAddSchemaModalVisible] = useState<boolean>(false);
+  const [isSubmittingAddSchema, setIsSubmittingAddSchema] =
+    useState<boolean>(false);
+  const [isAddSchemaModalVisible, setIsAddSchemaModalVisible] =
+    useState<boolean>(false);
   let [newSchema, setNewSchema] = useState<string>('');
   let [addNewSchema, setAddNewSchema] = useState<string>('');
   let [formTitle, setFormTitle] = useState<string>('');
@@ -84,21 +95,31 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
       <Button disabled={!selectedRow} onClick={async () => deleteSchema()}>
         Delete
       </Button>
-      <Button disabled={!selectedRow} onClick={() => {
-        setNewSchema(stringifySchema(selectedRow?.schema || {}));
-        setIsSchemaModalVisible(true);
-      }}>
+      <Button
+        disabled={!selectedRow}
+        onClick={() => {
+          setNewSchema(stringifySchema(selectedRow?.schema || {}));
+          setIsSchemaModalVisible(true);
+        }}
+      >
         View/Edit
       </Button>
-      <Button variant="primary" onClick={() => {
-        setAddNewSchema(stringifySchema(SCHEMA_TEMPLATE));
-        setIsAddSchemaModalVisible(true);
-        setErrorMessage(undefined);
-        setErrorMessage('');
-      }}>
+      <Button
+        variant="primary"
+        onClick={() => {
+          setAddNewSchema(stringifySchema(SCHEMA_TEMPLATE));
+          setIsAddSchemaModalVisible(true);
+          setErrorMessage(undefined);
+          setErrorMessage('');
+        }}
+      >
         Add
       </Button>
-      <Button variant="icon" icon="refresh" onClick={async () => fetchSchemas()} />
+      <Button
+        variant="icon"
+        icon="refresh"
+        onClick={async () => fetchSchemas()}
+      />
     </Inline>
   );
 
@@ -133,7 +154,13 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
       width: 100,
       Header: 'Average Accuracy',
       accessor: 'schemaId',
-      Cell: ({ value }) => <>{friendlyPercent(metrics?.bySchemaId[value]?.averageExtractionAccuracyDistance)}</>,
+      Cell: ({ value }) => (
+        <>
+          {friendlyPercent(
+            metrics?.bySchemaId[value]?.averageExtractionAccuracyDistance,
+          )}
+        </>
+      ),
     },
   ];
 
@@ -143,15 +170,19 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
   }, [selectedRow, fetchSchemas]);
 
   const updateSchema = useCallback(async () => {
-    let toBeUpdatedSchema = await API.getFormSchema({ schemaId: selectedRow!.schemaId });
+    let toBeUpdatedSchema = await API.getFormSchema({
+      schemaId: selectedRow!.schemaId,
+    });
     let schemasResponse;
 
     try {
       const parsedSchema: FormJSONSchema = JSON.parse(newSchema);
       toBeUpdatedSchema.schema = parsedSchema;
-      schemasResponse = await API.updateFormSchema({ schemaId: selectedRow!.schemaId, formSchema: toBeUpdatedSchema! });
+      schemasResponse = await API.updateFormSchema({
+        schemaId: selectedRow!.schemaId,
+        formSchema: toBeUpdatedSchema!,
+      });
     } catch (error: any) {
-
       setIsSubmittingSchema(false);
       setErrorMessage('Could not update schema. ' + error.message);
     }
@@ -160,7 +191,6 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
       setIsSubmittingSchema(false);
       setIsSchemaModalVisible(false);
     }
-
   }, [newSchema, selectedRow]);
 
   const submitSchema = useCallback(async () => {
@@ -195,9 +225,7 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
       setIsSubmittingAddSchema(false);
       setIsAddSchemaModalVisible(false);
     }
-
   }, [formTitle, formDesc, addNewSchema, fetchSchemas]);
-
 
   const cancelSubmit = () => {
     setIsSubmittingSchema(false);
@@ -220,20 +248,26 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
           setIsSubmittingSchema(false);
         }}
       >
-        {errorMessage &&
+        {errorMessage && (
           <div style={{ marginBottom: 20 }}>
-            <Alert type="error" dismissible={true} buttonText="Dismiss" onButtonClick={() => {
-              setErrorMessage(undefined);
-            }}
-            header="Error">
+            <Alert
+              type="error"
+              dismissible={true}
+              buttonText="Dismiss"
+              onButtonClick={() => {
+                setErrorMessage(undefined);
+              }}
+              header="Error"
+            >
               {errorMessage}
             </Alert>
-          </div>}
+          </div>
+        )}
         <SchemaEditor
           jsonSchema={newSchema}
           onChange={(e) => setNewSchema(e)}
         />
-        <br/>
+        <br />
         <ModalButtons
           loading={isSubmittingSchema}
           cancelOnClick={cancelSubmit}
@@ -250,22 +284,32 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
           setIsSubmittingAddSchema(false);
         }}
       >
-        {errorMessage &&
+        {errorMessage && (
           <div style={{ marginBottom: 20 }}>
-            <Alert type="error" dismissible={true} buttonText="Dismiss" onButtonClick={() => {
-              setErrorMessage(undefined);
-              setNewSchema(stringifySchema(selectedRow?.schema || {}));
-            }}
-            header="Error">
+            <Alert
+              type="error"
+              dismissible={true}
+              buttonText="Dismiss"
+              onButtonClick={() => {
+                setErrorMessage(undefined);
+                setNewSchema(stringifySchema(selectedRow?.schema || {}));
+              }}
+              header="Error"
+            >
               {errorMessage}
             </Alert>
-          </div>}
+          </div>
+        )}
         <FormField
           label="Title"
           controlId="schemaFormName"
           hintText="This must exactly match the title on the first page of a corresponding form"
         >
-          <Input type="text" controlId="schemaFormName" onChange={e => setFormTitle(e)} />
+          <Input
+            type="text"
+            controlId="schemaFormName"
+            onChange={(e) => setFormTitle(e)}
+          />
         </FormField>
 
         <FormField
@@ -273,7 +317,11 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
           controlId="schemaFormDescription"
           hintText="(Optional)"
         >
-          <Input type="text" controlId="schemaFormDescription" onChange={e => setFormDesc(e)} />
+          <Input
+            type="text"
+            controlId="schemaFormDescription"
+            onChange={(e) => setFormDesc(e)}
+          />
         </FormField>
 
         <h1>Document Definition JSON</h1>
@@ -281,7 +329,7 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
           jsonSchema={addNewSchema}
           onChange={(e: any) => setAddNewSchema(e)}
         />
-        <br/>
+        <br />
         <ModalButtons
           loading={isSubmittingAddSchema}
           cancelOnClick={cancelAddSubmit}

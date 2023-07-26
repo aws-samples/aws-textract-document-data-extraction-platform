@@ -1,11 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { FormMetadata, FormReviewWorkflowTag, StatusTransition } from '@aws/api-typescript';
 import { Badge, Button, Inline, Link } from 'aws-northstar';
 import Table from 'aws-northstar/components/Table';
 import { Column as TableColumn } from 'aws-northstar/components/Table/types';
 import Grid from 'aws-northstar/layouts/Grid';
 import React, { useState, useEffect } from 'react';
+import {
+  FormMetadata,
+  FormReviewWorkflowTag,
+  StatusTransition,
+} from '../../../../../api-old/generated/typescript/lib';
 import { API } from '../../../api/client';
 import { listAllPages } from '../../../api/utils';
 import { tagIdsToTags } from '../../../utils/review-tags-helper';
@@ -19,8 +23,13 @@ export interface FormsTableProps {
   readonly reloadAction?: any;
 }
 
-export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloadAction }) => {
-  const [availableReviewTags, setAvailableReviewTags] = useState<FormReviewWorkflowTag[]>();
+export const FormsTable: React.FC<FormsTableProps> = ({
+  dataLoaded,
+  forms,
+  reloadAction,
+}) => {
+  const [availableReviewTags, setAvailableReviewTags] =
+    useState<FormReviewWorkflowTag[]>();
 
   const formListColumns: TableColumn<any>[] = [
     {
@@ -30,7 +39,11 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
       accessor: 'formId',
       Cell: ({ value, row }) => {
         const link = `/view/${row.original.documentId}/${value}`;
-        return <Link href={link} underlineHover={true}>{row.original.documentName} {value}</Link>;
+        return (
+          <Link href={link} underlineHover={true}>
+            {row.original.documentName} {value}
+          </Link>
+        );
       },
     },
     {
@@ -56,7 +69,9 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
           status={value}
           documentId={row.original.documentId}
           formId={row.original.formId}
-          updateStatus={(documentId, formId) => updateStatus(documentId, formId, 'REVIEWING')}
+          updateStatus={(documentId, formId) =>
+            updateStatus(documentId, formId, 'REVIEWING')
+          }
           statusReason={row.original.extractionExecution.statusReason}
         />
       ),
@@ -69,9 +84,11 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
       // @ts-ignore
       Cell: ({ value, row }) => (
         <>
-          {
-            tagIdsToTags(row.original.tags, availableReviewTags)?.map((tag: any) => <Badge key={tag.tagId} content={tag.tagText}/>)
-          }
+          {tagIdsToTags(row.original.tags, availableReviewTags)?.map(
+            (tag: any) => (
+              <Badge key={tag.tagId} content={tag.tagText} />
+            ),
+          )}
         </>
       ),
     },
@@ -82,11 +99,9 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
       accessor: 'statusTransitionLog',
       Cell: ({ value }: { value: StatusTransition[] }) => (
         <>
-          {
-            value.find(({ status }) => status === 'REVIEWED')?.actingUser ||
+          {value.find(({ status }) => status === 'REVIEWED')?.actingUser ||
             value.find(({ status }) => status === 'REVIEWING')?.actingUser ||
-            'N/A'
-          }
+            'N/A'}
         </>
       ),
     },
@@ -133,14 +148,17 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
 
   useEffect(() => {
     void (async () => {
-      const tags = await listAllPages(API.listFormReviewWorkflowTags.bind(API), 'tags');
+      const tags = await listAllPages(
+        API.listFormReviewWorkflowTags.bind(API),
+        'tags',
+      );
       setAvailableReviewTags(tags);
     })();
   }, []);
 
   const actionGroup = (
     <Inline>
-      {reloadAction ?
+      {reloadAction ? (
         <Button
           variant="icon"
           icon={'refresh'}
@@ -148,8 +166,10 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
             reloadAction();
           }}
           loading={!dataLoaded}
-        /> : <></>
-      }
+        />
+      ) : (
+        <></>
+      )}
     </Inline>
   );
 
@@ -173,4 +193,3 @@ export const FormsTable: React.FC<FormsTableProps> = ({ dataLoaded, forms, reloa
     </Grid>
   );
 };
-

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { PDKNag } from "aws-prototyping-sdk/pdk-nag";
+import { PDKNag } from "@aws-prototyping-sdk/pdk-nag";
 import { ApplicationStage } from "./application-stage";
 import { PipelineStack } from "./pipeline-stack";
 

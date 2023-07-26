@@ -21,11 +21,6 @@
       "type": "devenv"
     },
     {
-      "name": "projen",
-      "version": "0.63.34",
-      "type": "devenv"
-    },
-    {
       "name": "pytest",
       "type": "devenv"
     },
@@ -35,6 +30,11 @@
     },
     {
       "name": "amazon-textract-response-parser",
+      "type": "runtime"
+    },
+    {
+      "name": "aws-api-python-runtime",
+      "version": "{path=\"../api/runtime/python\", develop=true}",
       "type": "runtime"
     },
     {

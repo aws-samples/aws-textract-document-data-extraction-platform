@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { pipeline } from "aws-prototyping-sdk";
+import { PDKPipelineTsProject } from "@aws-prototyping-sdk/pipeline";
 import { Project } from "projen";
 import { ApprovalLevel } from "projen/lib/awscdk";
 import { TypeScriptProject } from "projen/lib/typescript";
@@ -23,9 +23,8 @@ export const infraProject = ({
   cdkVersion,
   constructsVersion,
   cdkDeps,
-  awsPrototypingSdkVersion,
 }: InfraProjectProps): TypeScriptProject => {
-  const infra = new pipeline.PDKPipelineTsProject({
+  const infra = new PDKPipelineTsProject({
     defaultReleaseBranch: "mainline",
     name: "@aws/infra",
     cdkVersion,
@@ -42,7 +41,6 @@ export const infraProject = ({
       "aws-sdk",
       "uuid",
       "@aws-prototyping-sdk/open-api-gateway",
-      "@aws/api-typescript",
     ],
     devDeps: ["@types/uuid", "ts-node@10.6.0", "typescript@4.6.4"],
   });
@@ -50,7 +48,7 @@ export const infraProject = ({
   // Add dependencies that require explicit versions
   infra.package.addDeps(
     ...cdkDeps,
-    `aws-prototyping-sdk@${awsPrototypingSdkVersion}`,
+    "@aws-prototyping-sdk/pipeline",
     "esbuild@0"
   );
 

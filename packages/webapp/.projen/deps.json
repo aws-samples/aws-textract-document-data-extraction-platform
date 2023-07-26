@@ -23,7 +23,7 @@
     },
     {
       "name": "@types/node",
-      "version": "^14",
+      "version": "^16",
       "type": "build"
     },
     {
@@ -72,10 +72,6 @@
       "type": "build"
     },
     {
-      "name": "json-schema",
-      "type": "build"
-    },
-    {
       "name": "npm-check-updates",
       "version": "^16",
       "type": "build"
@@ -106,16 +102,6 @@
     {
       "name": "@types/express",
       "version": "4.17.13",
-      "type": "override"
-    },
-    {
-      "name": "@types/responselike",
-      "version": "1.0.0",
-      "type": "override"
-    },
-    {
-      "name": "got",
-      "version": "12.3.1",
       "type": "override"
     },
     {
