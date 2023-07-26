@@ -1,15 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Grid, LoadingIndicator } from 'aws-northstar';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import {
-  FormMetadata,
-  FormSchema,
-} from '../../../../api-old/generated/typescript/lib';
-import { API } from '../../api/client';
-import { FormReviewPanel } from '../form-review-panel';
+import { Grid, LoadingIndicator } from "aws-northstar";
+import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { API } from "../../api/client";
+import { FormReviewPanel } from "../form-review-panel";
+import { FormMetadata, FormSchema } from "@aws/api-typescript-runtime";
 
 export interface PDFFormReviewProps {
   readonly isReadOnly: boolean;
@@ -19,7 +17,7 @@ export interface PDFFormReviewProps {
  * Host page for the form content review UI
  */
 const PDFFormReview: React.FC<PDFFormReviewProps> = (
-  props: PDFFormReviewProps,
+  props: PDFFormReviewProps
 ) => {
   const [documentForm, setDocumentForm] = useState<FormMetadata>();
   const [formSchema, setFormSchema] = useState<FormSchema>();

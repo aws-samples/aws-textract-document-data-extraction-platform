@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { PaginatedResponse } from '../../../api-old/generated/typescript/lib';
+
+import { PaginatedResponse } from "@aws/api-typescript-runtime";
 
 const DEFAULT_PAGE_SIZE = 100;
 
@@ -22,7 +23,7 @@ export const listAllPages = async <
 >(
   boundApiMethod: (input: I) => Promise<O>,
   itemsKey: K,
-  parameters?: Omit<I, keyof PaginationParameters>,
+  parameters?: Omit<I, keyof PaginationParameters>
 ): Promise<K extends keyof O ? O[K] : never> => {
   let nextToken = undefined;
   const items = [];

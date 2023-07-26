@@ -7,10 +7,10 @@ import {
   PhysicalResourceId,
 } from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
-import { ApiExtended } from "../../../constructs/api-extended";
-import { SourceApi } from "../api";
 import { W_8BEN } from "./form-schemas/w-8ben";
 import { REVIEW_WORKFLOW_TAGS } from "./review-workflow-tags/tags";
+import { ApiExtended } from "../../../constructs/api-extended";
+import { SourceApi } from "../api";
 
 export interface PopulateDefaultDataProps {
   readonly sourceApi: SourceApi;

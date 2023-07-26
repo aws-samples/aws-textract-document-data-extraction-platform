@@ -80,7 +80,10 @@ monorepo.addImplicitDependency(lambdas, api);
 
 const webapp = webappProject({ monorepo });
 configureTsProject(webapp);
-monorepo.addImplicitDependency(webapp, api);
+// make sure typescript client is generated first
+webapp.addDeps(api.runtime.typescript?.package.packageName!);
+// documentation gets generated before it is copied
+monorepo.addImplicitDependency(webapp, api.documentation.html2!);
 
 const infra = infraProject({
   monorepo,

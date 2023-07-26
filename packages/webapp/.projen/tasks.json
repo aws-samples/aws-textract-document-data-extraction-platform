@@ -40,7 +40,7 @@
           "exec": "mkdir -p public/api-docs"
         },
         {
-          "exec": "cp -r ../api/generated/documentation/html2/* public/api-docs"
+          "exec": "cp -r ../api/documentation/html2/* public/api-docs"
         }
       ]
     },

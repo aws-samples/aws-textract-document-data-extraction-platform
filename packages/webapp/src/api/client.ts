@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { Auth } from 'aws-amplify';
-import { AwsV4Signer } from 'aws4fetch';
 import {
-  Configuration,
-  DefaultApi,
   Middleware,
-} from '../../../api-old/generated/typescript/lib';
+  DefaultApi,
+  Configuration,
+} from "@aws/api-typescript-runtime";
+import { Auth } from "aws-amplify";
+import { AwsV4Signer } from "aws4fetch";
 
 // @ts-ignore
 const { region, sourceApiUrl } = window.runtimeConfig;
@@ -28,7 +28,7 @@ const sigv4SignMiddleware: Middleware = {
       secretAccessKey,
       sessionToken,
       region,
-      service: 'execute-api',
+      service: "execute-api",
       url,
       body: init.body,
       headers: init.headers,
@@ -53,7 +53,7 @@ const addHeadersMiddleware: Middleware = {
       ...init,
       headers: {
         ...init.headers,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     },
   }),
@@ -62,12 +62,12 @@ const addHeadersMiddleware: Middleware = {
 const API = new DefaultApi(
   new Configuration({
     // Remove trailing slash if present
-    basePath: sourceApiUrl.endsWith('/')
+    basePath: sourceApiUrl.endsWith("/")
       ? sourceApiUrl.slice(0, -1)
       : sourceApiUrl,
     fetchApi: window.fetch.bind(window),
     middleware: [addHeadersMiddleware, sigv4SignMiddleware],
-  }),
+  })
 );
 
 export { API };

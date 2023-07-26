@@ -1,10 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import _ from 'lodash';
-import {
-  FormJSONSchema,
-  FormMetadata,
-} from '../../../../api-old/generated/typescript/lib';
+import { FormJSONSchema, FormMetadata } from "@aws/api-typescript-runtime";
+import _ from "lodash";
 
 export interface FormValue {
   key: string;
@@ -27,7 +24,7 @@ export const flattenFormSchema = (documentForm: FormMetadata) => {
   return buildFlattenedFormSchema(
     documentForm.extractedData,
     documentForm.extractedDataMetadata,
-    documentForm.schemaSnapshot,
+    documentForm.schemaSnapshot
   );
 };
 
@@ -35,25 +32,25 @@ export const buildFlattenedFormSchema = (
   formData: any,
   formMetadata: any,
   schema: FormJSONSchema,
-  key: string = '',
+  key: string = ""
 ): FormValue[] => {
-  if (schema.typeOf === 'object') {
+  if (schema.typeOf === "object") {
     return getOrderedPropertyKeys(schema.properties!).flatMap((propertyKey) => {
       return buildFlattenedFormSchema(
         formData,
         formMetadata,
         schema.properties![propertyKey],
-        `${key}${key ? '.' : ''}${propertyKey}`,
+        `${key}${key ? "." : ""}${propertyKey}`
       );
     });
-  } else if (schema.typeOf === 'array') {
+  } else if (schema.typeOf === "array") {
     const values = _.get(formData, key) || [];
     return values.flatMap((_value: any, i: number) => {
       return buildFlattenedFormSchema(
         formData,
         formMetadata,
         schema.items!,
-        `${key}[${i}]`,
+        `${key}[${i}]`
       );
     });
   }
@@ -66,7 +63,7 @@ export const buildFlattenedFormSchema = (
       width: 0,
       height: 0,
     },
-    extractionMethod: 'NOT FOUND',
+    extractionMethod: "NOT FOUND",
   };
 
   return [
@@ -101,14 +98,14 @@ export const stringifySchema = (schema: FormJSONSchema) =>
   JSON.stringify(
     schema,
     (_key, value) => {
-      if (value && typeof value === 'object' && !Array.isArray(value)) {
+      if (value && typeof value === "object" && !Array.isArray(value)) {
         return Object.fromEntries(
-          getOrderedPropertyKeys(value).map((k) => [k, value[k]]),
+          getOrderedPropertyKeys(value).map((k) => [k, value[k]])
         );
       }
       return value;
     },
-    2,
+    2
   );
 
 /**
@@ -116,18 +113,18 @@ export const stringifySchema = (schema: FormJSONSchema) =>
  */
 export const sortDataAccordingToSchema = (
   data: any,
-  schema: FormJSONSchema,
+  schema: FormJSONSchema
 ): any => {
-  if (schema.typeOf === 'object') {
+  if (schema.typeOf === "object") {
     return Object.fromEntries(
       getOrderedPropertyKeys(schema.properties!).map((key) => [
         key,
         sortDataAccordingToSchema(data[key], schema.properties![key]),
-      ]),
+      ])
     );
-  } else if (schema.typeOf === 'array') {
+  } else if (schema.typeOf === "array") {
     return data.map((item: any) =>
-      sortDataAccordingToSchema(item, schema.items!),
+      sortDataAccordingToSchema(item, schema.items!)
     );
   }
   // No sorting for primitive types
@@ -139,5 +136,5 @@ export const sortDataAccordingToSchema = (
  */
 export const stringifyDataAccordingToSchema = (
   data: any,
-  schema: FormJSONSchema,
+  schema: FormJSONSchema
 ) => JSON.stringify(sortDataAccordingToSchema(data, schema), null, 2);

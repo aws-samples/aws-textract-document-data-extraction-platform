@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import humanizeDuration from 'humanize-duration';
-import React, { useMemo } from 'react';
-import { StatusTransition } from '../../../../api-old/generated/typescript/lib';
+import { StatusTransition } from "@aws/api-typescript-runtime";
+import humanizeDuration from "humanize-duration";
+import React, { useMemo } from "react";
 
 export interface DurationBetweenProps {
   fromStatuses: string[];
@@ -26,7 +26,7 @@ export const DurationBetween: React.FC<DurationBetweenProps> = ({
     () =>
       statusTransitionLog.find(({ status }) => fromStatusesSet.has(status))
         ?.timestamp,
-    [fromStatusesSet, statusTransitionLog],
+    [fromStatusesSet, statusTransitionLog]
   );
 
   // Find the last occurrence of the "to" status
@@ -35,17 +35,17 @@ export const DurationBetween: React.FC<DurationBetweenProps> = ({
       statusTransitionLog
         .reverse()
         .find(({ status }) => toStatusesSet.has(status))?.timestamp,
-    [toStatusesSet, statusTransitionLog],
+    [toStatusesSet, statusTransitionLog]
   );
 
   return (
     <>
       {fromTimestamp && toTimestamp
         ? humanizeDuration(
-          new Date(toTimestamp).getTime() - new Date(fromTimestamp).getTime(),
-          { largest: 2, round: true },
-        )
-        : 'N/A'}
+            new Date(toTimestamp).getTime() - new Date(fromTimestamp).getTime(),
+            { largest: 2, round: true }
+          )
+        : "N/A"}
     </>
   );
 };
