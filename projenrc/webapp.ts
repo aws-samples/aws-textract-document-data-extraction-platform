@@ -45,6 +45,11 @@ export const webappProject = ({
       dirs: ["src"],
       fileExtensions: [".ts", ".tsx"],
     },
+    tsconfig: {
+      compilerOptions: {
+        skipLibCheck: true,
+      },
+    },
   });
   configureProject(webapp);
   configureTsProject(webapp);

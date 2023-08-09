@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { Popover, StatusIndicator } from "aws-northstar";
-import React from "react";
-import { InProgressStatusIndicator } from "./inProgressStatusIndicator";
-import { ExecutionStatus } from "@aws/api-typescript-runtime";
+import { ExecutionStatus } from '@aws/api-typescript-runtime';
+import { Popover, StatusIndicator } from 'aws-northstar';
+import React from 'react';
+import { InProgressStatusIndicator } from './inProgressStatusIndicator';
 
 export interface IngestionExecutionStatusIndicatorProps {
   readonly status: ExecutionStatus;
@@ -14,12 +14,12 @@ export interface IngestionExecutionStatusIndicatorProps {
  * Display the status of document ingestion
  */
 export const IngestionExecutionStatusIndicator: React.FC<
-  IngestionExecutionStatusIndicatorProps
+IngestionExecutionStatusIndicatorProps
 > = ({ status, statusReason }) => {
   switch (status) {
-    case "IN_PROGRESS":
+    case 'IN_PROGRESS':
       return <InProgressStatusIndicator label="Classifying" />;
-    case "SUCCEEDED":
+    case 'SUCCEEDED':
       return (
         <StatusIndicator statusType="positive">Classified</StatusIndicator>
       );

@@ -112,7 +112,13 @@
       "description": "Run tests",
       "steps": [
         {
+          "exec": "which python"
+        },
+        {
           "exec": "pytest"
+        },
+        {
+          "exec": "poetry run pytest"
         },
         {
           "spawn": "lint"

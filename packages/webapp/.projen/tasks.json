@@ -146,7 +146,7 @@
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade"
+          "exec": "yarn upgrade @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/humanize-duration @types/jest @types/node @types/react-dom @types/react-pdf @types/react-router-dom @types/react @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint npm-check-updates projen react-app-rewired react-scripts typescript @aws-amplify/api @aws-amplify/auth @aws-amplify/ui-react @aws/api-typescript-runtime @material-ui/icons @types/lodash ace-builds aws-amplify aws-northstar aws4fetch graphql humanize-duration lodash react react-ace react-dom react-pdf react-router-dom react-scripts react-zoom-pan-pinch web-vitals"
         },
         {
           "exec": "npx projen"

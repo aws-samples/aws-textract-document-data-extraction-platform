@@ -23,6 +23,6 @@ export class PipelineStack extends Stack {
         commands: ["npx projen && npx nx run @aws/infra:build"],
       },
     });
-    this.pipeline.suppressCDKViolations();
+    // this.pipeline.suppressCDKViolations();
   }
 }

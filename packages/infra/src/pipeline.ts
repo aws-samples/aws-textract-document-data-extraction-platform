@@ -3,6 +3,7 @@
 
 import { PDKNag } from "@aws-prototyping-sdk/pdk-nag";
 import { ApplicationStage } from "./application-stage";
+import { addNagSupressionsToStack } from "./cfn-nag";
 import { PipelineStack } from "./pipeline-stack";
 
 const app = PDKNag.app();
@@ -34,6 +35,7 @@ new ApplicationStage(app, "Sandbox", {
 });
 
 pipelineStack.pipeline.addStage(devStage);
+addNagSupressionsToStack(pipelineStack);
 
 // Add additional stages here i.e. Prod
 

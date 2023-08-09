@@ -34,6 +34,20 @@ export const apiProject = ({
     },
     infrastructure: {
       language: Language.TYPESCRIPT,
+      options: {
+        typescript: {
+          mockDataOptions: {
+            disable: true,
+          },
+          tsconfig: {
+            compilerOptions: {
+              skipLibCheck: true,
+              lib: ["es2019", "dom"],
+            },
+            exclude: ["node_modules"],
+          },
+        } as any,
+      },
     },
     documentation: {
       formats: [DocumentationFormat.HTML2],

@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import { DocumentMetadata, FormMetadata } from '@aws/api-typescript-runtime';
 import {
   Button,
   Column,
@@ -10,26 +11,25 @@ import {
   Link,
   LoadingIndicator,
   Table,
-} from "aws-northstar";
-import { Column as TableColumn } from "aws-northstar/components/Table/types";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+} from 'aws-northstar';
+import { Column as TableColumn } from 'aws-northstar/components/Table/types';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { API } from "../../api/client";
-import { listAllPages } from "../../api/utils";
-import { updateStatus } from "../../utils/status-update-helper";
-import { PdfViewer } from "../pdf/pdf-viewer";
-import { ExtractionExecutionStatusIndicator } from "../status/extractionExecutionStatusIndicator";
-import { DocumentMetadata, FormMetadata } from "@aws/api-typescript-runtime";
+import { API } from '../../api/client';
+import { listAllPages } from '../../api/utils';
+import { updateStatus } from '../../utils/status-update-helper';
+import { PdfViewer } from '../pdf/pdf-viewer';
+import { ExtractionExecutionStatusIndicator } from '../status/extractionExecutionStatusIndicator';
 
 export interface DocumentProps {}
 
 const formColumnDefinitions: TableColumn<any>[] = [
   {
-    id: "formId",
+    id: 'formId',
     width: 220,
-    Header: "Form",
-    accessor: "formId",
+    Header: 'Form',
+    accessor: 'formId',
     Cell: ({ value, row }) => {
       const link = `/view/${row.original.documentId}/${value}`;
       return (
@@ -40,35 +40,35 @@ const formColumnDefinitions: TableColumn<any>[] = [
     },
   },
   {
-    id: "status",
+    id: 'status',
     width: 200,
-    Header: "Status", // backlog/in review/reviewed
-    accessor: "extractionExecution.status",
+    Header: 'Status', // backlog/in review/reviewed
+    accessor: 'extractionExecution.status',
     Cell: ({ value, row }) => (
       <ExtractionExecutionStatusIndicator
         status={value}
         documentId={row.original.documentId}
         formId={row.original.formId}
         updateStatus={(documentId, formId) =>
-          updateStatus(documentId, formId, "REVIEWING")
+          updateStatus(documentId, formId, 'REVIEWING')
         }
         statusReason={row.original.extractionExecution.statusReason}
       />
     ),
   },
   {
-    id: "startPageIndex",
+    id: 'startPageIndex',
     width: 100,
-    Header: "Start Page",
-    accessor: "startPageIndex",
+    Header: 'Start Page',
+    accessor: 'startPageIndex',
     // Page index starts from 0, and page number starts from 1
     Cell: ({ value }) => value + 1,
   },
   {
-    id: "endPageIndex",
+    id: 'endPageIndex',
     width: 100,
-    Header: "End Page",
-    accessor: "endPageIndex",
+    Header: 'End Page',
+    accessor: 'endPageIndex',
     // Page index starts from 0, and page number starts from 1
     Cell: ({ value }) => value + 1,
   },
@@ -90,9 +90,9 @@ export const Document: React.FC<DocumentProps> = () => {
   const fetchForms = useCallback(async () => {
     setIsLoadingForms(true);
     setForms(
-      await listAllPages(API.listDocumentForms.bind(API), "forms", {
+      await listAllPages(API.listDocumentForms.bind(API), 'forms', {
         documentId,
-      })
+      }),
     );
     setIsLoadingForms(false);
   }, [documentId]);
@@ -119,7 +119,7 @@ export const Document: React.FC<DocumentProps> = () => {
       // Page index is 0-based
       setPageNumber(form.startPageIndex + 1);
     },
-    [selectedForm, setPageNumber]
+    [selectedForm, setPageNumber],
   );
 
   return isLoading || !document ? (
@@ -133,8 +133,8 @@ export const Document: React.FC<DocumentProps> = () => {
               <Grid item xs={12}>
                 <Container
                   style={{
-                    marginBottom: "0px",
-                    boxShadow: "none",
+                    marginBottom: '0px',
+                    boxShadow: 'none',
                   }}
                 >
                   <Table
@@ -142,7 +142,7 @@ export const Document: React.FC<DocumentProps> = () => {
                       <Inline>
                         <Button
                           variant="icon"
-                          icon={"refresh"}
+                          icon={'refresh'}
                           onClick={async () => {
                             await fetchForms();
                           }}

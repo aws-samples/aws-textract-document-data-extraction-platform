@@ -50,6 +50,11 @@
       "type": "runtime"
     },
     {
+      "name": "python",
+      "version": "~3.9",
+      "type": "runtime"
+    },
+    {
       "name": "thefuzz",
       "type": "runtime"
     },

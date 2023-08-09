@@ -9,10 +9,6 @@ import { configureTsProject } from "./utils/typescript";
 
 export interface InfraProjectProps {
   readonly monorepo: Project;
-  readonly cdkVersion: string;
-  readonly constructsVersion: string;
-  readonly awsPrototypingSdkVersion: string;
-  readonly cdkDeps: string[];
 }
 
 /**
@@ -20,15 +16,11 @@ export interface InfraProjectProps {
  */
 export const infraProject = ({
   monorepo,
-  cdkVersion,
-  constructsVersion,
-  cdkDeps,
 }: InfraProjectProps): TypeScriptProject => {
   const infra = new PDKPipelineTsProject({
     defaultReleaseBranch: "mainline",
     name: "@aws/infra",
-    cdkVersion,
-    constructsVersion,
+    cdkVersion: "2.0.0",
     cdkVersionPinning: true,
     appEntrypoint: "pipeline.ts",
     parent: monorepo,
@@ -40,16 +32,27 @@ export const infraProject = ({
       "openapi-types",
       "aws-sdk",
       "uuid",
-      "@aws-prototyping-sdk/open-api-gateway",
+      `@aws-prototyping-sdk/type-safe-api`,
     ],
     devDeps: ["@types/uuid", "ts-node@10.6.0", "typescript@4.6.4"],
+    tsconfig: {
+      compilerOptions: {
+        skipLibCheck: true,
+        lib: ["es2019", "dom"],
+      },
+    },
+    tsconfigDev: {
+      compilerOptions: {
+        skipLibCheck: true,
+        lib: ["es2019", "dom"],
+      },
+    },
   });
 
   // Add dependencies that require explicit versions
   infra.package.addDeps(
-    ...cdkDeps,
-    "@aws-prototyping-sdk/pipeline",
-    "esbuild@0"
+    ...[`aws-cdk-lib`, `constructs`],
+    "@aws-prototyping-sdk/pipeline"
   );
 
   // Configure linting etc

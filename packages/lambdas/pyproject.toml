@@ -13,7 +13,7 @@ readme = "README.md"
 dev-dependencies = { }
 
   [tool.poetry.dependencies]
-  python = "^3.7"
+  python = "~3.9"
 
     [tool.poetry.dependencies.aws-api-python-runtime]
     path = "../api/runtime/python"

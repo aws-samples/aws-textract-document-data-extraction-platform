@@ -10,9 +10,9 @@ import { configureProject } from "./projenrc/utils/common";
 import { configureTsProject } from "./projenrc/utils/typescript";
 import { webappProject } from "./projenrc/webapp";
 
-const awsPrototypingSdkVersion = "0.19.47";
-const cdkVersion = "2.45.0";
-const constructsVersion = "10.1.124";
+const awsPrototypingSdkVersion = "0.19.52";
+// const cdkVersion = "2.0.0";
+// const constructsVersion = "10.1.124";
 const monorepo = new NxMonorepoProject({
   defaultReleaseBranch: "main",
   devDeps: ["eslint-plugin-header"],
@@ -33,12 +33,10 @@ monorepo.addDevDeps(
   `@aws-prototyping-sdk/type-safe-api`
 );
 monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
-  // "**/aws-cdk-lib": cdkVersion,
-  // "**/constructs": constructsVersion,
-  // "**/@types/react": "^17",
-  // "**/react": "^17",
-  // "**/react-dom": "^17",
-  // "**/@types/react-dom": "^17",
+  "**/@types/react": "^17",
+  "**/react": "^17",
+  "**/react-dom": "^17",
+  "**/@types/react-dom": "^17",
   // "**/d3-color": "^3.1.0",
   // "**/axios": "^0.21.2",
   // "**/aws-sdk": "^2.814.0",
@@ -68,10 +66,7 @@ monorepo.components.push(
   })(monorepo)
 );
 
-const cdkDeps = [
-  `aws-cdk-lib@${cdkVersion}`,
-  `constructs@${constructsVersion}`,
-];
+// const cdkDeps = [`aws-cdk-lib`, `constructs`];
 
 const api = apiProject({ monorepo });
 const lambdas = lambdasProject({ monorepo, api });
@@ -87,9 +82,6 @@ monorepo.addImplicitDependency(webapp, api.documentation.html2!);
 
 const infra = infraProject({
   monorepo,
-  constructsVersion,
-  cdkVersion,
-  cdkDeps,
   awsPrototypingSdkVersion,
 });
 infra.addDeps(api.infrastructure.typescript!.package.packageName);

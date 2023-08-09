@@ -36,6 +36,7 @@ export const lambdasProject = ({
       "amazon-textract-response-parser",
       "pypdf2",
       "thefuzz",
+      "python@~3.9",
     ],
     devDeps: [
       "mypy",
@@ -60,6 +61,14 @@ export const lambdasProject = ({
 
   // Run type checking as a post compile step
   postCompileTask.exec(`mypy ${MODULE_NAME}`);
+
+  // Add test task
+  const testTask = lambdas.tasks.tryFind("test")!;
+  testTask.reset();
+  // use poetry to run pytest
+  testTask.prependExec(`which python`);
+  testTask.exec("pytest");
+  testTask.exec(`poetry run pytest`);
 
   // Add linting task to run after tests
   const lintTask = lambdas.addTask("lint");
