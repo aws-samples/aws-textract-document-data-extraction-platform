@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
+import path from "path";
 import { NxMonorepoProject } from "@aws-prototyping-sdk/nx-monorepo";
 import { Component } from "projen";
 import { exec } from "projen/lib/util";
@@ -73,4 +74,14 @@ infra.addDeps(api.infrastructure.typescript!.package.packageName);
 infra.addDeps(webapp.package.packageName);
 monorepo.addImplicitDependency(infra, lambdas);
 
+monorepo.setScript(
+  "preinstall",
+  `cd ... ${path.relative(
+    monorepo.outdir,
+    lambdas.outdir
+  )} && poetry env info -p || poetry env use python; cd ${path.relative(
+    monorepo.outdir,
+    api.runtime.python!.outdir
+  )} && poetry env info -p || poetry env use python`
+);
 monorepo.synth();
