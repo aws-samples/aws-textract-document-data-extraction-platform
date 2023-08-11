@@ -13,6 +13,7 @@ import {
   Bucket,
   BucketEncryption,
   CfnBucket,
+  ObjectOwnership,
 } from "aws-cdk-lib/aws-s3";
 import {
   BucketDeployment,
@@ -56,6 +57,7 @@ export class WebsiteStack extends Stack {
         blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
         removalPolicy: RemovalPolicy.DESTROY,
         encryption: BucketEncryption.S3_MANAGED,
+        objectOwnership: ObjectOwnership.OBJECT_WRITER,
       }),
     });
 
