@@ -10,9 +10,6 @@ import { configureProject } from "./projenrc/utils/common";
 import { configureTsProject } from "./projenrc/utils/typescript";
 import { webappProject } from "./projenrc/webapp";
 
-const awsPrototypingSdkVersion = "0.19.52";
-// const cdkVersion = "2.0.0";
-// const constructsVersion = "10.1.124";
 const monorepo = new NxMonorepoProject({
   defaultReleaseBranch: "main",
   devDeps: ["eslint-plugin-header"],
@@ -37,15 +34,6 @@ monorepo.tryFindObjectFile("package.json")?.addOverride("resolutions", {
   "**/react": "^17",
   "**/react-dom": "^17",
   "**/@types/react-dom": "^17",
-  // "**/d3-color": "^3.1.0",
-  // "**/axios": "^0.21.2",
-  // "**/aws-sdk": "^2.814.0",
-  // "**/nth-check": "^2.0.1",
-  // "**/minimatch": "^3.1.0",
-  // "**/loader-utils": "2.0.4",
-  // "**/json5": "^2.2.2",
-  // "**/decode-uri-component": "^0.2.1",
-  // "**/http-cache-semantics": "^4.1.1",
 });
 monorepo.gitignore.addPatterns(".vscode/*");
 monorepo.gitignore.addPatterns(".env/*");
@@ -66,8 +54,6 @@ monorepo.components.push(
   })(monorepo)
 );
 
-// const cdkDeps = [`aws-cdk-lib`, `constructs`];
-
 const api = apiProject({ monorepo });
 const lambdas = lambdasProject({ monorepo, api });
 
@@ -82,15 +68,9 @@ monorepo.addImplicitDependency(webapp, api.documentation.html2!);
 
 const infra = infraProject({
   monorepo,
-  awsPrototypingSdkVersion,
 });
 infra.addDeps(api.infrastructure.typescript!.package.packageName);
 infra.addDeps(webapp.package.packageName);
 monorepo.addImplicitDependency(infra, lambdas);
-
-// monorepo.tasks.tryFind("default")?.reset();
-// monorepo.tasks
-//   .tryFind("default")
-//   ?.exec("npx ts-node --project tsconfig.dev.json .projenrc.ts");
 
 monorepo.synth();

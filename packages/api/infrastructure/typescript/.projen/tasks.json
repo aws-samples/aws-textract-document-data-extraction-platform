@@ -38,10 +38,10 @@
       "name": "generate",
       "steps": [
         {
-          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.52 clean-openapi-generated-code --code-path ."
+          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.62 clean-openapi-generated-code --code-path ."
         },
         {
-          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.52 generate --generator typescript-fetch --spec-path ../../model/.api.json --output-path . --generator-dir typescript-cdk-infrastructure --src-dir src --openapi-normalizer \"KEEP_ONLY_FIRST_TAG_IN_OPERATION=true\" --extra-vendor-extensions '{\"x-runtime-package-name\":\"@aws/api-typescript-runtime\",\"x-relative-spec-path\":\"../assets/api.json\",\"x-enable-mock-integrations\":false}' --generate-alias-as-model"
+          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.62 generate --generator typescript-fetch --spec-path ../../model/.api.json --output-path . --generator-dir typescript-cdk-infrastructure --src-dir src --openapi-normalizer \"KEEP_ONLY_FIRST_TAG_IN_OPERATION=true\" --extra-vendor-extensions '{\"x-runtime-package-name\":\"@aws/api-typescript-runtime\",\"x-relative-spec-path\":\"../assets/api.json\",\"x-enable-mock-integrations\":false}' --generate-alias-as-model"
         },
         {
           "exec": "mkdir -p assets"

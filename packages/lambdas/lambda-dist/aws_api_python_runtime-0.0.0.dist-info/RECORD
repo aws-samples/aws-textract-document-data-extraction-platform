@@ -3,7 +3,7 @@ aws_api_python_runtime-0.0.0.dist-info/METADATA,sha256=AtdY_kJ2yYSSJRfmcOfjBDkYM
 aws_api_python_runtime-0.0.0.dist-info/RECORD,,
 aws_api_python_runtime-0.0.0.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
 aws_api_python_runtime-0.0.0.dist-info/WHEEL,sha256=Zb28QaM1gQi8f4VCBhsUklF61CTlNYfs9YAZn-TOGFk,88
-aws_api_python_runtime-0.0.0.dist-info/direct_url.json,sha256=51GUohRTWQVoeZ7EMpT0f7y9klsZB_DgjScgMqTEiHE,110
+aws_api_python_runtime-0.0.0.dist-info/direct_url.json,sha256=hyqtMXDGslgCg_qsAGl5NGUZA_obXaMEJ9gzk9B7s-g,101
 aws_api_python_runtime/__init__.py,sha256=zh-VscXCLlSfpbW8nV7z8isN3yYmncvgyAOtU8tznRA,761
 aws_api_python_runtime/__pycache__/__init__.cpython-39.pyc,,
 aws_api_python_runtime/__pycache__/api_client.cpython-39.pyc,,
