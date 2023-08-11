@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { Configuration, DefaultApi, Middleware } from '@aws/api-typescript';
+import {
+  Middleware,
+  DefaultApi,
+  Configuration,
+} from '@aws/api-typescript-runtime';
 import { Auth } from 'aws-amplify';
 import { AwsV4Signer } from 'aws4fetch';
 
@@ -12,8 +16,14 @@ const { region, sourceApiUrl } = window.runtimeConfig;
  */
 const sigv4SignMiddleware: Middleware = {
   pre: async ({ init, url }) => {
-    const { accessKeyId, secretAccessKey, sessionToken } = await Auth.currentCredentials();
-    const { url: signedUrl, headers, body, method } = await new AwsV4Signer({
+    const { accessKeyId, secretAccessKey, sessionToken } =
+      await Auth.currentCredentials();
+    const {
+      url: signedUrl,
+      headers,
+      body,
+      method,
+    } = await new AwsV4Signer({
       accessKeyId,
       secretAccessKey,
       sessionToken,
@@ -49,14 +59,15 @@ const addHeadersMiddleware: Middleware = {
   }),
 };
 
-const API = new DefaultApi(new Configuration({
-  // Remove trailing slash if present
-  basePath: sourceApiUrl.endsWith('/') ? sourceApiUrl.slice(0, -1) : sourceApiUrl,
-  fetchApi: window.fetch.bind(window),
-  middleware: [
-    addHeadersMiddleware,
-    sigv4SignMiddleware,
-  ],
-}));
+const API = new DefaultApi(
+  new Configuration({
+    // Remove trailing slash if present
+    basePath: sourceApiUrl.endsWith('/')
+      ? sourceApiUrl.slice(0, -1)
+      : sourceApiUrl,
+    fetchApi: window.fetch.bind(window),
+    middleware: [addHeadersMiddleware, sigv4SignMiddleware],
+  }),
+);
 
 export { API };

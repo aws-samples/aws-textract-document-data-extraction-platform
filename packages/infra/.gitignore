@@ -34,6 +34,7 @@ junit.xml
 /coverage/
 !/.prettierignore
 !/.prettierrc.json
+!/.npmrc
 !/test/
 !/tsconfig.json
 !/tsconfig.dev.json
@@ -47,3 +48,4 @@ junit.xml
 .cdk.staging/
 .parcel-cache/
 !/LICENSE
+!/project.json

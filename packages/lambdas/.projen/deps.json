@@ -21,11 +21,6 @@
       "type": "devenv"
     },
     {
-      "name": "projen",
-      "version": "0.63.34",
-      "type": "devenv"
-    },
-    {
       "name": "pytest",
       "type": "devenv"
     },
@@ -38,6 +33,11 @@
       "type": "runtime"
     },
     {
+      "name": "aws-api-python-runtime",
+      "version": "{path=\"../api/runtime/python\", develop=true}",
+      "type": "runtime"
+    },
+    {
       "name": "boto3",
       "type": "runtime"
     },
@@ -47,6 +47,11 @@
     },
     {
       "name": "pypdf2",
+      "type": "runtime"
+    },
+    {
+      "name": "python",
+      "version": "~3.9",
       "type": "runtime"
     },
     {

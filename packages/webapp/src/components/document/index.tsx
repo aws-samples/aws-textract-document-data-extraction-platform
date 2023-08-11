@@ -1,10 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { DocumentMetadata, FormMetadata } from '@aws/api-typescript';
-import { Button, Column, ColumnLayout, Container, Grid, Inline, Link, LoadingIndicator, Table } from 'aws-northstar';
+import { DocumentMetadata, FormMetadata } from '@aws/api-typescript-runtime';
+import {
+  Button,
+  Column,
+  ColumnLayout,
+  Container,
+  Grid,
+  Inline,
+  Link,
+  LoadingIndicator,
+  Table,
+} from 'aws-northstar';
 import { Column as TableColumn } from 'aws-northstar/components/Table/types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { API } from '../../api/client';
 import { listAllPages } from '../../api/utils';
 import { updateStatus } from '../../utils/status-update-helper';
@@ -21,7 +32,11 @@ const formColumnDefinitions: TableColumn<any>[] = [
     accessor: 'formId',
     Cell: ({ value, row }) => {
       const link = `/view/${row.original.documentId}/${value}`;
-      return <Link href={link} underlineHover={true}>{row.original.documentName} {value}</Link>;
+      return (
+        <Link href={link} underlineHover={true}>
+          {row.original.documentName} {value}
+        </Link>
+      );
     },
   },
   {
@@ -34,7 +49,9 @@ const formColumnDefinitions: TableColumn<any>[] = [
         status={value}
         documentId={row.original.documentId}
         formId={row.original.formId}
-        updateStatus={(documentId, formId) => updateStatus(documentId, formId, 'REVIEWING')}
+        updateStatus={(documentId, formId) =>
+          updateStatus(documentId, formId, 'REVIEWING')
+        }
         statusReason={row.original.extractionExecution.statusReason}
       />
     ),
@@ -68,11 +85,15 @@ export const Document: React.FC<DocumentProps> = () => {
   const selectedForm = useRef<FormMetadata>();
   const [pageNumber, setPageNumber] = useState<number>(1);
 
-  const { documentId } = useParams<{ documentId: string}>();
+  const { documentId } = useParams<{ documentId: string }>();
 
   const fetchForms = useCallback(async () => {
     setIsLoadingForms(true);
-    setForms(await listAllPages(API.listDocumentForms.bind(API), 'forms', { documentId }));
+    setForms(
+      await listAllPages(API.listDocumentForms.bind(API), 'forms', {
+        documentId,
+      }),
+    );
     setIsLoadingForms(false);
   }, [documentId]);
 
@@ -92,19 +113,20 @@ export const Document: React.FC<DocumentProps> = () => {
     })();
   }, []);
 
-  const onSelectForm = useCallback((form: FormMetadata) => {
-    selectedForm.current = form;
-    // Page index is 0-based
-    setPageNumber(form.startPageIndex + 1);
-  }, [selectedForm, setPageNumber]);
+  const onSelectForm = useCallback(
+    (form: FormMetadata) => {
+      selectedForm.current = form;
+      // Page index is 0-based
+      setPageNumber(form.startPageIndex + 1);
+    },
+    [selectedForm, setPageNumber],
+  );
 
   return isLoading || !document ? (
     <LoadingIndicator />
   ) : (
     <>
-      <Container
-        title={`Viewing Document ${document.name}`}
-      >
+      <Container title={`Viewing Document ${document.name}`}>
         <ColumnLayout>
           <Column>
             <Grid container spacing={1}>
@@ -116,7 +138,7 @@ export const Document: React.FC<DocumentProps> = () => {
                   }}
                 >
                   <Table
-                    actionGroup={(
+                    actionGroup={
                       <Inline>
                         <Button
                           variant="icon"
@@ -127,15 +149,17 @@ export const Document: React.FC<DocumentProps> = () => {
                           loading={isLoadingForms}
                         />
                       </Inline>
-                    )}
+                    }
                     onSelectionChange={(event) => {
                       if (event[0]?.formId !== selectedForm.current?.formId) {
                         onSelectForm(event[0]);
                       }
                     }}
                     getRowId={(row) => row.formId}
-                    selectedRowIds={selectedForm.current ? [selectedForm.current.formId] : []}
-                    tableTitle='Classified Forms'
+                    selectedRowIds={
+                      selectedForm.current ? [selectedForm.current.formId] : []
+                    }
+                    tableTitle="Classified Forms"
                     columnDefinitions={formColumnDefinitions}
                     items={forms}
                     loading={isLoadingForms}
@@ -154,7 +178,11 @@ export const Document: React.FC<DocumentProps> = () => {
             </Grid>
           </Column>
           <Column>
-            <PdfViewer url={document.url!} pageNumber={pageNumber} setPageNumber={setPageNumber} />
+            <PdfViewer
+              url={document.url!}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
+            />
           </Column>
         </ColumnLayout>
       </Container>

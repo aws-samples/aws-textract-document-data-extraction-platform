@@ -45,6 +45,11 @@ export const webappProject = ({
       dirs: ["src"],
       fileExtensions: [".ts", ".tsx"],
     },
+    tsconfig: {
+      compilerOptions: {
+        skipLibCheck: true,
+      },
+    },
   });
   configureProject(webapp);
   configureTsProject(webapp);
@@ -83,9 +88,7 @@ export const webappProject = ({
   const copyApiDocs = webapp.addTask("copy:api-docs");
   copyApiDocs.exec("rm -rf public/api-docs");
   copyApiDocs.exec("mkdir -p public/api-docs");
-  copyApiDocs.exec(
-    "cp -r ../api/generated/documentation/html2/* public/api-docs"
-  );
+  copyApiDocs.exec("cp -r ../api/documentation/html2/* public/api-docs");
   webapp.tasks.tryFind("pre-compile")?.spawn(copyApiDocs);
 
   webapp.package.addField("config-overrides-path", "./config-overrides.js");

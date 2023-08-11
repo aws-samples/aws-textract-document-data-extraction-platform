@@ -337,7 +337,7 @@ This will activate the python virtual environment that contains python 3.9 that'
 To build all packages in this repository
 
 ```bash
-yarn build
+yarn && yarn nx run-many --target=build --all --skip-nx-cache
 ```
 
 For subsequent builds, `yarn` need not be run. `npx projen` need only be run when the `.projenrc.ts` file (or files in the `projenrc` folder) is changed.

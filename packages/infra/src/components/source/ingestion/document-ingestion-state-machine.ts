@@ -15,6 +15,7 @@ import {
   StepFunctionsStartExecution,
 } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import { Construct } from "constructs";
+import { FormDataExtractionStateMachine } from "./form-data-extraction-state-machine";
 import { Table } from "../../common/dynamodb/table";
 import {
   PythonLambda,
@@ -22,7 +23,6 @@ import {
 } from "../../common/lambda/python-lambda";
 import { grantPublishMetrics } from "../../common/metrics/permissions";
 import { TextractStateMachine } from "../textract/textract-state-machine";
-import { FormDataExtractionStateMachine } from "./form-data-extraction-state-machine";
 
 export interface DocumentIngestionStateMachineProps {
   readonly sourceBucket: Bucket;

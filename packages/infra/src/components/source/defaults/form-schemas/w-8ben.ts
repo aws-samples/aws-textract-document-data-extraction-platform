@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { FormSchemaInput } from "@aws/api/generated/typescript";
+
+import { FormSchemaInput } from "@aws/api-typescript-runtime";
 
 /**
  * Default form schema for an W-8BEN FORM

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { pipeline } from "aws-prototyping-sdk";
+import { PDKPipelineTsProject } from "@aws-prototyping-sdk/pipeline";
 import { Project } from "projen";
 import { ApprovalLevel } from "projen/lib/awscdk";
 import { TypeScriptProject } from "projen/lib/typescript";
@@ -9,10 +9,6 @@ import { configureTsProject } from "./utils/typescript";
 
 export interface InfraProjectProps {
   readonly monorepo: Project;
-  readonly cdkVersion: string;
-  readonly constructsVersion: string;
-  readonly awsPrototypingSdkVersion: string;
-  readonly cdkDeps: string[];
 }
 
 /**
@@ -20,16 +16,11 @@ export interface InfraProjectProps {
  */
 export const infraProject = ({
   monorepo,
-  cdkVersion,
-  constructsVersion,
-  cdkDeps,
-  awsPrototypingSdkVersion,
 }: InfraProjectProps): TypeScriptProject => {
-  const infra = new pipeline.PDKPipelineTsProject({
+  const infra = new PDKPipelineTsProject({
     defaultReleaseBranch: "mainline",
     name: "@aws/infra",
-    cdkVersion,
-    constructsVersion,
+    cdkVersion: "2.0.0",
     cdkVersionPinning: true,
     appEntrypoint: "pipeline.ts",
     parent: monorepo,
@@ -41,17 +32,27 @@ export const infraProject = ({
       "openapi-types",
       "aws-sdk",
       "uuid",
-      "@aws-prototyping-sdk/open-api-gateway",
-      "@aws/api-typescript",
+      `@aws-prototyping-sdk/type-safe-api`,
     ],
     devDeps: ["@types/uuid", "ts-node@10.6.0", "typescript@4.6.4"],
+    tsconfig: {
+      compilerOptions: {
+        skipLibCheck: true,
+        lib: ["es2019", "dom"],
+      },
+    },
+    tsconfigDev: {
+      compilerOptions: {
+        skipLibCheck: true,
+        lib: ["es2019", "dom"],
+      },
+    },
   });
 
   // Add dependencies that require explicit versions
   infra.package.addDeps(
-    ...cdkDeps,
-    `aws-prototyping-sdk@${awsPrototypingSdkVersion}`,
-    "esbuild@0"
+    ...[`aws-cdk-lib`, `constructs`],
+    "@aws-prototyping-sdk/pipeline"
   );
 
   // Configure linting etc

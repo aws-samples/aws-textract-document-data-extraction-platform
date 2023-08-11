@@ -2,25 +2,11 @@
   "tasks": {
     "build": {
       "name": "build",
-      "description": "Full release build",
+      "description": "Full release build for all affected projects",
       "steps": [
         {
-          "spawn": "default"
-        },
-        {
-          "spawn": "pre-compile"
-        },
-        {
-          "spawn": "compile"
-        },
-        {
-          "spawn": "post-compile"
-        },
-        {
-          "spawn": "test"
-        },
-        {
-          "spawn": "package"
+          "exec": "yarn nx run-many --target=build --output-style=stream --nx-bail",
+          "receiveArgs": true
         }
       ]
     },
@@ -58,14 +44,20 @@
     },
     "compile": {
       "name": "compile",
-      "description": "Only compile"
+      "description": "Only compile for all affected projects",
+      "steps": [
+        {
+          "exec": "yarn nx run-many --target=compile --output-style=stream --nx-bail",
+          "receiveArgs": true
+        }
+      ]
     },
     "default": {
       "name": "default",
       "description": "Synthesize project files",
       "steps": [
         {
-          "exec": "npx ts-node --project tsconfig.dev.json .projenrc.ts"
+          "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
         }
       ]
     },
@@ -83,40 +75,103 @@
     },
     "eslint": {
       "name": "eslint",
-      "description": "Runs eslint against the codebase",
+      "description": "Runs eslint against the codebase for all affected projects",
       "steps": [
         {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern projenrc .projenrc.ts"
+          "exec": "yarn nx run-many --target=eslint --output-style=stream --nx-bail",
+          "receiveArgs": true
+        }
+      ]
+    },
+    "graph": {
+      "name": "graph",
+      "description": "Generate dependency graph for monorepo",
+      "steps": [
+        {
+          "exec": "yarn nx graph",
+          "receiveArgs": true
         }
       ]
     },
     "install": {
       "name": "install",
+      "description": "Install project dependencies and update lockfile (non-frozen)",
       "steps": [
         {
-          "exec": "npx nx run-many --target install-py --projects api_python_client,aws-lambdas --parallel=1"
+          "exec": "yarn install --check-files"
+        }
+      ]
+    },
+    "install:ci": {
+      "name": "install:ci",
+      "description": "Install project dependencies using frozen lockfile",
+      "steps": [
+        {
+          "exec": "yarn install --check-files --frozen-lockfile"
         }
       ]
     },
     "package": {
       "name": "package",
-      "description": "Creates the distribution package"
+      "description": "Creates the distribution package for all affected projects",
+      "steps": [
+        {
+          "exec": "yarn nx run-many --target=package --output-style=stream --nx-bail",
+          "receiveArgs": true
+        }
+      ]
     },
     "post-compile": {
       "name": "post-compile",
-      "description": "Runs after successful compilation"
+      "description": "Runs after successful compilation for all affected projects",
+      "steps": [
+        {
+          "exec": "yarn nx run-many --target=post-compile --output-style=stream --nx-bail",
+          "receiveArgs": true
+        }
+      ]
     },
     "post-upgrade": {
       "name": "post-upgrade",
       "description": "Runs after upgrading dependencies"
     },
+    "postinstall": {
+      "name": "postinstall",
+      "steps": [
+        {
+          "exec": "yarn nx run-many --target=install --output-style=stream --parallel=1 --nx-bail --projects=aws-api-python-runtime,aws-lambdas"
+        }
+      ]
+    },
     "pre-compile": {
       "name": "pre-compile",
-      "description": "Prepare the project for compilation"
+      "description": "Prepare the project for compilation for all affected projects",
+      "steps": [
+        {
+          "exec": "yarn nx run-many --target=pre-compile --output-style=stream --nx-bail",
+          "receiveArgs": true
+        }
+      ]
+    },
+    "run-many": {
+      "name": "run-many",
+      "description": "Run task against multiple workspace projects",
+      "steps": [
+        {
+          "exec": "yarn nx run-many",
+          "receiveArgs": true
+        }
+      ]
     },
     "test": {
       "name": "test",
-      "description": "Run tests"
+      "description": "Run tests for all affected projects",
+      "steps": [
+        {
+          "exec": "yarn nx run-many --target=test --output-style=stream --nx-bail",
+          "receiveArgs": true
+        }
+      ]
     },
     "upgrade": {
       "name": "upgrade",
@@ -129,25 +184,25 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@aws-prototyping-sdk/open-api-gateway,aws-prototyping-sdk'"
+          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='nx'"
         },
         {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@aws-prototyping-sdk/open-api-gateway,aws-prototyping-sdk'"
+          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='nx'"
         },
         {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@aws-prototyping-sdk/open-api-gateway,aws-prototyping-sdk'"
+          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='nx'"
         },
         {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@aws-prototyping-sdk/open-api-gateway,aws-prototyping-sdk'"
+          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='nx'"
         },
         {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@aws-prototyping-sdk/open-api-gateway,aws-prototyping-sdk'"
+          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='nx'"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade"
+          "exec": "yarn upgrade @aws-prototyping-sdk/nx-monorepo @aws-prototyping-sdk/open-api-gateway @aws-prototyping-sdk/pipeline @aws-prototyping-sdk/type-safe-api @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-config-prettier eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-header eslint-plugin-import eslint-plugin-prettier eslint npm-check-updates nx prettier projen syncpack ts-node typescript nx aws-cdk-lib cdk-nag constructs"
         },
         {
           "exec": "npx projen"
@@ -161,31 +216,32 @@
       "name": "upgrade-deps",
       "steps": [
         {
-          "exec": "npx npm-check-updates --deep --rejectVersion 0.0.0 -u"
+          "exec": "yarn npm-check-updates --deep --rejectVersion 0.0.0 -u --dep prod,dev,peer,optional,bundle --target=minor"
         },
         {
-          "exec": "npx syncpack fix-mismatches"
+          "exec": "yarn syncpack fix-mismatches"
         },
         {
           "exec": "yarn install"
         },
         {
-          "exec": "npx projen"
+          "exec": "yarn projen"
         }
       ]
     },
     "watch": {
       "name": "watch",
-      "description": "Watch & compile in the background",
+      "description": "Watch & compile in the background for all affected projects",
       "steps": [
         {
-          "exec": "tsc --build -w"
+          "exec": "yarn nx run-many --target=watch --output-style=stream --skip-nx-cache --nx-ignore-cycles --nx-bail",
+          "receiveArgs": true
         }
       ]
     }
   },
   "env": {
-    "PATH": "$(npx -c \"node -e \\\"console.log(process.env.PATH)\\\"\")"
+    "PATH": "$(npx -c \"node --print process.env.PATH\")"
   },
-  "//": "~~ Generated by projen. To modify, edit .projenrc.js and run \"npx projen\"."
+  "//": "~~ Generated by projen. To modify, edit .projenrc.ts and run \"npx projen\"."
 }
