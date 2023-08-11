@@ -33,10 +33,10 @@
       "name": "generate",
       "steps": [
         {
-          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.52 clean-openapi-generated-code --code-path ."
+          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.62 clean-openapi-generated-code --code-path ."
         },
         {
-          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.52 generate --generator python --spec-path ../../model/.api.json --output-path . --generator-dir python --src-dir aws_api_python_runtime --additional-properties \"packageName=aws_api_python_runtime,projectName=aws-api-python-runtime\" --openapi-normalizer \"KEEP_ONLY_FIRST_TAG_IN_OPERATION=true\" --generate-alias-as-model"
+          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.62 generate --generator python --spec-path ../../model/.api.json --output-path . --generator-dir python --src-dir aws_api_python_runtime --additional-properties \"packageName=aws_api_python_runtime,projectName=aws-api-python-runtime\" --openapi-normalizer \"KEEP_ONLY_FIRST_TAG_IN_OPERATION=true\" --generate-alias-as-model"
         }
       ]
     },

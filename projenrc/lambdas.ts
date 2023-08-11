@@ -61,7 +61,9 @@ export const lambdasProject = ({
 
   // Run type checking as a post compile step
   postCompileTask.exec(`mypy ${MODULE_NAME}`);
-
+  lambdas.tasks
+    .tryFind("install")!
+    .prependExec("poetry env info -p || poetry env use python");
   // Add test task
   const testTask = lambdas.tasks.tryFind("test")!;
   testTask.reset();

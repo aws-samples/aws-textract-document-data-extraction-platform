@@ -38,7 +38,7 @@
       "name": "generate",
       "steps": [
         {
-          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.52 parse-openapi-spec --spec-path src/main/openapi/main.yaml --output-path .api.json"
+          "exec": "npx --yes -p @aws-prototyping-sdk/type-safe-api@0.19.62 parse-openapi-spec --spec-path src/main/openapi/main.yaml --output-path .api.json"
         }
       ]
     },

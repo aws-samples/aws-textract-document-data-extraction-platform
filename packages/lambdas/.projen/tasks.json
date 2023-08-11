@@ -34,6 +34,9 @@
       "description": "Install and upgrade dependencies",
       "steps": [
         {
+          "exec": "poetry env info -p || poetry env use python"
+        },
+        {
           "exec": "poetry update"
         }
       ]

@@ -308,6 +308,7 @@ defined using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/)
 - [CDK version 2](https://github.com/aws/aws-cdk#getting-started)
 - [`git-remote-codecommit`](https://github.com/aws/git-remote-codecommit#step-3-install-git-remote-codecommit)
 - Java 11 (used by OpenAPI generator), (eg [Amazon Correto 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/what-is-corretto-11.html))
+- poetry `pip install poetry`
 
 ### Getting Started
 
@@ -323,13 +324,7 @@ This will install all dependencies for packages except for the generated package
 Error: Invalid projects: api_python_client, just continue with npx projen to create the .env necessary. Installation of api_python_client will be a few steps later.
 
 ```bash
-npx projen
-```
-
-Once a .env directory is created in the root of the project, run the following command:
-
-```bash
-source .env/bin/activate
+yarn projen
 ```
 
 This will activate the python virtual environment that contains python 3.9 that's required for this repository.
@@ -337,7 +332,7 @@ This will activate the python virtual environment that contains python 3.9 that'
 To build all packages in this repository
 
 ```bash
-yarn && yarn nx run-many --target=build --all --skip-nx-cache
+ yarn build
 ```
 
 For subsequent builds, `yarn` need not be run. `npx projen` need only be run when the `.projenrc.ts` file (or files in the `projenrc` folder) is changed.

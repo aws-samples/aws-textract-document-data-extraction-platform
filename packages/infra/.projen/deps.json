@@ -92,15 +92,15 @@
       "type": "build"
     },
     {
-      "name": "@aws-prototyping-sdk/open-api-gateway",
-      "type": "runtime"
-    },
-    {
       "name": "@aws-prototyping-sdk/pdk-nag",
       "type": "runtime"
     },
     {
       "name": "@aws-prototyping-sdk/pipeline",
+      "type": "runtime"
+    },
+    {
+      "name": "@aws-prototyping-sdk/type-safe-api",
       "type": "runtime"
     },
     {
