@@ -540,7 +540,7 @@ exports[`Snapshot 1`] = `
                   "Version": "1",
                 },
                 "Configuration": {
-                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"cfd88dc74b092cc9bd6345fb09abb6143cdbbec4b5c2bd1f19acf6ad658d4606"}]",
+                  "EnvironmentVariables": "[{"name":"_PROJECT_CONFIG_HASH","type":"PLAINTEXT","value":"6fcf03726234796dead9558d9c0f7f67dd38707c1a9e2bb68b73472fa3d97c5d"}]",
                   "ProjectName": {
                     "Ref": "ApplicationPipelineCodePipelineBuildSynthCdkBuildProjectEE7ED66A",
                   },
@@ -641,7 +641,7 @@ exports[`Snapshot 1`] = `
     "install": {
       "commands": [
         "npm install -g aws-cdk",
-        "yarn install --frozen-lockfile || npx projen && yarn install --frozen-lockfile"
+        "npx projen install"
       ]
     },
     "build": {
