@@ -76,10 +76,10 @@ monorepo.addImplicitDependency(infra, lambdas);
 
 monorepo.setScript(
   "preinstall",
-  `cd ... ${path.relative(
+  `pwd && cd ${path.relative(
     monorepo.outdir,
     lambdas.outdir
-  )} && poetry env info -p || poetry env use python; cd ${path.relative(
+  )} && poetry env info -p || poetry env use python; pwd && cd ../../${path.relative(
     monorepo.outdir,
     api.runtime.python!.outdir
   )} && poetry env info -p || poetry env use python`

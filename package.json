@@ -19,7 +19,7 @@
     "upgrade-deps": "npx projen upgrade-deps",
     "watch": "npx projen watch",
     "synth-workspace": "yarn projen",
-    "preinstall": "cd ... packages/lambdas && poetry env info -p || poetry env use python; cd packages/api/runtime/python && poetry env info -p || poetry env use python"
+    "preinstall": "pwd && cd packages/lambdas && poetry env info -p || poetry env use python; pwd && cd ../../packages/api/runtime/python && poetry env info -p || poetry env use python"
   },
   "devDependencies": {
     "@aws-prototyping-sdk/nx-monorepo": "0.19.52",
