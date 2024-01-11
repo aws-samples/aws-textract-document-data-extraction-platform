@@ -95,6 +95,10 @@ new InfrastructureTsProject({
   name: "@aws/document-extraction-platform-infra",
   cloudscapeReactTsWebsite: website,
   typeSafeApi: api,
+  deps: [
+    api.runtime.typescript!.package.packageName,
+    "cdk-nag",
+  ],
 });
 
 monorepo.synth();

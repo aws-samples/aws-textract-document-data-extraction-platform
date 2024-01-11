@@ -44,8 +44,10 @@
   },
   "dependencies": {
     "@aws/document-extraction-platform-api-typescript-infra": "0.0.0",
+    "@aws/document-extraction-platform-api-typescript-runtime": "^0.0.0",
     "@aws/pdk": "^0.22.49",
     "aws-cdk-lib": "^2.1.0",
+    "cdk-nag": "^2.28.6",
     "constructs": "^10.0.5"
   },
   "license": "Apache-2.0",

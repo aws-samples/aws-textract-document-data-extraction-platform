@@ -1,17 +1,29 @@
-import { UserIdentity } from "@aws/pdk/identity";
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { ApiConstruct } from "../constructs/api";
-import { WebsiteConstruct } from "../constructs/website";
+import { addNagSupressionsToStack } from "../cfn-nag";
+import { AuthStack } from "../components/auth/auth-stack";
+import { PermissionsStack } from "../components/auth/permissions-stack";
+import { SourceStack } from "../components/source/stack";
+import { WebsiteStack } from "../components/website";
 
 export class ApplicationStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const userIdentity = new UserIdentity(this, `${id}UserIdentity`);
-    const apiConstruct = new ApiConstruct(this, "Api", {
-      userIdentity,
+    const authStack = new AuthStack(this, "AuthStack", {});
+    const sourceStack = new SourceStack(this, "SourceStack", {
+      userPool: authStack.userPool,
     });
-    new WebsiteConstruct(this, "Website", { userIdentity, apiConstruct });
+    new WebsiteStack(this, "WebsiteStack", {
+      authStack,
+      sourceStack,
+    });
+    new PermissionsStack(this, "PermissionsStack", {
+      userPool: authStack.userPool,
+      identityPool: authStack.identityPool,
+      sourceApi: sourceStack.sourceApi,
+    });
+
+    addNagSupressionsToStack(this);
   }
 }

@@ -164,12 +164,18 @@ importers:
       '@aws/document-extraction-platform-api-typescript-infra':
         specifier: 0.0.0
         version: link:../api/generated/infrastructure/typescript
+      '@aws/document-extraction-platform-api-typescript-runtime':
+        specifier: ^0.0.0
+        version: link:../api/generated/runtime/typescript
       '@aws/pdk':
         specifier: ^0.22.49
         version: 0.22.49(@aws-cdk/aws-cognito-identitypool-alpha@2.104.0-alpha.0)(@pnpm/logger@5.0.0)(@types/node@18.19.6)(aws-cdk-lib@2.118.0)(cdk-nag@2.28.6)(constructs@10.3.0)(projen@0.79.0)(typescript@5.3.3)
       aws-cdk-lib:
         specifier: ^2.1.0
         version: 2.118.0(constructs@10.3.0)
+      cdk-nag:
+        specifier: ^2.28.6
+        version: 2.28.6(aws-cdk-lib@2.118.0)(constructs@10.3.0)
       constructs:
         specifier: ^10.0.5
         version: 10.3.0
@@ -5043,6 +5049,7 @@ packages:
 
   /@swagger-api/apidom-ns-json-schema-draft-4@0.91.0:
     resolution: {integrity: sha512-oVxUVucnPSjcmUaYkTHAaqCGLbkgFEDWePGs+sqJj7WxhfJxLS+A8oFkvtXfTmfBel2ESQ7AFlReb/zhCpUfOg==}
+    requiresBuild: true
     dependencies:
       '@babel/runtime-corejs3': 7.23.8
       '@swagger-api/apidom-ast': 0.91.0

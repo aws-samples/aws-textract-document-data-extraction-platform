@@ -1,7 +1,8 @@
 import { CdkGraph, FilterPreset, Filters } from "@aws/pdk/cdk-graph";
 import { CdkGraphDiagramPlugin } from "@aws/pdk/cdk-graph-plugin-diagram";
 import { CdkGraphThreatComposerPlugin } from "@aws/pdk/cdk-graph-plugin-threat-composer";
-import { AwsPrototypingChecks, PDKNag } from "@aws/pdk/pdk-nag";
+import { PDKNag } from "@aws/pdk/pdk-nag";
+import { AwsSolutionsChecks } from "cdk-nag";
 import { ApplicationStack } from "./stacks/application-stack";
 
 // for development, use account/region from cdk cli
@@ -13,10 +14,12 @@ const devEnv = {
 /* eslint-disable @typescript-eslint/no-floating-promises */
 (async () => {
   const app = PDKNag.app({
-    nagPacks: [new AwsPrototypingChecks()],
+    nagPacks: [new AwsSolutionsChecks()],
   });
 
-  new ApplicationStack(app, "infra-dev", { env: devEnv });
+  new ApplicationStack(app, "document-data-extraction-platform", {
+    env: devEnv,
+  });
 
   const graph = new CdkGraph(app, {
     plugins: [

@@ -89,12 +89,20 @@
       "type": "runtime"
     },
     {
+      "name": "@aws/document-extraction-platform-api-typescript-runtime",
+      "type": "runtime"
+    },
+    {
       "name": "@aws/pdk",
       "type": "runtime"
     },
     {
       "name": "aws-cdk-lib",
       "version": "^2.1.0",
+      "type": "runtime"
+    },
+    {
+      "name": "cdk-nag",
       "type": "runtime"
     },
     {
