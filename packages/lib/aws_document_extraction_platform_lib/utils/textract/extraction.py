@@ -8,7 +8,7 @@ import statistics
 import dateutil
 from typing import Dict, List, Any, Optional, TypedDict
 
-from aws_document_extraction_platform_api_python_runtime.model.form_json_schema import FormJSONSchema
+from aws_document_extraction_platform_api_python_runtime.models.form_json_schema import FormJSONSchema
 from trp import Document, Field, Cell, Table, BaseBlock
 from trp.trp2 import TDocument, TDocumentSchema, TBlock
 from trp.t_pipeline import order_blocks_by_geo

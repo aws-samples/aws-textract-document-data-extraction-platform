@@ -70,6 +70,18 @@ const pythonLibrary = new PythonProject({
 monorepo.addPythonPoetryDependency(pythonLibrary, api.runtime.python!);
 monorepo.addPythonPoetryDependency(api.handlers.python!, pythonLibrary);
 
+// Create a lambda distributable for the state machine handlers included in the python library
+pythonLibrary.packageTask.exec("mkdir -p dist/lambda && rm -rf dist/lambda/*");
+pythonLibrary.packageTask.exec(
+  `cp -r ${pythonLibrary.moduleName} dist/lambda/${pythonLibrary.moduleName}`
+);
+pythonLibrary.packageTask.exec(
+  "poetry export --without-hashes --format=requirements.txt > dist/lambda/requirements.txt"
+);
+pythonLibrary.packageTask.exec(
+  `pip install -r dist/lambda/requirements.txt --target dist/lambda --upgrade --platform manylinux2014_x86_64 --only-binary :all:`
+);
+
 const website = new CloudscapeReactTsWebsiteProject({
   parent: monorepo,
   outdir: "packages/website",

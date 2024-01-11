@@ -5,11 +5,11 @@
 from aws_document_extraction_platform_api_python_runtime.api_client import JSONEncoder
 from typing import TypedDict, Dict
 
-from aws_document_extraction_platform_api_python_runtime.model.extraction_execution_status import (
+from aws_document_extraction_platform_api_python_runtime.models.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
-from aws_document_extraction_platform_api_python_runtime.model.status_transition import StatusTransition
-from aws_document_extraction_platform_api_python_runtime.model.form_metadata import FormMetadata
+from aws_document_extraction_platform_api_python_runtime.models.status_transition import StatusTransition
+from aws_document_extraction_platform_api_python_runtime.models.form_metadata import FormMetadata
 
 from aws_document_extraction_platform_lib.utils.sfn.errors import SfnErrorDetails, get_sfn_error_message
 from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore

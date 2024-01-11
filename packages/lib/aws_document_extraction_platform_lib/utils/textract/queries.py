@@ -4,8 +4,7 @@
 #
 from typing import TypedDict, List
 
-from aws_document_extraction_platform_api_python_runtime.model.form_json_schema import FormJSONSchema
-
+from aws_document_extraction_platform_api_python_runtime.models.form_json_schema import FormJSONSchema
 from aws_document_extraction_platform_lib.utils.textract.extraction import ordered_object_schema_property_keys
 
 

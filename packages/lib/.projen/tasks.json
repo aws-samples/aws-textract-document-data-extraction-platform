@@ -44,6 +44,18 @@
       "steps": [
         {
           "exec": "poetry build"
+        },
+        {
+          "exec": "mkdir -p dist/lambda && rm -rf dist/lambda/*"
+        },
+        {
+          "exec": "cp -r aws_document_extraction_platform_lib dist/lambda/aws_document_extraction_platform_lib"
+        },
+        {
+          "exec": "poetry export --without-hashes --format=requirements.txt > dist/lambda/requirements.txt"
+        },
+        {
+          "exec": "pip install -r dist/lambda/requirements.txt --target dist/lambda --upgrade --platform manylinux2014_x86_64 --only-binary :all:"
         }
       ]
     },

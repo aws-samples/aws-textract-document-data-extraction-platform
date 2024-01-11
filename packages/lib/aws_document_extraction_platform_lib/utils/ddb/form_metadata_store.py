@@ -13,7 +13,7 @@ from aws_document_extraction_platform_lib.utils.ddb.store import (
     PaginatedItemsResponse,
     fetch_page_with_query_for_key_equals,
 )
-from aws_document_extraction_platform_api_python_runtime.model.form_metadata import FormMetadata
+from aws_document_extraction_platform_api_python_runtime.models.form_metadata import FormMetadata
 
 
 class FormMetadataStore(Store):

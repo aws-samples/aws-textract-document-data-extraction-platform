@@ -12,7 +12,7 @@ from aws_document_extraction_platform_lib.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from aws_document_extraction_platform_api_python_runtime.model.form_schema import FormSchema
+from aws_document_extraction_platform_api_python_runtime.models.form_schema import FormSchema
 
 
 class FormSchemaStore(Store):

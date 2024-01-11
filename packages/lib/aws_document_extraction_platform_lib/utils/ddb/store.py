@@ -8,14 +8,12 @@ import decimal
 import json
 from typing import Optional, Dict, Mapping, Any, Generic, TypeVar, TypedDict, List
 from aws_document_extraction_platform_lib.utils.base64 import base64_decode, base64_encode
-from aws_document_extraction_platform_api_python_runtime.api_client import JSONEncoder
-
-from aws_document_extraction_platform_api_python_runtime.schemas import DictSchema
 
 from aws_document_extraction_platform_lib.utils.time import utc_now
-from aws_document_extraction_platform_api_python_runtime.configuration import Configuration
 
-Document = TypeVar("Document", bound=DictSchema)
+from pydantic import BaseModel
+
+Document = TypeVar("Document", bound=BaseModel)
 T = TypeVar("T")
 
 
@@ -203,8 +201,6 @@ def _sanitise_ddb_document_response(item):
     elif isinstance(item, dict):
         for k in item.keys():
             item[k] = _sanitise_ddb_document_response(item[k])
-            # setattr(item, k, _sanitise_ddb_document_response(item[k]))
-            # item.update({ k: _sanitise_ddb_document_response(item[k]) })
         return item
     elif isinstance(item, decimal.Decimal):
         if item % 1 == 0:
@@ -253,14 +249,10 @@ class Store(Generic[Document]):
         return self.table.get_item(Key=key, ConsistentRead=True).get("Item")
 
     def _deserialize(self, document_dict: Dict):
-        return self.model(
-            **_sanitise_ddb_document_response(document_dict),
-            # _spec_property_naming=True,
-            _configuration=Configuration()
-        )
+        return self.model.from_dict(_sanitise_ddb_document_response(document_dict))
 
     def _serialize(self, document: Document) -> Dict:
-        return _sanitise_dict_for_ddb(JSONEncoder().default(document))
+        return _sanitise_dict_for_ddb(document.to_dict())
 
     def get(self, key: Dict) -> Optional[Document]:
         item = self._get(key)
