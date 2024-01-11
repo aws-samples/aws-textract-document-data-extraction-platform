@@ -1,5 +1,7 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import FormSchemaStore
+from aws_document_extraction_platform_lib.utils.misc import copy_defined_keys
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -13,11 +15,28 @@ def create_form_schema(input: CreateFormSchemaRequest, **kwargs) -> CreateFormSc
     """
     LoggingInterceptor.get_logger(input).info("Start CreateFormSchema Operation")
 
-    # TODO: Implement CreateFormSchema Operation. `input` contains the request input
+    # Lowercase form title is used as the schema id. This allows for a fast lookup for potential matching schemas during
+    # the form classification phase
+    caller = input.interceptor_context["AuthenticatedUser"]
+    schema_id = input.body.title.lower()
 
-    return Response.internal_failure(InternalFailureErrorResponseContent(
-        message="Not Implemented!"
-    ))
+    store = FormSchemaStore()
+    existing_schema = store.get_form_schema(schema_id)
+    if existing_schema is not None:
+        return Response.bad_request(
+            ApiError(message="Schema already exists with id {}".format(schema_id))
+        )
+
+    schema = FormSchemaStore().put_form_schema(
+        caller.username,
+        FormSchema(
+            schemaId=schema_id,
+            schema=input.body.var_schema,
+            **copy_defined_keys(input.body, ["description", "title"]),
+        ),
+    )
+
+    return Response.success(schema)
 
 
 # Entry point for the AWS Lambda handler for the CreateFormSchema operation.

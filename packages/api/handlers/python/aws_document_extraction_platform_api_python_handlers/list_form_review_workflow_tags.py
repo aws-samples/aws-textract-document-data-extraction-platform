@@ -1,5 +1,7 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.ddb.form_review_workflow_tag_store import FormReviewWorkflowTagStore
+from aws_document_extraction_platform_lib.utils.ddb.store import to_paginated_response_args, to_pagination_parameters
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -13,11 +15,17 @@ def list_form_review_workflow_tags(input: ListFormReviewWorkflowTagsRequest, **k
     """
     LoggingInterceptor.get_logger(input).info("Start ListFormReviewWorkflowTags Operation")
 
-    # TODO: Implement ListFormReviewWorkflowTags Operation. `input` contains the request input
+    response = FormReviewWorkflowTagStore().list_all(
+        to_pagination_parameters(input.request_parameters)
+    )
+    if response.error is not None:
+        return Response.bad_request(ApiError(message=response.error))
 
-    return Response.internal_failure(InternalFailureErrorResponseContent(
-        message="Not Implemented!"
-    ))
+    return Response.success(
+        ListFormReviewWorkflowTagsResponse(
+            tags=response.items, **to_paginated_response_args(response)
+        )
+    )
 
 
 # Entry point for the AWS Lambda handler for the ListFormReviewWorkflowTags operation.

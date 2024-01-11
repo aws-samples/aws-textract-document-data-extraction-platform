@@ -38,6 +38,9 @@ const api = new TypeSafeApiProject({
   },
 });
 
+api.handlers.python!.addDependency("boto3@^1");
+api.handlers.python!.addDependency("botocore@^1");
+
 const pythonLibrary = new PythonProject({
   parent: monorepo,
   poetry: true,

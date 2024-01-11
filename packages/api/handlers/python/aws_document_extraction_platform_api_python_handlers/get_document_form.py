@@ -1,5 +1,7 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
+from aws_document_extraction_platform_lib.utils.s3.location import get_presigned_get_url_for_pdf
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -13,11 +15,22 @@ def get_document_form(input: GetDocumentFormRequest, **kwargs) -> GetDocumentFor
     """
     LoggingInterceptor.get_logger(input).info("Start GetDocumentForm Operation")
 
-    # TODO: Implement GetDocumentForm Operation. `input` contains the request input
+    document_id = input.request_parameters.document_id
+    form_id = input.request_parameters.form_id
+    form = FormMetadataStore().get_form_metadata(document_id, form_id)
+    if form is None:
+        return Response.not_found(
+            ApiError(
+                message="No form found with id {} in document {}".format(
+                    form_id, document_id
+                )
+            )
+        )
 
-    return Response.internal_failure(InternalFailureErrorResponseContent(
-        message="Not Implemented!"
-    ))
+    # Add a presigned GET url
+    form.url = get_presigned_get_url_for_pdf(form.location)
+
+    return Response.success(form)
 
 
 # Entry point for the AWS Lambda handler for the GetDocumentForm operation.

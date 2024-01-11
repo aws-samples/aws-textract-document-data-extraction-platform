@@ -1,5 +1,6 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -13,11 +14,34 @@ def update_form_review(input: UpdateFormReviewRequest, **kwargs) -> UpdateFormRe
     """
     LoggingInterceptor.get_logger(input).info("Start UpdateFormReview Operation")
 
-    # TODO: Implement UpdateFormReview Operation. `input` contains the request input
+    caller = input.interceptor_context["AuthenticatedUser"]
+    document_id = input.request_parameters.document_id
+    form_id = input.request_parameters.form_id
 
-    return Response.internal_failure(InternalFailureErrorResponseContent(
-        message="Not Implemented!"
-    ))
+    extracted_data_update = input.body.extracted_data
+
+    store = FormMetadataStore()
+    document_form = store.get_form_metadata(document_id, form_id)
+
+    if document_form is None:
+        return Response.bad_request(
+            ApiError(
+                message="No document form found with document id {} and form id {}".format(
+                    document_id, form_id
+                )
+            )
+        )
+
+    if input.body.tags is not None:
+        document_form.tags = input.body.tags
+    if input.body.notes is not None:
+        document_form.notes = input.body.notes
+
+    document_form.extracted_data = extracted_data_update
+
+    updated_form_review = store.put_form_metadata(caller.username, document_form)
+
+    return Response.success(updated_form_review)
 
 
 # Entry point for the AWS Lambda handler for the UpdateFormReview operation.

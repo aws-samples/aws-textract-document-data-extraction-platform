@@ -11,6 +11,16 @@
       "type": "runtime"
     },
     {
+      "name": "boto3",
+      "version": "^1",
+      "type": "runtime"
+    },
+    {
+      "name": "botocore",
+      "version": "^1",
+      "type": "runtime"
+    },
+    {
       "name": "python",
       "version": "^3.11",
       "type": "runtime"

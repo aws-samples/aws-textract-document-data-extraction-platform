@@ -1,5 +1,6 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import FormSchemaStore
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -13,11 +14,14 @@ def get_form_schema(input: GetFormSchemaRequest, **kwargs) -> GetFormSchemaOpera
     """
     LoggingInterceptor.get_logger(input).info("Start GetFormSchema Operation")
 
-    # TODO: Implement GetFormSchema Operation. `input` contains the request input
+    schema_id = input.request_parameters.schema_id
 
-    return Response.internal_failure(InternalFailureErrorResponseContent(
-        message="Not Implemented!"
-    ))
+    schema = FormSchemaStore().get_form_schema(schema_id)
+    if schema is None:
+        return Response.not_found(
+            ApiError(message="No form schema found with id {}".format(schema_id))
+        )
+    return Response.success(schema)
 
 
 # Entry point for the AWS Lambda handler for the GetFormSchema operation.

@@ -1,5 +1,8 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import DocumentMetadataStore
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
+from aws_document_extraction_platform_lib.utils.ddb.store import to_paginated_response_args, to_pagination_parameters
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -13,11 +16,32 @@ def list_document_forms(input: ListDocumentFormsRequest, **kwargs) -> ListDocume
     """
     LoggingInterceptor.get_logger(input).info("Start ListDocumentForms Operation")
 
-    # TODO: Implement ListDocumentForms Operation. `input` contains the request input
+    document_id = input.request_parameters.document_id
+    document = DocumentMetadataStore().get_document_metadata(document_id)
 
-    return Response.internal_failure(InternalFailureErrorResponseContent(
-        message="Not Implemented!"
-    ))
+    if document is None:
+        return Response.not_found(
+            ApiError(message="No document found with id {}".format(document_id))
+        )
+
+    if document["ingestionExecution"]["status"] != ExecutionStatus("SUCCEEDED"):
+        return Response.bad_request(
+            ApiError(
+                message="Cannot retrieve forms for document with ingestion status {}".format(
+                    document["ingestionExecution"]["status"]
+                )
+            )
+        )
+
+    response = FormMetadataStore().list_forms_in_document(
+        document_id, to_pagination_parameters(input.request_parameters)
+    )
+    if response.error is not None:
+        return Response.bad_request(ApiError(message=response.error))
+
+    return Response.success(
+        ListFormsResponse(forms=response.items, **to_paginated_response_args(response))
+    )
 
 
 # Entry point for the AWS Lambda handler for the ListDocumentForms operation.

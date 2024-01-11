@@ -19,6 +19,8 @@ include = [
   include = "aws_document_extraction_platform_api_python_handlers"
 
   [tool.poetry.dependencies]
+  boto3 = "^1"
+  botocore = "^1"
   python = "^3.11"
 
     [tool.poetry.dependencies.aws-document-extraction-platform-api-python-runtime]
