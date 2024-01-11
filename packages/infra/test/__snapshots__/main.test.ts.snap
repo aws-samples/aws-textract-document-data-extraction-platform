@@ -434,7 +434,7 @@ exports[`Snapshot 1`] = `
       "Type": "AWS::IAM::Role",
       "UpdateReplacePolicy": "Retain",
     },
-    "ApiDeployment854B3E793e83a1d582ee8cd5b0e59880ca9515d8": {
+    "ApiDeployment854B3E79108ff7e962c01b65abb9187657803b5a": {
       "DependsOn": [
         "ApiPrepareSpecCustomResourceBD8A21DD",
       ],
@@ -526,7 +526,7 @@ exports[`Snapshot 1`] = `
           "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId",
         },
         "DeploymentId": {
-          "Ref": "ApiDeployment854B3E793e83a1d582ee8cd5b0e59880ca9515d8",
+          "Ref": "ApiDeployment854B3E79108ff7e962c01b65abb9187657803b5a",
         },
         "MethodSettings": [
           {
@@ -615,10 +615,10 @@ exports[`Snapshot 1`] = `
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json",
+          "key": "dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json",
         },
         "integrations": {
-          "sayHello": {
+          "createFormReviewWorkflowTag": {
             "integration": {
               "requestTemplates": {
                 "application/json": "{"statusCode": 200}",
@@ -632,7 +632,443 @@ exports[`Snapshot 1`] = `
                   },
                   "responseTemplates": {
                     "application/json": "{
-  "message": "cedo laborum articulus"
+  "tagText": "cedo laborum articulus",
+  "createdBy": "benevolentia chirographum illo",
+  "updatedBy": "degenero ademptio commemoro",
+  "createdTimestamp": "canto eaque omnis",
+  "updatedTimestamp": "cedo conculco voluptatibus"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "createFormSchema": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "title": "charisma voluptate vacuus",
+  "description": "deprecator civis confugo",
+  "schema": {},
+  "createdBy": "dolor supra arca",
+  "updatedBy": "abstergo sto temporibus",
+  "createdTimestamp": "valetudo speciosus fugiat",
+  "updatedTimestamp": "aufero tener sophismata"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "deleteFormSchema": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "title": "officiis velit denego",
+  "description": "curia balbus delibero",
+  "schema": {},
+  "createdBy": "somnus ventito volup",
+  "updatedBy": "recusandae deleo expedita",
+  "createdTimestamp": "accusantium capio celo",
+  "updatedTimestamp": "vindico eveniet laboriosam"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "getDocument": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "createdBy": "spargo cultellus desidero",
+  "updatedBy": "decet atrox aqua",
+  "createdTimestamp": "cupiditate tracto avarus",
+  "updatedTimestamp": "velit exercitationem vestrum"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "getDocumentForm": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "createdBy": "accendo tui suus",
+  "updatedBy": "provident vulgo sono",
+  "createdTimestamp": "ascisco defungo antepono",
+  "updatedTimestamp": "cupressus corrupti quos"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "getDocumentUploadUrl": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "documentId": "testimonium texo thalassinus",
+  "url": "https://gruesome-insight.info/",
+  "location": {
+    "bucket": "creator nulla eius",
+    "objectKey": "temporibus corpus audeo"
+  }
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "getFormSchema": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "title": "degero vere sopor",
+  "description": "arx itaque verbum",
+  "schema": {},
+  "createdBy": "texo communis utilis",
+  "updatedBy": "subseco universe cena",
+  "createdTimestamp": "cohaero earum vomer",
+  "updatedTimestamp": "atrocitas supra delibero"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "getMetrics": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "averageClassificationTimeMilliseconds": 1328929916846080,
+  "averageClassificationTimePerPageMilliseconds": 6821616130457600,
+  "totalProcessedDocumentCount": 4545319891107840,
+  "totalSuccessfulDocumentCount": 2127042988474368,
+  "totalFailedDocumentCount": 2713403021852672,
+  "averageExtractionAccuracyDistance": 0.4297587329056114,
+  "averageExtractionAccuracyCorrectness": 0.3779787740204483,
+  "averageConfidence": 0.39411359769292176,
+  "averageExtractionTimeMilliseconds": 8925154897821696,
+  "averageExtractionTimePerPageMilliseconds": 4600061296115712,
+  "averageProcessingTimeMilliseconds": 7159274006380544,
+  "averageProcessingTimePerPageMilliseconds": 1129529768673280,
+  "averageWaitForReviewTimeMilliseconds": 1975767267278848,
+  "averageWaitForReviewTimePerPageMilliseconds": 6157799742504960,
+  "averageReviewTimeMilliseconds": 5056614644056064,
+  "averageReviewTimePerPageMilliseconds": 249406794235904,
+  "averageEndToEndTimeMilliseconds": 5912975976169472,
+  "averageEndToEndTimePerPageMilliseconds": 2106269750001664,
+  "totalProcessedFormCount": 6391574139240448,
+  "totalSuccessfulFormCount": 6633279818039296,
+  "totalFailedFormCount": 4715859020873728
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "listDocumentForms": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "nextToken": "vita vita uxor"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "listDocuments": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "nextToken": "demonstro civis urbanus"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "listFormReviewWorkflowTags": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "nextToken": "cerno tabella cohors"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "listFormSchemas": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "nextToken": "alienus peior vigor"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "listForms": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "nextToken": "stultus dolore suadeo"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "submitSourceDocument": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "createdBy": "ancilla thorax creptio",
+  "updatedBy": "allatus quisquam conventus",
+  "createdTimestamp": "ante talio vorago",
+  "updatedTimestamp": "artificiose decipio unus"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "updateFormReview": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "createdBy": "spiritus voluptas tamquam",
+  "updatedBy": "tubineus fugit pel",
+  "createdTimestamp": "celo magni tum",
+  "updatedTimestamp": "vulpes tabesco caterva"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "updateFormSchema": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "title": "degenero deduco spectaculum",
+  "description": "crustulum vae textor",
+  "schema": {},
+  "createdBy": "denuncio depromo cupio",
+  "updatedBy": "surculus adsum textus",
+  "createdTimestamp": "studio consequuntur abundans",
+  "updatedTimestamp": "verbera corpus summisse"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+          "updateStatus": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "createdBy": "spiritus corporis ubi",
+  "updatedBy": "adsum temporibus testimonium",
+  "createdTimestamp": "vitium consectetur admoveo",
+  "updatedTimestamp": "subvenio est deprecator"
 }",
                   },
                   "statusCode": "200",
@@ -643,19 +1079,131 @@ exports[`Snapshot 1`] = `
           },
         },
         "operationLookup": {
-          "sayHello": {
+          "createFormReviewWorkflowTag": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "POST",
+            "path": "/tags",
+          },
+          "createFormSchema": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "POST",
+            "path": "/schemas",
+          },
+          "deleteFormSchema": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "DELETE",
+            "path": "/schemas/{schemaId}",
+          },
+          "getDocument": {
             "contentTypes": [
               "application/json",
             ],
             "method": "GET",
-            "path": "/hello",
+            "path": "/documents/{documentId}",
+          },
+          "getDocumentForm": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/documents/{documentId}/forms/{formId}",
+          },
+          "getDocumentUploadUrl": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/documents/upload-url",
+          },
+          "getFormSchema": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/schemas/{schemaId}",
+          },
+          "getMetrics": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/metrics",
+          },
+          "listDocumentForms": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/documents/{documentId}/forms",
+          },
+          "listDocuments": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/documents",
+          },
+          "listFormReviewWorkflowTags": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/tags",
+          },
+          "listFormSchemas": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/schemas",
+          },
+          "listForms": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/forms",
+          },
+          "submitSourceDocument": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "POST",
+            "path": "/sources/document",
+          },
+          "updateFormReview": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "PUT",
+            "path": "/documents/{documentId}/forms/{formId}/review",
+          },
+          "updateFormSchema": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "PUT",
+            "path": "/schemas/{schemaId}",
+          },
+          "updateStatus": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "PUT",
+            "path": "/documents/{documentId}/forms/{formId}/status",
           },
         },
         "outputSpecLocation": {
           "bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "key": "a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared",
+          "key": "dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json-prepared",
         },
         "securitySchemes": {
           "aws.auth.sigv4": {
@@ -1008,7 +1556,7 @@ exports[`Snapshot 1`] = `
             {
               "applies_to": [
                 {
-                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared/*/g",
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json-prepared/*/g",
                 },
               ],
               "id": "AwsSolutions-IAM5",
@@ -1026,7 +1574,7 @@ exports[`Snapshot 1`] = `
             {
               "applies_to": [
                 {
-                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared/*/g",
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json-prepared/*/g",
                 },
               ],
               "id": "AwsPrototyping-IAMNoWildcardPermissions",
@@ -1143,7 +1691,7 @@ exports[`Snapshot 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json",
+                        "/dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json",
                       ],
                     ],
                   },
@@ -1163,7 +1711,7 @@ exports[`Snapshot 1`] = `
                         {
                           "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
                         },
-                        "/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared/*",
+                        "/dbe54b6e48e941fdd1f43344ad458d904744fdd95034bd2ea96b6aa9c2c58d58.json-prepared/*",
                       ],
                     ],
                   },
@@ -3745,7 +4293,7 @@ exports[`Snapshot 1`] = `
           },
         ],
         "SourceObjectKeys": [
-          "9b87fc8a993d5036a4525cd8cb2d459095fc72b4b46d8b8a3af3020d33642756.zip",
+          "ddc52a440d3244d41fe0bbc1a7d8c049294ff0fe36f857b0199fb2e453dfacb9.zip",
           "37f8b69d2391f53dcf2ec9ff366827139c3728c7b4f11ba5a2cecd023e4ebdd7.zip",
         ],
       },
