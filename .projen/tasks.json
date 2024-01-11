@@ -139,7 +139,7 @@
       "name": "postinstall",
       "steps": [
         {
-          "exec": "pnpm exec nx run-many --target=install --output-style=stream --parallel=1 --nx-bail --projects=aws-document-extraction-platform-api-python-runtime,aws-document-extraction-platform-api-python-handlers"
+          "exec": "pnpm exec nx run-many --target=install --output-style=stream --parallel=1 --nx-bail --projects=aws-document-extraction-platform-api-python-runtime,aws-document-extraction-platform-api-python-handlers,aws-document-extraction-platform-lib"
         }
       ]
     },

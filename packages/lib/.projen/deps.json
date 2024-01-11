@@ -2,17 +2,12 @@
   "dependencies": [
     {
       "name": "aws-document-extraction-platform-api-python-runtime",
-      "version": "{path=\"../../generated/runtime/python\", develop=true}",
-      "type": "runtime"
-    },
-    {
-      "name": "aws-document-extraction-platform-lib",
-      "version": "{path=\"../../../lib\", develop=true}",
+      "version": "{path=\"../api/generated/runtime/python\", develop=true}",
       "type": "runtime"
     },
     {
       "name": "python",
-      "version": "^3.11",
+      "version": "^3.9",
       "type": "runtime"
     },
     {

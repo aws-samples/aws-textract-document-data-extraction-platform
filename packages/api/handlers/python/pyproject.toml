@@ -25,5 +25,9 @@ include = [
     path = "../../generated/runtime/python"
     develop = true
 
+    [tool.poetry.dependencies.aws-document-extraction-platform-lib]
+    path = "../../../lib"
+    develop = true
+
   [tool.poetry.dev-dependencies]
   pytest = "7.4.3"

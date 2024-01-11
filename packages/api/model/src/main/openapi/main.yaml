@@ -6,6 +6,8 @@ info:
 paths:
   /tags:
     post:
+      x-handler:
+        language: python
       operationId: createFormReviewWorkflowTag
       description: create a form review workflow tag
       requestBody:
@@ -22,6 +24,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/FormReviewWorkflowTag"
     get:
+      x-handler:
+        language: python
       operationId: listFormReviewWorkflowTags
       description: List all form review workflow tags
       parameters:
@@ -36,6 +40,8 @@ paths:
                 $ref: "#/components/schemas/ListFormReviewWorkflowTagsResponse"
   /sources/document:
     post:
+      x-handler:
+        language: python
       operationId: submitSourceDocument
       description: Submit a document for processing
       requestBody:
@@ -53,6 +59,8 @@ paths:
                 $ref: "#/components/schemas/DocumentMetadata"
   /documents/upload-url:
     get:
+      x-handler:
+        language: python
       operationId: getDocumentUploadUrl
       description: Get a presigned url for uploading a document
       parameters:
@@ -75,6 +83,8 @@ paths:
                 $ref: "#/components/schemas/GetDocumentUploadUrlResponse"
   /documents:
     get:
+      x-handler:
+        language: python
       operationId: listDocuments
       description: List all documents
       parameters:
@@ -89,6 +99,8 @@ paths:
                 $ref: "#/components/schemas/ListDocumentsResponse"
   /documents/{documentId}:
     get:
+      x-handler:
+        language: python
       operationId: getDocument
       description: Get details about a document being ingested
       parameters:
@@ -112,6 +124,8 @@ paths:
                 $ref: "#/components/schemas/ApiError"
   /documents/{documentId}/forms:
     get:
+      x-handler:
+        language: python
       operationId: listDocumentForms
       description: Get details about the forms within a processed document
       parameters:
@@ -137,6 +151,8 @@ paths:
                 $ref: "#/components/schemas/ApiError"
   /forms:
     get:
+      x-handler:
+        language: python
       operationId: listForms
       description: List all forms within documents
       parameters:
@@ -151,6 +167,8 @@ paths:
                 $ref: "#/components/schemas/ListFormsResponse"
   /documents/{documentId}/forms/{formId}:
     get:
+      x-handler:
+        language: python
       operationId: getDocumentForm
       description: Get details about a form within a processed document
       parameters:
@@ -179,6 +197,8 @@ paths:
                 $ref: "#/components/schemas/ApiError"
   /documents/{documentId}/forms/{formId}/status:
     put:
+      x-handler:
+        language: python
       operationId: updateStatus
       description: start a new review
       parameters:
@@ -208,6 +228,8 @@ paths:
 
   /documents/{documentId}/forms/{formId}/review:
     put:
+      x-handler:
+        language: python
       operationId: updateFormReview
       description: Update the extracted data details object from a document form
       parameters:
@@ -242,6 +264,8 @@ paths:
                 $ref: "#/components/schemas/ApiError"
   /schemas:
     get:
+      x-handler:
+        language: python
       operationId: listFormSchemas
       description: List all schemas for forms
       parameters:
@@ -255,6 +279,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ListFormSchemasResponse"
     post:
+      x-handler:
+        language: python
       operationId: createFormSchema
       description: Create a new form schema
       requestBody:
@@ -272,6 +298,8 @@ paths:
                 $ref: "#/components/schemas/FormSchema"
   /schemas/{schemaId}:
     get:
+      x-handler:
+        language: python
       operationId: getFormSchema
       description: Retrieve a specific form schema
       parameters:
@@ -288,6 +316,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/FormSchema"
     put:
+      x-handler:
+        language: python
       operationId: updateFormSchema
       description: Update an existing form schema
       parameters:
@@ -310,6 +340,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/FormSchema"
     delete:
+      x-handler:
+        language: python
       operationId: deleteFormSchema
       description: Delete a form schema
       parameters:
@@ -327,6 +359,8 @@ paths:
                 $ref: "#/components/schemas/FormSchema"
   /metrics:
     get:
+      x-handler:
+        language: python
       operationId: getMetrics
       description: Retrieve average aggregate metrics for disclosure data extraction for the given time period
       parameters:
