@@ -4,6 +4,7 @@ import { CloudscapeReactTsWebsiteProject } from "@aws/pdk/cloudscape-react-ts-we
 import { InfrastructureTsProject } from "@aws/pdk/infrastructure";
 import { NodePackageManager } from "projen/lib/javascript";
 import { PythonProject } from "projen/lib/python";
+import * as path from "path";
 
 const monorepo = new MonorepoTsProject({
   devDeps: ["@aws/pdk"],
@@ -82,18 +83,70 @@ pythonLibrary.packageTask.exec(
   `pip install -r dist/lambda/requirements.txt --target dist/lambda --upgrade --platform manylinux2014_x86_64 --only-binary :all:`
 );
 
-const website = new CloudscapeReactTsWebsiteProject({
+const webapp = new CloudscapeReactTsWebsiteProject({
   parent: monorepo,
   outdir: "packages/webapp",
   name: "@aws/document-extraction-platform-webapp",
   typeSafeApi: api,
+  deps: [
+    "aws-amplify@4.3.8",
+    "@aws-amplify/ui-react@1.2.5",
+    "aws-northstar",
+    "aws4fetch",
+    "react-pdf@^5",
+    "react-ace@^10",
+    "ace-builds@^1",
+    "@material-ui/icons@^4",
+    "lodash",
+    "humanize-duration",
+    "react-zoom-pan-pinch@^2",
+    "react-router-dom@^6",
+    "react@^17",
+  ],
+  devDeps: [
+    "@types/lodash",
+    "@types/humanize-duration",
+    "@types/react@^17",
+    "react-app-rewired@^2",
+    "@types/react-router-dom"
+  ],
 });
+
+// Use react-app-rewired tasks instead of default create react app tasks.
+  // Note that we disable the inbuilt create react app eslint plugin in favour of running our own eslint after the tests
+  webapp.tasks.tryFind("dev")?.reset();
+  webapp.tasks
+    .tryFind("dev")
+    ?.exec("DISABLE_ESLINT_PLUGIN=true react-app-rewired start");
+  webapp.tasks.tryFind("compile")?.reset();
+  webapp.tasks
+    .tryFind("compile")
+    ?.exec("DISABLE_ESLINT_PLUGIN=true react-app-rewired build --verbose");
+  webapp.tasks.tryFind("test")?.reset();
+  webapp.tasks
+    .tryFind("test")
+    ?.exec(
+      "DISABLE_ESLINT_PLUGIN=true react-app-rewired test --watchAll=false"
+    );
+  webapp.tasks.tryFind("test")?.spawn(webapp.tasks.tryFind("eslint")!);
+  webapp.tasks.tryFind("test:watch")?.reset();
+  webapp.tasks
+    .tryFind("test:watch")
+    ?.exec("DISABLE_ESLINT_PLUGIN=true react-app-rewired test");
+
+const copyApiDocs = webapp.addTask("copy:api-docs");
+copyApiDocs.exec("rm -rf public/api-docs");
+copyApiDocs.exec("mkdir -p public/api-docs");
+copyApiDocs.exec(`cp -r ${path.relative(webapp.outdir, api.documentation.htmlRedoc!.outdir)}/index.html public/api-docs/index.html`);
+webapp.preCompileTask.spawn(copyApiDocs);
+monorepo.addImplicitDependency(webapp, api.documentation.htmlRedoc!);
+
 
 new InfrastructureTsProject({
   parent: monorepo,
   outdir: "packages/infra",
   name: "@aws/document-extraction-platform-infra",
-  cloudscapeReactTsWebsite: website,
+  cloudscapeReactTsWebsite: webapp,
   typeSafeApi: api,
   deps: [
     api.runtime.typescript!.package.packageName,

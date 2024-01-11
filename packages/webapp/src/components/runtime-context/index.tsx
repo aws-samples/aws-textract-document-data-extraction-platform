@@ -1,6 +1,7 @@
 /*! Copyright [Amazon.com](http://amazon.com/), Inc. or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0 */
 import ErrorMessage from "@aws-northstar/ui/components/CognitoAuth/components/ErrorMessage";
+import { LoadingIndicator } from "aws-northstar";
 import React, { createContext, useEffect, useState } from "react";
 
 export interface RuntimeContext {
@@ -50,11 +51,11 @@ const RuntimeContextProvider: React.FC<any> = ({ children }) => {
 
   return error ? (
     <ErrorMessage>{error}</ErrorMessage>
-  ) : (
+  ) : runtimeContext ? (
     <RuntimeConfigContext.Provider value={runtimeContext}>
       {children}
     </RuntimeConfigContext.Provider>
-  );
+  ) : <LoadingIndicator size="large" />;
 };
 
 export default RuntimeContextProvider;

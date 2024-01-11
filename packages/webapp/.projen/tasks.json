@@ -26,7 +26,21 @@
       "description": "Only compile",
       "steps": [
         {
-          "exec": "react-scripts build"
+          "exec": "DISABLE_ESLINT_PLUGIN=true react-app-rewired build --verbose"
+        }
+      ]
+    },
+    "copy:api-docs": {
+      "name": "copy:api-docs",
+      "steps": [
+        {
+          "exec": "rm -rf public/api-docs"
+        },
+        {
+          "exec": "mkdir -p public/api-docs"
+        },
+        {
+          "exec": "cp -r ../api/generated/documentation/html_redoc/index.html public/api-docs/index.html"
         }
       ]
     },
@@ -43,7 +57,7 @@
       },
       "steps": [
         {
-          "exec": "react-scripts start"
+          "exec": "DISABLE_ESLINT_PLUGIN=true react-app-rewired start"
         }
       ]
     },
@@ -89,17 +103,22 @@
     },
     "pre-compile": {
       "name": "pre-compile",
-      "description": "Prepare the project for compilation"
+      "description": "Prepare the project for compilation",
+      "steps": [
+        {
+          "spawn": "copy:api-docs"
+        }
+      ]
     },
     "test": {
       "name": "test",
       "description": "Run tests",
       "steps": [
         {
-          "spawn": "eslint"
+          "exec": "DISABLE_ESLINT_PLUGIN=true react-app-rewired test --watchAll=false"
         },
         {
-          "exec": "react-scripts test --watchAll=false --passWithNoTests"
+          "spawn": "eslint"
         }
       ]
     },
@@ -111,13 +130,13 @@
       },
       "steps": [
         {
-          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@testing-library/jest-dom,@testing-library/react,@testing-library/user-event,@types/jest,@types/node,@types/react,@types/react-dom,@types/swagger-ui-react,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,prettier,projen,typescript,@aws-northstar/ui,@cloudscape-design/board-components,@cloudscape-design/components,aws4fetch,react,react-dom,react-router-dom,react-scripts,web-vitals"
+          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@testing-library/jest-dom,@testing-library/react,@testing-library/user-event,@types/humanize-duration,@types/jest,@types/lodash,@types/node,@types/react,@types/react-dom,@types/react-router-dom,@types/swagger-ui-react,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,prettier,projen,react-app-rewired,typescript,@aws-northstar/ui,@cloudscape-design/board-components,@cloudscape-design/components,@material-ui/icons,ace-builds,aws-northstar,aws4fetch,humanize-duration,lodash,react,react-ace,react-dom,react-pdf,react-router-dom,react-scripts,react-zoom-pan-pinch,web-vitals"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/jest @types/node @types/react @types/react-dom @types/swagger-ui-react @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint prettier projen typescript @aws-northstar/ui @cloudscape-design/board-components @cloudscape-design/components aws4fetch react react-dom react-router-dom react-scripts web-vitals"
+          "exec": "pnpm update @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/humanize-duration @types/jest @types/lodash @types/node @types/react @types/react-dom @types/react-router-dom @types/swagger-ui-react @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint prettier projen react-app-rewired typescript @aws-northstar/ui @cloudscape-design/board-components @cloudscape-design/components @material-ui/icons ace-builds aws-northstar aws4fetch humanize-duration lodash react react-ace react-dom react-pdf react-router-dom react-scripts react-zoom-pan-pinch web-vitals"
         },
         {
           "exec": "npx projen"
