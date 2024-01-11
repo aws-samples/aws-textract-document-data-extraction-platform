@@ -1,8 +1,0 @@
-aws-api-python-runtime @ file:///Users/emlha/Documents/AMAZON/DE-DELETE/packages/api/runtime/python ; python_version >= "3.9" and python_version < "3.10"
-certifi==14.05.14 ; python_version >= "3.9" and python_version < "3.10"
-frozendict==2.3.8 ; python_version >= "3.9" and python_version < "3.10"
-python-dateutil==2.7.5 ; python_version >= "3.9" and python_version < "3.10"
-setuptools==21.2.2 ; python_version >= "3.9" and python_version < "3.10"
-six==1.16.0 ; python_version >= "3.9" and python_version < "3.10"
-typing-extensions==4.3.0 ; python_version >= "3.9" and python_version < "3.10"
-urllib3==1.26.16 ; python_version >= "3.9" and python_version < "3.10"
