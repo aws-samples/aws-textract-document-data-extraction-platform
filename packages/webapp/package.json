@@ -1,5 +1,5 @@
 {
-  "name": "@aws/document-extraction-platform-website",
+  "name": "@aws/document-extraction-platform-webapp",
   "scripts": {
     "build": "npx projen build",
     "compile": "npx projen compile",

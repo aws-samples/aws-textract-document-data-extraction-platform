@@ -1,8 +1,13 @@
 /*! Copyright [Amazon.com](http://amazon.com/), Inc. or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0 */
 import { useCognitoAuthContext } from "@aws-northstar/ui";
-import NavHeader from "@aws-northstar/ui/components/AppLayout/components/NavHeader";
 import getBreadcrumbs from "@aws-northstar/ui/components/AppLayout/utils/getBreadcrumbs";
+import NavHeader from "@aws-northstar/ui/components/AppLayout/components/NavHeader";
+import * as React from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { NavItems } from "./navitems";
+import Config from "../../config.json";
+import Routes from "../Routes";
 import {
   BreadcrumbGroup,
   BreadcrumbGroupProps,
@@ -11,12 +16,7 @@ import {
 import AppLayout, {
   AppLayoutProps,
 } from "@cloudscape-design/components/app-layout";
-import * as React from "react";
-import { createContext, useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { NavItems } from "./navitems";
-import Config from "../../config.json";
-import Routes from "../Routes";
 
 /**
  * Context for updating/retrieving the AppLayout.

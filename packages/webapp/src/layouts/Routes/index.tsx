@@ -2,8 +2,8 @@
 SPDX-License-Identifier: Apache-2.0 */
 import * as React from "react";
 import { Route, Routes as ReactRoutes } from "react-router-dom";
-import ApiExplorer from "../../pages/ApiExplorer";
 import Home from "../../pages/Home";
+import ApiExplorer from "../../pages/ApiExplorer";
 
 /**
  * Defines the Routes.

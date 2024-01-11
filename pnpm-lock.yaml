@@ -180,9 +180,9 @@ importers:
         specifier: ^10.0.5
         version: 10.3.0
     devDependencies:
-      '@aws/document-extraction-platform-website':
+      '@aws/document-extraction-platform-webapp':
         specifier: 0.0.0
-        version: link:../website
+        version: link:../webapp
       '@types/jest':
         specifier: ^29.5.11
         version: 29.5.11
@@ -238,7 +238,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/website:
+  packages/webapp:
     dependencies:
       '@aws-northstar/ui':
         specifier: ^1.1.13
@@ -352,7 +352,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
-      '@jridgewell/trace-mapping': 0.3.9
+      '@jridgewell/trace-mapping': 0.3.20
 
   /@apideck/better-ajv-errors@0.3.6(ajv@8.12.0):
     resolution: {integrity: sha512-P+ZygBLZtkp0qqOAJJVX4oX/sFo5JR3eBWwwuqHHhK0GIgQOKWrAfiAaWX0aArHkRWHMuggFEgAZNxVPwPZYaA==}
@@ -3744,7 +3744,7 @@ packages:
     dependencies:
       '@jridgewell/set-array': 1.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
-      '@jridgewell/trace-mapping': 0.3.9
+      '@jridgewell/trace-mapping': 0.3.20
 
   /@jridgewell/resolve-uri@3.1.1:
     resolution: {integrity: sha512-dSYZh7HhCDtCKm4QakX0xFpsRDqjjtZf/kjI/v3T3Nwt5r8/qz/M19F9ySyOqU94SXBmeG9ttTul+YnR4LOxFA==}

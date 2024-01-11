@@ -5,4 +5,4 @@ packages:
   - packages/api/generated/libraries/typescript-react-query-hooks
   - packages/api/generated/runtime/typescript
   - packages/infra
-  - packages/website
+  - packages/webapp

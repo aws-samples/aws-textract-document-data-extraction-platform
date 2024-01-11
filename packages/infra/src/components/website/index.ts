@@ -19,7 +19,7 @@ export class WebsiteStack extends NestedStack {
     super(scope, id, props);
 
     const website = new StaticWebsite(this, id, {
-      websiteContentPath: "../website/build",
+      websiteContentPath: "../webapp/build",
       runtimeOptions: {
         jsonPayload: {
           region: Stack.of(this).region,

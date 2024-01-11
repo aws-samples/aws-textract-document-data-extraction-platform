@@ -84,8 +84,8 @@ pythonLibrary.packageTask.exec(
 
 const website = new CloudscapeReactTsWebsiteProject({
   parent: monorepo,
-  outdir: "packages/website",
-  name: "@aws/document-extraction-platform-website",
+  outdir: "packages/webapp",
+  name: "@aws/document-extraction-platform-webapp",
   typeSafeApi: api,
 });
 

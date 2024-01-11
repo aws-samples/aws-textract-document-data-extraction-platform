@@ -372,39 +372,6 @@ git push awscodecommit mainline -u
 
 You can now visit the AWS console to find the CodePipeline and track its progress.
 
-#### [OPTIONAL] Configure the Pipeline Source with SonarQube
-
-`packages/infra/cdk.context.json` file must include your sonarqube settings like so. This will add `sonarqubeScannerConfig` to the cdk context.
-
-```
-{
-  "sonarqubeScannerConfig": {
-    "sonarqubeEndpoint": "https://www.example.sonar.qube.com",
-    "sonarqubeAuthorizedGroup": "<YOUR_AUTHORIZED_GROUP_NAME>",
-    "sonarqubeDefaultProfileOrGateName": "<YOUR_DEFAULT_PROFILE>",
-    "sonarqubeSpecificProfileOrGateName": "<YOUR_SPECIFIC_PROFILE>",
-    "sonarqubeProjectName": "<YOUR_DESIRED_SONARQUBE_PROJECT_NAME>",
-    "sonarqubeTags": [
-      "example_tag1",
-      "example_tag2",
-      "example_tag3"
-    ],
-    "preArchiveCommands": [
-      "cd packages/infra && cat cdk.context.json | jq 'del(.sonarqubeScannerConfig)' > cdk.context.json"
-    ]
-  }
-}
-```
-
-Add the following snippet to the PDKPipeline construct to get sonarqube configured in `packages/infra/src/pipeline-stack.ts`. This will grab the object `sonarqubeScannerConfig` from the cdk context.
-
-```
-this.pipeline = new pipeline.PDKPipeline(this, "ApplicationPipeline", {
-      ...
-      // Optional: if you use SonarQube, you can provide config to execute a code scan here
-      sonarCodeScannerConfig: this.node.tryGetContext("sonarqubeScannerConfig"),
-    });
-```
 
 ### Useful Commands
 

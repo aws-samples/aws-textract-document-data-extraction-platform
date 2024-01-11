@@ -32,7 +32,7 @@ const ApiExplorer: React.FC = () => {
       })
       .catch(() => {
         setError(
-          "No OpenAPI definition detected. Ensure TypeSafeAPI is passed in to Cloudscape Website construct.",
+          "No OpenAPI definition detected. Ensure TypeSafeAPI is passed in to Cloudscape Website construct."
         );
       });
   }, []);
@@ -45,7 +45,7 @@ const ApiExplorer: React.FC = () => {
       getAuthenticatedUser?.()!,
       region,
       identityPoolId,
-      userPoolId,
+      userPoolId
     );
 
     // Sign the request

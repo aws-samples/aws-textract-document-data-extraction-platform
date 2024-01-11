@@ -51,10 +51,10 @@
       "description": "Runs after successful compilation",
       "steps": [
         {
-          "exec": "rm -f ../../website/public/api.json"
+          "exec": "rm -f ../../webapp/public/api.json"
         },
         {
-          "exec": "cp .api.json ../../website/public/api.json"
+          "exec": "cp .api.json ../../webapp/public/api.json"
         }
       ]
     },

@@ -22,5 +22,5 @@ createRoot(document.getElementById("root")!).render(
         </RuntimeContextProvider>
       </BrowserRouter>
     </NorthStarThemeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

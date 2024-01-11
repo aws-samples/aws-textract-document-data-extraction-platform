@@ -15,7 +15,7 @@ export interface RuntimeContext {
  * Context for storing the runtimeContext.
  */
 export const RuntimeConfigContext = createContext<RuntimeContext | undefined>(
-  undefined,
+  undefined
 );
 
 const RuntimeContextProvider: React.FC<any> = ({ children }) => {
@@ -39,7 +39,7 @@ const RuntimeContextProvider: React.FC<any> = ({ children }) => {
           setRuntimeContext(runtimeCtx as RuntimeContext);
         } else {
           setError(
-            "runtime-config.json should have region, userPoolId, userPoolWebClientId & identityPoolId.",
+            "runtime-config.json should have region, userPoolId, userPoolWebClientId & identityPoolId."
           );
         }
       })
