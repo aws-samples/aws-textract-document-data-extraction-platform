@@ -5,9 +5,10 @@
 import json
 import boto3
 from dataclasses import dataclass
-from functools import wraps
-from typing import Dict, Any, TypedDict, Protocol
+from typing import Any, TypedDict
 
+from aws_document_extraction_platform_api_python_runtime.response import Response
+from aws_document_extraction_platform_lib.utils.logger import get_logger
 
 log = get_logger(__name__)
 
@@ -76,42 +77,6 @@ def _get_caller(event: Any) -> CallingUser:
     return DefaultCallingUser
 
 
-class Handler(Protocol):
-    def __call__(self, event: Any, context: Any, *args, **kwargs) -> Dict[str, Any]:
-        ...
-
-
 def identity_interceptor(input: Any) -> Any:
     input.interceptor_context["AuthenticatedUser"] = _get_caller(input.event)
     return input.chain.next(input)
-
-
-def api(handler: Handler):
-    """
-    Wraps api handlers to catch unexpected exceptions and return a more meaningful api error response
-    :param handler: the already wrapped lambda handler
-    :return: a wrapped lambda handler with default exception handling
-    """
-
-    @wraps(handler)
-    def inner(event, context):
-        try:
-            return handler(event, context, caller=_get_caller(event))
-        except UnauthorizedException as e:
-            log.exception(str(e))
-            response = Response.not_authorized(
-                ApiError(message="User is not permitted")
-            )
-        except Exception as e:
-            log.exception(str(e))
-            response = Response.internal_server_error(ApiError(message=str(e)))
-
-        return {
-            "statusCode": response.status_code,
-            "headers": response.headers,
-            "body": json.dumps(
-                response.body, default=lambda o: o.__dict__, sort_keys=True, indent=4
-            ),
-        }
-
-    return inner

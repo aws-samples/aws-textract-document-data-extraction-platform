@@ -1,13 +1,63 @@
 {
   "dependencies": [
     {
+      "name": "black",
+      "version": "^22",
+      "type": "devenv"
+    },
+    {
+      "name": "boto3-stubs",
+      "version": "{version=\"^1\", extras=[\"s3\"]}",
+      "type": "devenv"
+    },
+    {
+      "name": "licenseheaders",
+      "version": "^0.8.8",
+      "type": "devenv"
+    },
+    {
+      "name": "moto",
+      "version": "^4",
+      "type": "devenv"
+    },
+    {
+      "name": "types-python-dateutil",
+      "version": "^2",
+      "type": "devenv"
+    },
+    {
+      "name": "amazon-textract-response-parser",
+      "version": "^1",
+      "type": "runtime"
+    },
+    {
       "name": "aws-document-extraction-platform-api-python-runtime",
       "version": "{path=\"../api/generated/runtime/python\", develop=true}",
       "type": "runtime"
     },
     {
+      "name": "boto3",
+      "version": "^1",
+      "type": "runtime"
+    },
+    {
+      "name": "botocore",
+      "version": "^1",
+      "type": "runtime"
+    },
+    {
+      "name": "pypdf2",
+      "version": "^1",
+      "type": "runtime"
+    },
+    {
       "name": "python",
       "version": "^3.9",
+      "type": "runtime"
+    },
+    {
+      "name": "thefuzz",
+      "version": "^0.19",
       "type": "runtime"
     },
     {

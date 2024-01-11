@@ -41,6 +41,7 @@ const api = new TypeSafeApiProject({
 const pythonLibrary = new PythonProject({
   parent: monorepo,
   poetry: true,
+  sample: false,
   outdir: "packages/lib",
   name: "aws-document-extraction-platform-lib",
   moduleName: "aws_document_extraction_platform_lib",
@@ -49,9 +50,20 @@ const pythonLibrary = new PythonProject({
   version: "0.0.0",
   deps: [
     "python@^3.9",
+    "boto3@^1",
+    "botocore@^1",
+    "amazon-textract-response-parser@^1",
+    "pypdf2@^1",
+    "thefuzz@^0.19",
+  ],
+  devDeps: [
+    "black@^22",
+    "licenseheaders@^0.8.8",
+    "moto@^4",
+    `boto3-stubs@{version="^1", extras=["s3"]}`,
+    "types-python-dateutil@^2",
   ],
 });
-
 monorepo.addPythonPoetryDependency(pythonLibrary, api.runtime.python!);
 monorepo.addPythonPoetryDependency(api.handlers.python!, pythonLibrary);
 

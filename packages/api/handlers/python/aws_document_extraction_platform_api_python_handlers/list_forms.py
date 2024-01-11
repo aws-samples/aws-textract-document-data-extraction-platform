@@ -1,6 +1,6 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_api_python_runtime.interceptors import INTERCEPTORS
+from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
     list_forms_handler, ListFormsRequest, ListFormsOperationResponses
@@ -22,5 +22,5 @@ def list_forms(input: ListFormsRequest, **kwargs) -> ListFormsOperationResponses
 
 # Entry point for the AWS Lambda handler for the ListForms operation.
 # The list_forms_handler method wraps the type-safe handler and manages marshalling inputs and outputs
-handler = list_forms_handler(interceptors=INTERCEPTORS)(list_forms)
+handler = list_forms_handler(interceptors=DEFAULT_INTERCEPTORS)(list_forms)
 

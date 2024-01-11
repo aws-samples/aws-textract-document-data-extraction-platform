@@ -12,11 +12,24 @@ authors = [ "aws <aws@amazon.com>" ]
 readme = "README.md"
 
   [tool.poetry.dependencies]
+  amazon-textract-response-parser = "^1"
+  boto3 = "^1"
+  botocore = "^1"
+  pypdf2 = "^1"
   python = "^3.9"
+  thefuzz = "^0.19"
 
     [tool.poetry.dependencies.aws-document-extraction-platform-api-python-runtime]
     path = "../api/generated/runtime/python"
     develop = true
 
   [tool.poetry.dev-dependencies]
+  black = "^22"
+  licenseheaders = "^0.8.8"
+  moto = "^4"
+  types-python-dateutil = "^2"
   pytest = "7.4.3"
+
+    [tool.poetry.dev-dependencies.boto3-stubs]
+    version = "^1"
+    extras = [ "s3" ]

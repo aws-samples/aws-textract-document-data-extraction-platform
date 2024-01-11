@@ -1,6 +1,6 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_api_python_runtime.interceptors import INTERCEPTORS
+from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
     list_form_review_workflow_tags_handler, ListFormReviewWorkflowTagsRequest, ListFormReviewWorkflowTagsOperationResponses
@@ -22,5 +22,5 @@ def list_form_review_workflow_tags(input: ListFormReviewWorkflowTagsRequest, **k
 
 # Entry point for the AWS Lambda handler for the ListFormReviewWorkflowTags operation.
 # The list_form_review_workflow_tags_handler method wraps the type-safe handler and manages marshalling inputs and outputs
-handler = list_form_review_workflow_tags_handler(interceptors=INTERCEPTORS)(list_form_review_workflow_tags)
+handler = list_form_review_workflow_tags_handler(interceptors=DEFAULT_INTERCEPTORS)(list_form_review_workflow_tags)
 
