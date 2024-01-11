@@ -135,6 +135,14 @@
       "name": "post-upgrade",
       "description": "Runs after upgrading dependencies"
     },
+    "postinstall": {
+      "name": "postinstall",
+      "steps": [
+        {
+          "exec": "pnpm exec nx run-many --target=install --output-style=stream --parallel=1 --nx-bail --projects=aws-document-extraction-platform-api-python-runtime,aws-document-extraction-platform-api-python-handlers"
+        }
+      ]
+    },
     "pre-compile": {
       "name": "pre-compile",
       "description": "Prepare the project for compilation for all affected projects",

@@ -44,5 +44,10 @@ jspm_packages/
 !/nx.json
 !/.nxignore
 !/.syncpackrc.json
+!/packages/api/generated/runtime/README.md
+!/packages/api/generated/documentation/README.md
+!/packages/api/generated/libraries/README.md
+!/packages/api/handlers/README.md
+!/packages/api/generated/infrastructure/README.md
 !/pnpm-workspace.yaml
 !/.projenrc.ts

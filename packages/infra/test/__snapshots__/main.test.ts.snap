@@ -1,0 +1,4151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+{
+  "Outputs": {
+    "ApiEndpoint7B58C87D": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "Api6B55D0A0",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "ApiDeploymentStageprodBD2FB4EE",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+    "WebsiteDistributionDomainName8DCBE973": {
+      "Value": {
+        "Fn::GetAtt": [
+          "WebsiteCloudfrontDistribution2DAF6FDB",
+          "DomainName",
+        ],
+      },
+    },
+    "testUserIdentitytestUserIdentityIdentityPoolId0DCB76FF": {
+      "Value": {
+        "Ref": "testUserIdentityIdentityPoolBAEBB5D7",
+      },
+    },
+    "testUserIdentitytestUserIdentityUserPoolId9CF290F0": {
+      "Value": {
+        "Ref": "testUserIdentityUserPoolB4EEB643",
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "Api6B55D0A0": {
+      "DependsOn": [
+        "ApiPrepareSpecCustomResourceBD8A21DD",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BodyS3Location": {
+          "Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "Key": {
+            "Fn::GetAtt": [
+              "ApiPrepareSpecCustomResourceBD8A21DD",
+              "outputSpecKey",
+            ],
+          },
+        },
+        "Name": "Api",
+        "Policy": {
+          "Statement": [
+            {
+              "Action": "execute-api:Invoke",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "execute-api:/*",
+            },
+            {
+              "Action": "execute-api:Invoke",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": "execute-api:/*/OPTIONS/*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "ApiAccessLogs02C2A02B": {
+      "DeletionPolicy": "Retain",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "RetentionInDays": 731,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiAccount45D5A63C": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "Api6B55D0A0",
+        "ApiPrepareSpecCustomResourceBD8A21DD",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "ApiCloudWatchRole1DE5C6E1",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiApiAclWebACLAssociation9474F21C": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "ResourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region",
+              },
+              "::/restapis/",
+              {
+                "Ref": "Api6B55D0A0",
+              },
+              "/stages/",
+              {
+                "Ref": "ApiDeploymentStageprodBD2FB4EE",
+              },
+            ],
+          ],
+        },
+        "WebACLArn": {
+          "Fn::GetAtt": [
+            "ApiApiAclWebACLCAA3F6C9",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::WAFv2::WebACLAssociation",
+    },
+    "ApiApiAclWebACLCAA3F6C9": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {},
+        },
+        "Name": "test--Api-Acl-WebAcl",
+        "Rules": [
+          {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "None": {},
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "test--Api-Acl-WebAcl-AWS-AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+        ],
+        "Scope": "REGIONAL",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "test--Api-Acl-WebAcl",
+          "SampledRequestsEnabled": true,
+        },
+      },
+      "Type": "AWS::WAFv2::WebACL",
+    },
+    "ApiCloudWatchRole1DE5C6E1": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "ApiPrepareSpecCustomResourceBD8A21DD",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "ApiDeployment854B3E793e83a1d582ee8cd5b0e59880ca9515d8": {
+      "DependsOn": [
+        "ApiPrepareSpecCustomResourceBD8A21DD",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": {
+          "Ref": "Api6B55D0A0",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "ApiDeploymentStageprodBD2FB4EE": {
+      "DependsOn": [
+        "ApiAccount45D5A63C",
+        "ApiPrepareSpecCustomResourceBD8A21DD",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AccessLogSetting": {
+          "DestinationArn": {
+            "Fn::GetAtt": [
+              "ApiAccessLogs02C2A02B",
+              "Arn",
+            ],
+          },
+          "Format": "$context.identity.sourceIp $context.identity.caller $context.identity.user [$context.requestTime] "$context.httpMethod $context.resourcePath $context.protocol" $context.status $context.responseLength $context.requestId",
+        },
+        "DeploymentId": {
+          "Ref": "ApiDeployment854B3E793e83a1d582ee8cd5b0e59880ca9515d8",
+        },
+        "MethodSettings": [
+          {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": {
+          "Ref": "Api6B55D0A0",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "ApiPrepareSpecCustomResourceBD8A21DD": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "ApiPrepareSpecProviderframeworkonEvent2597DD12",
+            "Arn",
+          ],
+        },
+        "corsOptions": {
+          "allowHeaders": [
+            "Content-Type",
+            "X-Amz-Date",
+            "Authorization",
+            "X-Api-Key",
+            "X-Amz-Security-Token",
+            "X-Amz-User-Agent",
+            "x-amz-content-sha256",
+          ],
+          "allowMethods": [
+            "OPTIONS",
+            "GET",
+            "PUT",
+            "POST",
+            "DELETE",
+            "PATCH",
+            "HEAD",
+          ],
+          "allowOrigins": [
+            "*",
+          ],
+          "statusCode": 204,
+        },
+        "defaultAuthorizerReference": {
+          "authorizerId": "aws.auth.sigv4",
+        },
+        "inputSpecLocation": {
+          "bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "key": "a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json",
+        },
+        "integrations": {
+          "sayHello": {
+            "integration": {
+              "requestTemplates": {
+                "application/json": "{"statusCode": 200}",
+              },
+              "responses": {
+                "default": {
+                  "responseParameters": {
+                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,x-amz-content-sha256'",
+                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                  },
+                  "responseTemplates": {
+                    "application/json": "{
+  "message": "cedo laborum articulus"
+}",
+                  },
+                  "statusCode": "200",
+                },
+              },
+              "type": "MOCK",
+            },
+          },
+        },
+        "operationLookup": {
+          "sayHello": {
+            "contentTypes": [
+              "application/json",
+            ],
+            "method": "GET",
+            "path": "/hello",
+          },
+        },
+        "outputSpecLocation": {
+          "bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "key": "a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared",
+        },
+        "securitySchemes": {
+          "aws.auth.sigv4": {
+            "in": "header",
+            "name": "Authorization",
+            "type": "apiKey",
+            "x-amazon-apigateway-authtype": "awsSigv4",
+          },
+        },
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ApiPrepareSpecHandlerB2B7CE82": {
+      "DependsOn": [
+        "ApiPrepareSpecRole1301F7EE",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "25fbc93f5fc99cc670c29b507d74025b045112180cb5bb318363d22816ce8ef2.zip",
+        },
+        "FunctionName": "test-B0D79EFEPrepSpec",
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiPrepareSpecRole1301F7EE",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 30,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiPrepareSpecProviderRole7EEEF05F": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/test-B0D79EFEPrepSpecProvider",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/test-B0D79EFEPrepSpecProvider:*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ApiPrepareSpecProviderRoleDefaultPolicy12E7E374": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "ApiPrepareSpecHandlerB2B7CE82",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "ApiPrepareSpecHandlerB2B7CE82",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ApiPrepareSpecProviderRoleDefaultPolicy12E7E374",
+        "Roles": [
+          {
+            "Ref": "ApiPrepareSpecProviderRole7EEEF05F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ApiPrepareSpecProviderframeworkonEvent2597DD12": {
+      "DependsOn": [
+        "ApiPrepareSpecProviderRoleDefaultPolicy12E7E374",
+        "ApiPrepareSpecProviderRole7EEEF05F",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the Provider construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the Provider construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip",
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (test/Api/Api/PrepareSpecProvider)",
+        "Environment": {
+          "Variables": {
+            "USER_ON_EVENT_FUNCTION_ARN": {
+              "Fn::GetAtt": [
+                "ApiPrepareSpecHandlerB2B7CE82",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "FunctionName": "test-B0D79EFEPrepSpecProvider",
+        "Handler": "framework.onEvent",
+        "Role": {
+          "Fn::GetAtt": [
+            "ApiPrepareSpecProviderRole7EEEF05F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ApiPrepareSpecRole1301F7EE": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/test-B0D79EFEPrepSpec:*/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared/*/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "S3 resources have been scoped down to the appropriate prefix in the CDK asset bucket, however * is still needed as since the prepared spec hash is not known until deploy time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/test-B0D79EFEPrepSpec:*/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:<AWS::Partition>:s3:.*/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared/*/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "S3 resources have been scoped down to the appropriate prefix in the CDK asset bucket, however * is still needed as since the prepared spec hash is not known until deploy time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Cloudwatch Role requires access to create/read groups at the root level.",
+            },
+            {
+              "id": "AwsSolutions-APIG2",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+            {
+              "id": "AwsPrototyping-APIGWRequestValidation",
+              "reason": "This construct implements fine grained validation via OpenApi.",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/test-B0D79EFEPrepSpec",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/test-B0D79EFEPrepSpec:*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "s3:getObject",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":s3:::",
+                        {
+                          "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                        },
+                        "/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json",
+                      ],
+                    ],
+                  },
+                },
+                {
+                  "Action": "s3:putObject",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":s3:::",
+                        {
+                          "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                        },
+                        "/a936c470e7e94e03a3decf62907a5db83409eb101415ea98f23c78d5886f0440.json-prepared/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "s3",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "e976a796f036a5efbf44b99e44cfb5a961df08d8dbf7cd37e60bf216fb982a00.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
+          },
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "WebsiteWebsiteDeploymentAwsCliLayer362D33CE",
+          },
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.9",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                      },
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteWebsiteBucketF8D98E44",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteWebsiteBucketF8D98E44",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "cloudfront:GetInvalidation",
+                "cloudfront:CreateInvalidation",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip",
+        },
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "WebsiteAccessLogsBucketF61D6E5E",
+              },
+              " S3 bucket.",
+            ],
+          ],
+        },
+        "Handler": "index.handler",
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "WebsiteAccessLogsBucketAutoDeleteObjectsCustomResourceFF206081": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "WebsiteAccessLogsBucketPolicyCED111D7",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BucketName": {
+          "Ref": "WebsiteAccessLogsBucketF61D6E5E",
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteAccessLogsBucketF61D6E5E": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "ObjectWriter",
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteAccessLogsBucketPolicyCED111D7": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebsiteAccessLogsBucketF61D6E5E",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteAccessLogsBucketF61D6E5E",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteAccessLogsBucketF61D6E5E",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteAccessLogsBucketF61D6E5E",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteAccessLogsBucketF61D6E5E",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "WebsiteWebsiteBucketF8D98E44",
+                      "Arn",
+                    ],
+                  },
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com",
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "WebsiteAccessLogsBucketF61D6E5E",
+                        "Arn",
+                      ],
+                    },
+                    "/website-access-logs*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::GetAtt": [
+                      "WebsiteDistributionLogBucketAB9B20F8",
+                      "Arn",
+                    ],
+                  },
+                },
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logging.s3.amazonaws.com",
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "WebsiteAccessLogsBucketF61D6E5E",
+                        "Arn",
+                      ],
+                    },
+                    "/distribution-access-logs*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "WebsiteCloudfrontDistribution2DAF6FDB": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-CFR4",
+              "reason": "Certificate is not mandatory therefore the Cloudfront certificate will be used.",
+            },
+            {
+              "id": "AwsPrototyping-CloudFrontDistributionHttpsViewerNoOutdatedSSL",
+              "reason": "Certificate is not mandatory therefore the Cloudfront certificate will be used.",
+            },
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "DistributionConfig": {
+          "CustomErrorResponses": [
+            {
+              "ErrorCode": 404,
+              "ResponseCode": 200,
+              "ResponsePagePath": "/index.html",
+            },
+          ],
+          "DefaultCacheBehavior": {
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+            "Compress": true,
+            "TargetOriginId": "testWebsiteCloudfrontDistributionOrigin186E89884",
+            "ViewerProtocolPolicy": "redirect-to-https",
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Logging": {
+            "Bucket": {
+              "Fn::GetAtt": [
+                "WebsiteDistributionLogBucketAB9B20F8",
+                "RegionalDomainName",
+              ],
+            },
+          },
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "WebsiteWebsiteBucketF8D98E44",
+                  "RegionalDomainName",
+                ],
+              },
+              "Id": "testWebsiteCloudfrontDistributionOrigin186E89884",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        "Ref": "WebsiteOriginAccessIdentityCEE431F1",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Restrictions": {
+            "GeoRestriction": {
+              "Locations": [
+                "AU",
+                "ID",
+                "IN",
+                "JP",
+                "KR",
+                "SG",
+                "US",
+              ],
+              "RestrictionType": "whitelist",
+            },
+          },
+          "WebACLId": {
+            "Fn::GetAtt": [
+              "WebsiteWebsiteAclCFAclCustomResource27F2C668",
+              "WebAclArn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::CloudFront::Distribution",
+    },
+    "WebsiteDistributionLogBucketAB9B20F8": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "WebsiteAccessLogsBucketF61D6E5E",
+          },
+          "LogFilePrefix": "distribution-access-logs",
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "BucketOwnerPreferred",
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteDistributionLogBucketAutoDeleteObjectsCustomResourceB345CE23": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "WebsiteDistributionLogBucketPolicyE8DA2244",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BucketName": {
+          "Ref": "WebsiteDistributionLogBucketAB9B20F8",
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteDistributionLogBucketPolicyE8DA2244": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebsiteDistributionLogBucketAB9B20F8",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteDistributionLogBucketAB9B20F8",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteDistributionLogBucketAB9B20F8",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteDistributionLogBucketAB9B20F8",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteDistributionLogBucketAB9B20F8",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "WebsiteOriginAccessIdentityCEE431F1": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Allows CloudFront to reach the bucket",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "WebsiteWebsiteAclCFAclCustomResource27F2C668": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "ID": "test-WebsiteAcl-8e0e",
+        "MANAGED_RULES": [
+          {
+            "name": "AWSManagedRulesCommonRuleSet",
+            "vendor": "AWS",
+          },
+        ],
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "WebsiteWebsiteAclCloudfrontAclProviderframeworkonEventA6ABECAA",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::CloudFormation::CustomResource",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteWebsiteAclCloudfrontAclProviderframeworkonEventA6ABECAA": {
+      "DependsOn": [
+        "WebsiteWebsiteAclCloudfrontWebAclProviderRoleDefaultPolicy288134FC",
+        "WebsiteWebsiteAclCloudfrontWebAclProviderRole90C1691B",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the Provider construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the Provider construct accordingly.",
+            },
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip",
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (test/Website/Website/WebsiteAcl/CloudfrontAclProvider)",
+        "Environment": {
+          "Variables": {
+            "USER_ON_EVENT_FUNCTION_ARN": {
+              "Fn::GetAtt": [
+                "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "FunctionName": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4",
+              },
+              "-Provider",
+            ],
+          ],
+        },
+        "Handler": "framework.onEvent",
+        "Role": {
+          "Fn::GetAtt": [
+            "WebsiteWebsiteAclCloudfrontWebAclProviderRole90C1691B",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4": {
+      "DependsOn": [
+        "WebsiteWebsiteAclOnEventHandlerRoleA53F4356",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "ec39abcd5967aac37a5eba68c6c0c0ed1aa814e34a727002bb2fed44bfe34739.zip",
+        },
+        "FunctionName": "test-AclEvent-778e0e",
+        "Handler": "index.onEvent",
+        "Role": {
+          "Fn::GetAtt": [
+            "WebsiteWebsiteAclOnEventHandlerRoleA53F4356",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs18.x",
+        "Timeout": 300,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "WebsiteWebsiteAclCloudfrontWebAclProviderRole90C1691B": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/",
+                          {
+                            "Ref": "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4",
+                          },
+                          "-Provider",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/",
+                          {
+                            "Ref": "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4",
+                          },
+                          "-Provider:*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "WebsiteWebsiteAclCloudfrontWebAclProviderRoleDefaultPolicy288134FC": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteWebsiteAclCloudfrontWebAclOnEventHandler1D09AFC4",
+                          "Arn",
+                        ],
+                      },
+                      ":*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "WebsiteWebsiteAclCloudfrontWebAclProviderRoleDefaultPolicy288134FC",
+        "Roles": [
+          {
+            "Ref": "WebsiteWebsiteAclCloudfrontWebAclProviderRole90C1691B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "WebsiteWebsiteAclOnEventHandlerRoleA53F4356": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:wafv2:us-east-1:<AWS::AccountId>:global/(.*)$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "WafV2 resources have been scoped down to the ACL/IPSet level, however * is still needed as resource id's are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/test-AclEvent-778e0e:*/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:wafv2:us-east-1:<AWS::AccountId>:global/(.*)$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "WafV2 resources have been scoped down to the ACL/IPSet level, however * is still needed as resource id's are created just in time.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Resource::arn:aws:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/test-AclEvent-778e0e:*/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "Cloudwatch resources have been scoped down to the LogGroup level, however * is still needed as stream names are created just in time.",
+            },
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/test-AclEvent-778e0e",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:logs:",
+                          {
+                            "Ref": "AWS::Region",
+                          },
+                          ":",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":log-group:/aws/lambda/test-AclEvent-778e0e:*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "logs",
+          },
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "wafv2:CreateWebACL",
+                    "wafv2:DeleteWebACL",
+                    "wafv2:UpdateWebACL",
+                    "wafv2:GetWebACL",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:wafv2:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":global/ipset/test-WebsiteAcl-8e0e-IPSet/*",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:wafv2:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":global/webacl/test-WebsiteAcl-8e0e/*",
+                        ],
+                      ],
+                    },
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:wafv2:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":global/managedruleset/*/*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+                {
+                  "Action": [
+                    "wafv2:CreateIPSet",
+                    "wafv2:DeleteIPSet",
+                    "wafv2:UpdateIPSet",
+                    "wafv2:GetIPSet",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:wafv2:us-east-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":global/ipset/test-WebsiteAcl-8e0e-IPSet/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "wafv2",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "WebsiteWebsiteBucketAutoDeleteObjectsCustomResourceE26C29C8": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "WebsiteWebsiteBucketPolicyC593B91E",
+      ],
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BucketName": {
+          "Ref": "WebsiteWebsiteBucketF8D98E44",
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteWebsiteBucketF8D98E44": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "LoggingConfiguration": {
+          "DestinationBucketName": {
+            "Ref": "WebsiteAccessLogsBucketF61D6E5E",
+          },
+          "LogFilePrefix": "website-access-logs",
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "BucketOwnerEnforced",
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+          {
+            "Key": "aws-cdk:cr-owned:7fc47f4b",
+            "Value": "true",
+          },
+        ],
+        "VersioningConfiguration": {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "WebsiteWebsiteBucketPolicyC593B91E": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Bucket": {
+          "Ref": "WebsiteWebsiteBucketF8D98E44",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteWebsiteBucketF8D98E44",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteWebsiteBucketF8D98E44",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:PutBucketPolicy",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "WebsiteWebsiteBucketF8D98E44",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "WebsiteWebsiteBucketF8D98E44",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "s3:ListBucket",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "WebsiteOriginAccessIdentityCEE431F1",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "WebsiteWebsiteBucketF8D98E44",
+                  "Arn",
+                ],
+              },
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "WebsiteOriginAccessIdentityCEE431F1",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "WebsiteWebsiteBucketF8D98E44",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "WebsiteWebsiteDeploymentAwsCliLayer362D33CE": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "3fb6287214999ddeafa7cd0e3e58bc5144c8678bb720f3b5e45e8fd32f333eb3.zip",
+        },
+        "Description": "/opt/awscli/aws",
+      },
+      "Type": "AWS::Lambda::LayerVersion",
+    },
+    "WebsiteWebsiteDeploymentCustomResource84A2C4F4": {
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-L1",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "id": "AwsPrototyping-LambdaLatestVersion",
+              "reason": "Latest runtime cannot be configured. CDK will need to upgrade the BucketDeployment construct accordingly.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM5",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Action::s3:.*$/g",
+                },
+                {
+                  "regex": "/^Resource::.*$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoWildcardPermissions",
+              "reason": "All Policies have been scoped to a Bucket. Given Buckets can contain arbitrary content, wildcard resources with bucket scope are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsSolutions-IAM4",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "applies_to": [
+                {
+                  "regex": "/^Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole$/g",
+                },
+              ],
+              "id": "AwsPrototyping-IAMNoManagedPolicies",
+              "reason": "Buckets can contain arbitrary content, therefore wildcard resources under a bucket are required.",
+            },
+            {
+              "id": "AwsSolutions-S1",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+            {
+              "id": "AwsPrototyping-S3BucketLoggingEnabled",
+              "reason": "Access Log buckets should not have s3 bucket logging",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "DestinationBucketName": {
+          "Ref": "WebsiteWebsiteBucketF8D98E44",
+        },
+        "DistributionId": {
+          "Ref": "WebsiteCloudfrontDistribution2DAF6FDB",
+        },
+        "Prune": true,
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn",
+          ],
+        },
+        "SourceBucketNames": [
+          {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+        ],
+        "SourceMarkers": [
+          {},
+          {
+            "<<marker:0xbaba:0>>": {
+              "Ref": "AWS::Region",
+            },
+            "<<marker:0xbaba:1>>": {
+              "Ref": "testUserIdentityIdentityPoolBAEBB5D7",
+            },
+            "<<marker:0xbaba:2>>": {
+              "Ref": "testUserIdentityUserPoolB4EEB643",
+            },
+            "<<marker:0xbaba:3>>": {
+              "Ref": "testUserIdentityUserPoolWebClientBC123C65",
+            },
+            "<<marker:0xbaba:4>>": {
+              "Ref": "Api6B55D0A0",
+            },
+            "<<marker:0xbaba:5>>": {
+              "Ref": "AWS::Region",
+            },
+            "<<marker:0xbaba:6>>": {
+              "Ref": "AWS::URLSuffix",
+            },
+            "<<marker:0xbaba:7>>": {
+              "Ref": "ApiDeploymentStageprodBD2FB4EE",
+            },
+          },
+        ],
+        "SourceObjectKeys": [
+          "9b87fc8a993d5036a4525cd8cb2d459095fc72b4b46d8b8a3af3020d33642756.zip",
+          "37f8b69d2391f53dcf2ec9ff366827139c3728c7b4f11ba5a2cecd023e4ebdd7.zip",
+        ],
+      },
+      "Type": "Custom::CDKBucketDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "testUserIdentityIdentityPoolAuthenticatedRole08CCC9FE": {
+      "DependsOn": [
+        "testUserIdentityUserPoolB4EEB643",
+        "testUserIdentityUserPoolsmsRole259861DE",
+        "testUserIdentityUserPoolWebClientBC123C65",
+      ],
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "authenticated",
+                },
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "testUserIdentityIdentityPoolBAEBB5D7",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Default Authenticated Role for Identity Pool ",
+              {
+                "Fn::GetAtt": [
+                  "testUserIdentityIdentityPoolBAEBB5D7",
+                  "Name",
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testUserIdentityIdentityPoolAuthenticatedRoleDefaultPolicy0231CEF1": {
+      "DependsOn": [
+        "testUserIdentityUserPoolB4EEB643",
+        "testUserIdentityUserPoolsmsRole259861DE",
+        "testUserIdentityUserPoolWebClientBC123C65",
+      ],
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "execute-api:Invoke",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":",
+                    {
+                      "Ref": "Api6B55D0A0",
+                    },
+                    "/*/*/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "testUserIdentityIdentityPoolAuthenticatedRoleDefaultPolicy0231CEF1",
+        "Roles": [
+          {
+            "Ref": "testUserIdentityIdentityPoolAuthenticatedRole08CCC9FE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "testUserIdentityIdentityPoolBAEBB5D7": {
+      "DependsOn": [
+        "testUserIdentityUserPoolB4EEB643",
+        "testUserIdentityUserPoolsmsRole259861DE",
+        "testUserIdentityUserPoolWebClientBC123C65",
+      ],
+      "Properties": {
+        "AllowUnauthenticatedIdentities": false,
+        "CognitoIdentityProviders": [
+          {
+            "ClientId": {
+              "Ref": "testUserIdentityUserPoolWebClientBC123C65",
+            },
+            "ProviderName": {
+              "Fn::Join": [
+                "",
+                [
+                  "cognito-idp.",
+                  {
+                    "Ref": "AWS::Region",
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix",
+                  },
+                  "/",
+                  {
+                    "Ref": "testUserIdentityUserPoolB4EEB643",
+                  },
+                ],
+              ],
+            },
+            "ServerSideTokenCheck": true,
+          },
+        ],
+      },
+      "Type": "AWS::Cognito::IdentityPool",
+    },
+    "testUserIdentityIdentityPoolDefaultRoleAttachment698E37CF": {
+      "DependsOn": [
+        "testUserIdentityUserPoolB4EEB643",
+        "testUserIdentityUserPoolsmsRole259861DE",
+        "testUserIdentityUserPoolWebClientBC123C65",
+      ],
+      "Properties": {
+        "IdentityPoolId": {
+          "Ref": "testUserIdentityIdentityPoolBAEBB5D7",
+        },
+        "Roles": {
+          "authenticated": {
+            "Fn::GetAtt": [
+              "testUserIdentityIdentityPoolAuthenticatedRole08CCC9FE",
+              "Arn",
+            ],
+          },
+          "unauthenticated": {
+            "Fn::GetAtt": [
+              "testUserIdentityIdentityPoolUnauthenticatedRoleD490B381",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::Cognito::IdentityPoolRoleAttachment",
+    },
+    "testUserIdentityIdentityPoolUnauthenticatedRoleD490B381": {
+      "DependsOn": [
+        "testUserIdentityUserPoolB4EEB643",
+        "testUserIdentityUserPoolsmsRole259861DE",
+        "testUserIdentityUserPoolWebClientBC123C65",
+      ],
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition": {
+                "ForAnyValue:StringLike": {
+                  "cognito-identity.amazonaws.com:amr": "unauthenticated",
+                },
+                "StringEquals": {
+                  "cognito-identity.amazonaws.com:aud": {
+                    "Ref": "testUserIdentityIdentityPoolBAEBB5D7",
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "cognito-identity.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Default Unauthenticated Role for Identity Pool ",
+              {
+                "Fn::GetAtt": [
+                  "testUserIdentityIdentityPoolBAEBB5D7",
+                  "Name",
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "testUserIdentityUserPoolB4EEB643": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccountRecoverySetting": {
+          "RecoveryMechanisms": [
+            {
+              "Name": "verified_email",
+              "Priority": 1,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": {
+          "AllowAdminCreateUserOnly": true,
+        },
+        "AliasAttributes": [
+          "email",
+        ],
+        "AutoVerifiedAttributes": [
+          "email",
+          "phone_number",
+        ],
+        "DeletionProtection": "ACTIVE",
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "EnabledMfas": [
+          "SMS_MFA",
+          "SOFTWARE_TOKEN_MFA",
+        ],
+        "MfaConfiguration": "ON",
+        "Policies": {
+          "PasswordPolicy": {
+            "MinimumLength": 8,
+            "RequireLowercase": true,
+            "RequireNumbers": true,
+            "RequireSymbols": true,
+            "RequireUppercase": true,
+            "TemporaryPasswordValidityDays": 3,
+          },
+        },
+        "Schema": [
+          {
+            "Mutable": true,
+            "Name": "phone_number",
+            "Required": false,
+          },
+          {
+            "Mutable": true,
+            "Name": "email",
+            "Required": true,
+          },
+          {
+            "Mutable": true,
+            "Name": "given_name",
+            "Required": true,
+          },
+          {
+            "Mutable": true,
+            "Name": "family_name",
+            "Required": true,
+          },
+        ],
+        "SmsConfiguration": {
+          "ExternalId": "testtestUserIdentityUserPoolA908B557",
+          "SnsCallerArn": {
+            "Fn::GetAtt": [
+              "testUserIdentityUserPoolsmsRole259861DE",
+              "Arn",
+            ],
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UserAttributeUpdateSettings": {
+          "AttributesRequireVerificationBeforeUpdate": [
+            "email",
+            "phone_number",
+          ],
+        },
+        "UserPoolAddOns": {
+          "AdvancedSecurityMode": "ENFORCED",
+        },
+        "UsernameConfiguration": {
+          "CaseSensitive": false,
+        },
+        "VerificationMessageTemplate": {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "testUserIdentityUserPoolWebClientBC123C65": {
+      "Properties": {
+        "AllowedOAuthFlows": [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": [
+          "https://example.com",
+        ],
+        "ExplicitAuthFlows": [
+          "ALLOW_USER_PASSWORD_AUTH",
+          "ALLOW_USER_SRP_AUTH",
+          "ALLOW_REFRESH_TOKEN_AUTH",
+        ],
+        "SupportedIdentityProviders": [
+          "COGNITO",
+        ],
+        "UserPoolId": {
+          "Ref": "testUserIdentityUserPoolB4EEB643",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+    "testUserIdentityUserPoolsmsRole259861DE": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "testtestUserIdentityUserPoolA908B557",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cognito-idp.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "sns:Publish",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "sns-publish",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
