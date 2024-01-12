@@ -104,13 +104,13 @@
       },
       "steps": [
         {
-          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@types/node,@types/react,constructs,projen,typescript,@tanstack/react-query,react-dom,react"
+          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@types/node,@types/react-dom,@types/react,constructs,projen,typescript,@tanstack/react-query,react-dom,react"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @types/node @types/react constructs projen typescript @tanstack/react-query react-dom react"
+          "exec": "pnpm update @types/node @types/react-dom @types/react constructs projen typescript @tanstack/react-query react-dom react"
         },
         {
           "exec": "npx projen"

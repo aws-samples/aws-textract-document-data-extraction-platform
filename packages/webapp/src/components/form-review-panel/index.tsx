@@ -32,7 +32,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { listAllPages } from "../../api/utils";
 import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
@@ -245,7 +245,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
     [isReadOnly, onSelectRow, setDocForm, updateFormValues],
   );
 
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const updateExtractedData = async () => {
     setIsSubmittingReview(true);
@@ -273,7 +273,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
 
     setShowSuccessAlert(true);
     setIsSubmittingReview(false);
-    navigate(-1);
+    history.goBack();
   };
 
   const reviewToolbar = (
@@ -358,7 +358,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
             <Button
               variant="primary"
               onClick={async () => {
-                navigate(`/review/${docForm!.documentId}/${docForm!.formId}`);
+                history.push(`/review/${docForm!.documentId}/${docForm!.formId}`);
                 await updateStatus(
                   API,
                   docForm!.documentId,

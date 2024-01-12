@@ -49,7 +49,7 @@ const buildClient = (runtimeContext: RuntimeContext): DefaultApi => {
 
   return new DefaultApi(
     new Configuration({
-      basePath: runtimeContext.sourceApiUrl.endsWith('/') ? runtimeContext.sourceApiUrl.slice(-1) : runtimeContext.sourceApiUrl,
+      basePath: runtimeContext.sourceApiUrl.endsWith('/') ? runtimeContext.sourceApiUrl.slice(0, -1) : runtimeContext.sourceApiUrl,
       fetchApi: window.fetch.bind(window),
       middleware: [sigv4SignMiddleware],
     }),

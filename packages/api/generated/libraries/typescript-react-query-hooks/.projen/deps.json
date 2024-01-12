@@ -6,6 +6,11 @@
       "type": "build"
     },
     {
+      "name": "@types/react-dom",
+      "version": "^17",
+      "type": "build"
+    },
+    {
       "name": "@types/react",
       "version": "^17",
       "type": "build"

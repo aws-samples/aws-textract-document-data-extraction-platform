@@ -17,7 +17,7 @@ import {
 } from "aws-northstar";
 import { SideNavigationItemType } from "aws-northstar/components/SideNavigation";
 import { useContext, useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Dashboard from "./components/dashboard";
 import { Document } from "./components/document";
 import DocumentSchemas from "./components/document-schemas";
@@ -129,29 +129,29 @@ const App: React.FC = () => {
                 ></SideNavigation>
               }
             >
-              <Routes>
-                <Route path="/" element={<Dashboard />} key={"dashboard"} />
-                <Route
+              <Switch>
+                <Route exact path="/" component={() => <Dashboard />} key={"dashboard"} />
+                <Route exact
                   path="/docs"
-                  element={<DocumentSchemas />}
+                  component={() => <DocumentSchemas />}
                   key={"docs"}
                 />
-                <Route
+                <Route exact
                   path="/review/:documentId/:formId"
-                  element={<PDFFormReview isReadOnly={false} />}
+                  component={() => <PDFFormReview isReadOnly={false} />}
                   key={"review"}
                 />
-                <Route
+                <Route exact
                   path="/view/:documentId/:formId"
-                  element={<PDFFormReview isReadOnly={true} />}
+                  component={() => <PDFFormReview isReadOnly={true} />}
                   key={"view"}
                 />
-                <Route
+                <Route exact
                   path="/view/:documentId"
-                  element={<Document />}
+                  component={() => <Document />}
                   key={"viewDocument"}
                 />
-              </Routes>
+              </Switch>
             </AppLayout>
           </BrowserRouter>
         </NorthStarThemeProvider>

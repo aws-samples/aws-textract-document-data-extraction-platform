@@ -85,6 +85,11 @@
       "type": "override"
     },
     {
+      "name": "react-router-dom",
+      "version": "^5",
+      "type": "override"
+    },
+    {
       "name": "wrap-ansi",
       "version": "^7.0.0",
       "type": "override"
