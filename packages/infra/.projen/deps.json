@@ -1,11 +1,6 @@
 {
   "dependencies": [
     {
-      "name": "@aws/document-extraction-platform-webapp",
-      "version": "0.0.0",
-      "type": "build"
-    },
-    {
       "name": "@types/jest",
       "type": "build"
     },
@@ -85,7 +80,6 @@
     },
     {
       "name": "@aws/document-extraction-platform-api-typescript-infra",
-      "version": "0.0.0",
       "type": "runtime"
     },
     {

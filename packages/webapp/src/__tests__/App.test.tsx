@@ -2,3 +2,5 @@
 // SPDX-License-Identifier: MIT-0
 
 test("placeholder", () => {});
+
+export {};

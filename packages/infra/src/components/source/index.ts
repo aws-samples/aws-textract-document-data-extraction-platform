@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { NestedStack, NestedStackProps, RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy } from "aws-cdk-lib";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
 import { AttributeType } from "aws-cdk-lib/aws-dynamodb";
 import {
@@ -10,27 +10,23 @@ import {
   HttpMethods,
 } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
-import { Table } from "../../common/dynamodb/table";
-import { SourceApi } from "../api";
-import { PopulateDefaultData } from "../defaults/populate-default-data";
-import { DocumentIngestionStateMachine } from "../ingestion/document-ingestion-state-machine";
+import { SourceApi } from "./api";
+import { PopulateDefaultData } from "./defaults/populate-default-data";
+import { DocumentIngestionStateMachine } from "./ingestion/document-ingestion-state-machine";
+import { Table } from "../common/dynamodb/table";
 
-export interface SourceStackProps extends NestedStackProps {
+export interface SourceProps {
   readonly userPool: UserPool;
 }
 
 /**
  * Main stack for ingestion of source documents and extraction of their data
  */
-export class SourceStack extends NestedStack {
+export class Source extends Construct {
   public readonly sourceApi: SourceApi;
 
-  constructor(
-    scope: Construct,
-    id: string,
-    { userPool, ...props }: SourceStackProps,
-  ) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string, { userPool }: SourceProps) {
+    super(scope, id);
 
     const sourceDocumentBucket = new Bucket(this, "SourceDocumentBucket", {
       enforceSSL: true,
@@ -52,7 +48,7 @@ export class SourceStack extends NestedStack {
       "FormReviewWorkflowTags",
       {
         partitionKey: {
-          name: "tagId",
+          name: "tag_id",
           type: AttributeType.STRING,
         },
         environmentVariableName: "FORM_REVIEW_WORKFLOW_TAGS_TABLE_NAME",
@@ -61,7 +57,7 @@ export class SourceStack extends NestedStack {
 
     const documentMetadataTable = new Table(this, "DocumentMetadata", {
       partitionKey: {
-        name: "documentId",
+        name: "document_id",
         type: AttributeType.STRING,
       },
       environmentVariableName: "DOCUMENT_METADATA_TABLE_NAME",
@@ -69,11 +65,11 @@ export class SourceStack extends NestedStack {
 
     const formMetadataTable = new Table(this, "FormMetadata", {
       partitionKey: {
-        name: "documentId",
+        name: "document_id",
         type: AttributeType.STRING,
       },
       sortKey: {
-        name: "formId",
+        name: "form_id",
         type: AttributeType.STRING,
       },
       environmentVariableName: "FORM_METADATA_TABLE_NAME",
@@ -81,7 +77,7 @@ export class SourceStack extends NestedStack {
 
     const formSchemaTable = new Table(this, "FormSchemas", {
       partitionKey: {
-        name: "schemaId",
+        name: "schema_id",
         type: AttributeType.STRING,
       },
       environmentVariableName: "FORM_SCHEMA_TABLE_NAME",

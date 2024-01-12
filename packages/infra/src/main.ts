@@ -17,7 +17,7 @@ const devEnv = {
     nagPacks: [new AwsSolutionsChecks()],
   });
 
-  new ApplicationStack(app, "document-data-extraction-platform", {
+  new ApplicationStack(app, "DocumentExtractionPlatform", {
     env: devEnv,
   });
 

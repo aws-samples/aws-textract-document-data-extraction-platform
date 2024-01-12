@@ -1,24 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import { StaticWebsite } from "@aws/pdk/static-website";
-import { CfnOutput, NestedStack, NestedStackProps, Stack } from "aws-cdk-lib";
+import { CfnOutput, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { AuthStack } from "../auth/auth-stack";
-import { SourceStack } from "../source/stack";
+import { Auth } from "../auth/auth";
+import { Source } from "../source";
 
-export interface WebsiteStackProps extends NestedStackProps {
-  readonly authStack: AuthStack;
-  readonly sourceStack: SourceStack;
+export interface WebsiteProps {
+  readonly authStack: Auth;
+  readonly sourceStack: Source;
 }
 
 /**
  * Creates infrastructure components for a S3/Cloudfront React website
  */
-export class WebsiteStack extends NestedStack {
-  constructor(scope: Construct, id: string, props: WebsiteStackProps) {
-    super(scope, id, props);
+export class Website extends Construct {
+  constructor(scope: Construct, id: string, props: WebsiteProps) {
+    super(scope, id);
 
-    const website = new StaticWebsite(this, id, {
+    const website = new StaticWebsite(this, "Website", {
       websiteContentPath: "../webapp/build",
       runtimeOptions: {
         jsonPayload: {
@@ -31,9 +31,8 @@ export class WebsiteStack extends NestedStack {
       },
     });
 
-    new CfnOutput(this, "DistributionDomainName", {
-      exportName: "DistributionDomainName",
-      value: website.cloudFrontDistribution.distributionDomainName,
+    new CfnOutput(this, "WebsiteUrl", {
+      value: `https://${website.cloudFrontDistribution.distributionDomainName}/`,
     });
   }
 }

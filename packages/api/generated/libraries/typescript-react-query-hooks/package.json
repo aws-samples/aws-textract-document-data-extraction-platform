@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4",
-    "react": "^17"
+    "react": "^17",
+    "react-dom": "^17"
   },
   "main": "lib/index.js",
   "license": "Apache-2.0",

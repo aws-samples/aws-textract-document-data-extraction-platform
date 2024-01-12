@@ -1,10 +1,14 @@
 {
   "name": "@aws/document-extraction-platform",
   "scripts": {
+    "bootstrap": "pnpm exec projen bootstrap",
     "build": "pnpm exec projen build",
     "clobber": "pnpm exec projen clobber",
     "compile": "pnpm exec projen compile",
     "default": "pnpm exec projen default",
+    "deploy": "pnpm exec projen deploy",
+    "destroy": "pnpm exec projen destroy",
+    "dev": "pnpm exec projen dev",
     "eject": "pnpm exec projen eject",
     "eslint": "pnpm exec projen eslint",
     "graph": "pnpm exec projen graph",

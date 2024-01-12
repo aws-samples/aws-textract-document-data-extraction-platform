@@ -122,7 +122,9 @@ webapp.deps.removeDependency("@cloudscape-design/board-components");
   project.deps.removeDependency("react", DependencyType.BUILD);
   project.deps.removeDependency("react", DependencyType.PEER);
   project.deps.removeDependency("@types/react");
+  project.deps.removeDependency("react-dom");
   project.addDeps("react@^17");
+  project.addDeps("react-dom@^17");
   project.addDevDeps("@types/react@^17");
 });
 
@@ -156,16 +158,23 @@ webapp.preCompileTask.spawn(copyApiDocs);
 monorepo.addImplicitDependency(webapp, api.documentation.htmlRedoc!);
 
 
-new InfrastructureTsProject({
+const infra = new InfrastructureTsProject({
   parent: monorepo,
   outdir: "packages/infra",
   name: "@aws/document-extraction-platform-infra",
-  cloudscapeReactTsWebsite: webapp,
-  typeSafeApi: api,
   deps: [
+    api.infrastructure.typescript!.package.packageName,
     api.runtime.typescript!.package.packageName,
     "cdk-nag",
   ],
 });
+
+monorepo.addImplicitDependency(infra, api.handlers.python!);
+monorepo.addImplicitDependency(infra, webapp);
+
+monorepo.addTask("bootstrap", { receiveArgs: true }).exec(`nx run ${infra.name}:bootstrap`, { receiveArgs: true });
+monorepo.addTask("deploy", { receiveArgs: true }).exec(`nx run ${infra.name}:deploy --require-approval never --all`, { receiveArgs: true });
+monorepo.addTask("destroy", { receiveArgs: true }).exec(`nx run ${infra.name}:destroy --require-approval never --all`, { receiveArgs: true });
+monorepo.addTask("dev", { receiveArgs: true }).exec(`nx run ${webapp.name}:dev`, { receiveArgs: true });
 
 monorepo.synth();

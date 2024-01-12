@@ -1,14 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { NestedStack, NestedStackProps } from "aws-cdk-lib";
 import * as cognito from "aws-cdk-lib/aws-cognito";
 import { CfnIdentityPool, UserPool } from "aws-cdk-lib/aws-cognito";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import { SourceApi } from "../source/api";
 
-export interface PermissionsStackProps extends NestedStackProps {
+export interface PermissionsProps {
   readonly sourceApi: SourceApi;
   readonly userPool: UserPool;
   readonly identityPool: CfnIdentityPool;
@@ -17,13 +16,13 @@ export interface PermissionsStackProps extends NestedStackProps {
 /**
  * Applies permissions to Cognito roles
  */
-export class PermissionsStack extends NestedStack {
+export class Permissions extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { sourceApi, userPool, identityPool, ...props }: PermissionsStackProps,
+    { sourceApi, identityPool }: PermissionsProps,
   ) {
-    super(scope, id, props);
+    super(scope, id);
 
     // Role associated with unauthenticated users
     const unauthenticatedRole = new iam.Role(

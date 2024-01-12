@@ -110,10 +110,13 @@ importers:
     dependencies:
       '@tanstack/react-query':
         specifier: ^4
-        version: 4.36.1(react@17.0.2)
+        version: 4.36.1(react-dom@17.0.2)(react@17.0.2)
       react:
         specifier: ^17
         version: 17.0.2
+      react-dom:
+        specifier: ^17
+        version: 17.0.2(react@17.0.2)
     devDependencies:
       '@types/node':
         specifier: ^18
@@ -180,9 +183,6 @@ importers:
         specifier: ^10.0.5
         version: 10.3.0
     devDependencies:
-      '@aws/document-extraction-platform-webapp':
-        specifier: 0.0.0
-        version: link:../webapp
       '@types/jest':
         specifier: ^29.5.11
         version: 29.5.11
@@ -242,13 +242,13 @@ importers:
     dependencies:
       '@aws-amplify/ui-react':
         specifier: 1.2.5
-        version: 1.2.5(aws-amplify@4.3.8)(react-dom@18.2.0)(react@17.0.2)
+        version: 1.2.5(aws-amplify@4.3.8)(react-dom@17.0.2)(react@17.0.2)
       '@aws/document-extraction-platform-api-typescript-react-query-hooks':
         specifier: 0.0.0
         version: link:../api/generated/libraries/typescript-react-query-hooks
       '@material-ui/icons':
         specifier: ^4
-        version: 4.11.3(@material-ui/core@4.12.4)(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+        version: 4.11.3(@material-ui/core@4.12.4)(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       ace-builds:
         specifier: ^1
         version: 1.32.3
@@ -257,7 +257,7 @@ importers:
         version: 4.3.8(react-native@0.73.2)
       aws-northstar:
         specifier: ^1.3.25
-        version: 1.3.25(@date-io/core@1.3.13)(@types/plotly.js@2.12.32)(@types/react-dom@18.2.18)(@types/react-plotly.js@2.6.3)(@types/react-router-dom@5.3.3)(@types/react-router@5.1.20)(@types/react@17.0.74)(plotly.js@2.28.0)(prop-types@15.8.1)(react-dom@18.2.0)(react-map-gl@6.1.21)(react-pivottable@0.11.0)(react-plotly.js@2.6.0)(react-router-dom@6.21.2)(react-router@5.3.4)(react@17.0.2)
+        version: 1.3.25(@date-io/core@1.3.13)(@types/plotly.js@2.12.32)(@types/react-dom@18.2.18)(@types/react-plotly.js@2.6.3)(@types/react-router-dom@5.3.3)(@types/react-router@5.1.20)(@types/react@17.0.74)(plotly.js@2.28.0)(prop-types@15.8.1)(react-dom@17.0.2)(react-map-gl@6.1.21)(react-pivottable@0.11.0)(react-plotly.js@2.6.0)(react-router-dom@6.21.2)(react-router@5.3.4)(react@17.0.2)
       aws4fetch:
         specifier: ^1.0.17
         version: 1.0.17
@@ -272,25 +272,25 @@ importers:
         version: 17.0.2
       react-ace:
         specifier: ^10
-        version: 10.1.0(react-dom@18.2.0)(react@17.0.2)
+        version: 10.1.0(react-dom@17.0.2)(react@17.0.2)
       react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@17.0.2)
+        specifier: ^17
+        version: 17.0.2(react@17.0.2)
       react-pdf:
         specifier: ^5
-        version: 5.7.2(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)(webpack@5.89.0)
+        version: 5.7.2(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)(webpack@5.89.0)
       react-router-dom:
         specifier: ^6.21.1
-        version: 6.21.2(react-dom@18.2.0)(react@17.0.2)
+        version: 6.21.2(react-dom@17.0.2)(react@17.0.2)
       react-scripts:
         specifier: ^5
         version: 5.0.1(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.23.4)(eslint-import-resolver-typescript@3.6.1)(eslint@8.56.0)(react@17.0.2)(ts-node@10.9.2)(typescript@4.9.5)
       react-zoom-pan-pinch:
         specifier: ^2
-        version: 2.6.1(react-dom@18.2.0)(react@17.0.2)
+        version: 2.6.1(react-dom@17.0.2)(react@17.0.2)
       swagger-ui-react:
         specifier: 5.5.0
-        version: 5.5.0(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@18.2.0)(react-native@0.73.2)(react@17.0.2)
+        version: 5.5.0(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@17.0.2)(react-native@0.73.2)(react@17.0.2)
       web-vitals:
         specifier: ^3.5.1
         version: 3.5.1
@@ -300,7 +300,7 @@ importers:
         version: 6.2.0(@types/jest@29.5.11)(jest@27.5.1)
       '@testing-library/react':
         specifier: ^14.1.2
-        version: 14.1.2(react-dom@18.2.0)(react@17.0.2)
+        version: 14.1.2(react-dom@17.0.2)(react@17.0.2)
       '@testing-library/user-event':
         specifier: ^14.5.2
         version: 14.5.2(@testing-library/dom@9.3.4)
@@ -588,7 +588,7 @@ packages:
       uuid: 8.3.2
     dev: false
 
-  /@aws-amplify/ui-react@1.2.5(aws-amplify@4.3.8)(react-dom@18.2.0)(react@17.0.2):
+  /@aws-amplify/ui-react@1.2.5(aws-amplify@4.3.8)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-DUpJ6GHmQALiP2K9X7a2fUVjgeAnv78NM4644fCZ9cpbH/V8zYXSwpAWa6p7TLmLHJdZRILKVxLs1qOCXTsoxg==}
     deprecated: Version '1.x' of '@aws-amplify/ui-react' has been deprecated. Please visit https://ui.docs.amplify.aws/ for the current version of Amplify UI.
     peerDependencies:
@@ -597,7 +597,7 @@ packages:
     dependencies:
       '@aws-amplify/ui-components': 1.6.1(aws-amplify@4.3.8)
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     transitivePeerDependencies:
       - aws-amplify
     dev: false
@@ -4214,7 +4214,7 @@ packages:
     dependencies:
       postcss-selector-parser: 6.0.15
 
-  /@data-driven-forms/react-form-renderer@3.22.2(react-dom@18.2.0)(react@17.0.2):
+  /@data-driven-forms/react-form-renderer@3.22.2(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-QsfxshVowPEzJkCn2+3cOjdXLslfGW0kJ3c09hkUqftms7DvsZYgsa02e78qGxmDKZ/1/yVS6p/SJOPlTOzOfA==}
     peerDependencies:
       react: ^16.13.1 || ^17.0.2 || ^18.0.0
@@ -4226,7 +4226,7 @@ packages:
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-final-form: 6.5.9(final-form@4.20.10)(react@17.0.2)
       react-final-form-arrays: 3.1.4(final-form-arrays@3.1.0)(final-form@4.20.10)(react-final-form@6.5.9)(react@17.0.2)
     dev: false
@@ -5118,7 +5118,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: false
 
-  /@material-ui/core@4.11.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/core@4.11.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-oqb+lJ2Dl9HXI9orc6/aN8ZIAMkeThufA5iZELf2LQeBn2NtjVilF5D2w7e9RpntAzDb4jK5DsVhkfOvFY/8fg==}
     engines: {node: '>=8.0.0'}
     deprecated: Material UI v4 doesn't receive active development since September 2021. See the guide https://mui.com/material-ui/migration/migration-v4/ to upgrade to v5.
@@ -5131,10 +5131,10 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/styles': 4.11.5(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/system': 4.11.3(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/styles': 4.11.5(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/system': 4.11.3(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       '@material-ui/types': 5.1.0(@types/react@17.0.74)
-      '@material-ui/utils': 4.11.3(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/utils': 4.11.3(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       '@types/react-transition-group': 4.4.10
       clsx: 1.2.1
@@ -5142,12 +5142,12 @@ packages:
       popper.js: 1.16.1-lts
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-is: 17.0.2
-      react-transition-group: 4.4.5(react-dom@18.2.0)(react@17.0.2)
+      react-transition-group: 4.4.5(react-dom@17.0.2)(react@17.0.2)
     dev: false
 
-  /@material-ui/core@4.12.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/core@4.12.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-tr7xekNlM9LjA6pagJmL8QCgZXaubWUwkJnoYcMKd4gw/t4XiyvnTkjdGrUVicyB2BsdaAv1tvow45bPM4sSwQ==}
     engines: {node: '>=8.0.0'}
     deprecated: Material UI v4 doesn't receive active development since September 2021. See the guide https://mui.com/material-ui/migration/migration-v4/ to upgrade to v5.
@@ -5160,10 +5160,10 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/styles': 4.11.5(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/system': 4.12.2(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/styles': 4.11.5(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/system': 4.12.2(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       '@material-ui/types': 5.1.0(@types/react@17.0.74)
-      '@material-ui/utils': 4.11.3(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/utils': 4.11.3(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       '@types/react-transition-group': 4.4.10
       clsx: 1.2.1
@@ -5171,12 +5171,12 @@ packages:
       popper.js: 1.16.1-lts
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-is: 17.0.2
-      react-transition-group: 4.4.5(react-dom@18.2.0)(react@17.0.2)
+      react-transition-group: 4.4.5(react-dom@17.0.2)(react@17.0.2)
     dev: false
 
-  /@material-ui/icons@4.11.3(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/icons@4.11.3(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-IKHlyx6LDh8n19vzwH5RtHIOHl9Tu90aAAxcbWME6kp4dmvODM3UvOHJeMIDzUbd4muuJKHmlNoBN+mDY4XkBA==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -5189,13 +5189,13 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
-  /@material-ui/icons@4.11.3(@material-ui/core@4.12.4)(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/icons@4.11.3(@material-ui/core@4.12.4)(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-IKHlyx6LDh8n19vzwH5RtHIOHl9Tu90aAAxcbWME6kp4dmvODM3UvOHJeMIDzUbd4muuJKHmlNoBN+mDY4XkBA==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -5208,13 +5208,13 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/core': 4.12.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/core': 4.12.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
-  /@material-ui/lab@4.0.0-alpha.58(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/lab@4.0.0-alpha.58(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-GKHlJqLxUeHH3L3dGQ48ZavYrqGOTXkFkiEiuYMAnAvXAZP4rhMIqeHOPXSUQan4Bd8QnafDcpovOSLnadDmKw==}
     engines: {node: '>=8.0.0'}
     deprecated: Material UI v4 doesn't receive active development since September 2021. See the guide https://mui.com/material-ui/migration/migration-v4/ to upgrade to v5.
@@ -5228,17 +5228,17 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/utils': 4.11.3(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/utils': 4.11.3(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       clsx: 1.2.1
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-is: 17.0.2
     dev: false
 
-  /@material-ui/pickers@3.3.11(@date-io/core@1.3.13)(@material-ui/core@4.11.4)(prop-types@15.8.1)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/pickers@3.3.11(@date-io/core@1.3.13)(@material-ui/core@4.11.4)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-pDYjbjUeabapijS2FpSwK/ruJdk7IGeAshpLbKDa3PRRKRy7Nv6sXxAvUg2F+lID/NwUKgBmCYS5bzrl7Xxqzw==}
     deprecated: This package no longer supported. It has been relaced by @mui/x-date-pickers
     peerDependencies:
@@ -5250,17 +5250,17 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.8
       '@date-io/core': 1.3.13
-      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       '@types/styled-jsx': 2.2.9
       clsx: 1.2.1
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
-      react-transition-group: 4.4.5(react-dom@18.2.0)(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
+      react-transition-group: 4.4.5(react-dom@17.0.2)(react@17.0.2)
       rifm: 0.7.0(react@17.0.2)
     dev: false
 
-  /@material-ui/styles@4.11.5(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/styles@4.11.5(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-o/41ot5JJiUsIETME9wVLAJrmIWL3j0R0Bj2kCOLbSfqEkKf0fmaPt+5vtblUh5eXr2S+J/8J3DaCb10+CzPGA==}
     engines: {node: '>=8.0.0'}
     deprecated: Material UI v4 doesn't receive active development since September 2021. See the guide https://mui.com/material-ui/migration/migration-v4/ to upgrade to v5.
@@ -5275,7 +5275,7 @@ packages:
       '@babel/runtime': 7.23.8
       '@emotion/hash': 0.8.0
       '@material-ui/types': 5.1.0(@types/react@17.0.74)
-      '@material-ui/utils': 4.11.3(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/utils': 4.11.3(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       clsx: 1.2.1
       csstype: 2.6.21
@@ -5290,10 +5290,10 @@ packages:
       jss-plugin-vendor-prefixer: 10.10.0
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
-  /@material-ui/system@4.11.3(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/system@4.11.3(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-SY7otguNGol41Mu2Sg6KbBP1ZRFIbFLHGK81y4KYbsV2yIcaEPOmsCK6zwWlp+2yTV3J/VwT6oSBARtGIVdXPw==}
     engines: {node: '>=8.0.0'}
     deprecated: 'You can now upgrade to @mui/system. See the guide: https://mui.com/guides/migration-v4/'
@@ -5306,15 +5306,15 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/utils': 4.11.3(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/utils': 4.11.3(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       csstype: 2.6.21
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
-  /@material-ui/system@4.12.2(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/system@4.12.2(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-6CSKu2MtmiJgcCGf6nBQpM8fLkuB9F55EKfbdTC80NND5wpTmKzwdhLYLH3zL4cLlK0gVaaltW7/wMuyTnN0Lw==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -5326,12 +5326,12 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.8
-      '@material-ui/utils': 4.11.3(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/utils': 4.11.3(react-dom@17.0.2)(react@17.0.2)
       '@types/react': 17.0.74
       csstype: 2.6.21
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /@material-ui/types@5.1.0(@types/react@17.0.74):
@@ -5345,7 +5345,7 @@ packages:
       '@types/react': 17.0.74
     dev: false
 
-  /@material-ui/utils@4.11.3(react-dom@18.2.0)(react@17.0.2):
+  /@material-ui/utils@4.11.3(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-ZuQPV4rBK/V1j2dIkSSEcH5uT6AaHuKWFfotADHsC0wVL1NLd2WkFCm4ZZbX33iO4ydl6V0GPngKm8HZQ2oujg==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -5355,7 +5355,7 @@ packages:
       '@babel/runtime': 7.23.8
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-is: 17.0.2
     dev: false
 
@@ -6948,7 +6948,7 @@ packages:
     resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
     dev: false
 
-  /@tanstack/react-query@4.36.1(react@17.0.2):
+  /@tanstack/react-query@4.36.1(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -6962,6 +6962,7 @@ packages:
     dependencies:
       '@tanstack/query-core': 4.36.1
       react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
       use-sync-external-store: 1.2.0(react@17.0.2)
     dev: false
 
@@ -7009,7 +7010,7 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react@14.1.2(react-dom@18.2.0)(react@17.0.2):
+  /@testing-library/react@14.1.2(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-z4p7DVBTPjKM5qDZ0t5ZjzkpSNb+fZy1u6bzO7kk8oeGagpPCAtgh4cx1syrfp7a+QWkM021jGqjJaxJJnXAZg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -7020,7 +7021,7 @@ packages:
       '@testing-library/dom': 9.3.4
       '@types/react-dom': 18.2.18
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: true
 
   /@testing-library/user-event@14.5.2(@testing-library/dom@9.3.4):
@@ -8540,7 +8541,7 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /aws-northstar@1.3.25(@date-io/core@1.3.13)(@types/plotly.js@2.12.32)(@types/react-dom@18.2.18)(@types/react-plotly.js@2.6.3)(@types/react-router-dom@5.3.3)(@types/react-router@5.1.20)(@types/react@17.0.74)(plotly.js@2.28.0)(prop-types@15.8.1)(react-dom@18.2.0)(react-map-gl@6.1.21)(react-pivottable@0.11.0)(react-plotly.js@2.6.0)(react-router-dom@6.21.2)(react-router@5.3.4)(react@17.0.2):
+  /aws-northstar@1.3.25(@date-io/core@1.3.13)(@types/plotly.js@2.12.32)(@types/react-dom@18.2.18)(@types/react-plotly.js@2.6.3)(@types/react-router-dom@5.3.3)(@types/react-router@5.1.20)(@types/react@17.0.74)(plotly.js@2.28.0)(prop-types@15.8.1)(react-dom@17.0.2)(react-map-gl@6.1.21)(react-pivottable@0.11.0)(react-plotly.js@2.6.0)(react-router-dom@6.21.2)(react-router@5.3.4)(react@17.0.2):
     resolution: {integrity: sha512-iGgN592eVnAYvFP5dVVPW5WG8+LK9jie9trR4JbYqwS55rtzNEFMGxEovdSP4ywut6KJRSyDMlilnxHTSOE3jQ==}
     peerDependencies:
       '@types/plotly.js': ^2.12.10
@@ -8558,13 +8559,13 @@ packages:
       react-router: ^5.1.2
       react-router-dom: ^5.1.2
     dependencies:
-      '@data-driven-forms/react-form-renderer': 3.22.2(react-dom@18.2.0)(react@17.0.2)
+      '@data-driven-forms/react-form-renderer': 3.22.2(react-dom@17.0.2)(react@17.0.2)
       '@date-io/date-fns': 1.3.13(date-fns@2.30.0)
-      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/icons': 4.11.3(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/lab': 4.0.0-alpha.58(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/pickers': 3.3.11(@date-io/core@1.3.13)(@material-ui/core@4.11.4)(prop-types@15.8.1)(react-dom@18.2.0)(react@17.0.2)
-      '@material-ui/system': 4.11.3(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)
+      '@material-ui/core': 4.11.4(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/icons': 4.11.3(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/lab': 4.0.0-alpha.58(@material-ui/core@4.11.4)(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/pickers': 3.3.11(@date-io/core@1.3.13)(@material-ui/core@4.11.4)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)
+      '@material-ui/system': 4.11.3(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)
       '@types/plotly.js': 2.12.32
       '@types/react': 17.0.74
       '@types/react-dom': 18.2.18
@@ -8579,17 +8580,17 @@ packages:
       html-react-parser: 3.0.16(react@17.0.2)
       plotly.js: 2.28.0(mapbox-gl@1.13.3)
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-map-gl: 6.1.21(react@17.0.2)
       react-markdown: 6.0.3(@types/react@17.0.74)(react@17.0.2)
-      react-pivottable: 0.11.0(react-dom@18.2.0)(react@17.0.2)
+      react-pivottable: 0.11.0(react-dom@17.0.2)(react@17.0.2)
       react-plotly.js: 2.6.0(plotly.js@2.28.0)(react@17.0.2)
       react-router: 5.3.4(react@17.0.2)
-      react-router-dom: 6.21.2(react-dom@18.2.0)(react@17.0.2)
+      react-router-dom: 6.21.2(react-dom@17.0.2)(react@17.0.2)
       react-syntax-highlighter: 15.5.0(react@17.0.2)
       react-table: 7.8.0(react@17.0.2)
       react-use-localstorage: 3.5.3(react@17.0.2)
-      recharts: 2.10.4(prop-types@15.8.1)(react-dom@18.2.0)(react@17.0.2)
+      recharts: 2.10.4(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)
       remark-code-blocks: 2.0.1
       remark-frontmatter: 3.0.0
       remark-gfm: 1.0.0
@@ -18038,7 +18039,7 @@ packages:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
-  /react-ace@10.1.0(react-dom@18.2.0)(react@17.0.2):
+  /react-ace@10.1.0(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-VkvUjZNhdYTuKOKQpMIZi7uzZZVgzCjM7cLYu6F64V0mejY8a2XTyPUIMszC6A4trbeMIHbK5fYFcT/wkP/8VA==}
     peerDependencies:
       react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
@@ -18050,7 +18051,7 @@ packages:
       lodash.isequal: 4.5.0
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /react-app-polyfill@3.0.0:
@@ -18145,16 +18146,17 @@ packages:
       - utf-8-validate
     dev: false
 
-  /react-dom@18.2.0(react@17.0.2):
-    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
+  /react-dom@17.0.2(react@17.0.2):
+    resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
     peerDependencies:
-      react: ^18.2.0
+      react: 17.0.2
     dependencies:
       loose-envify: 1.4.0
+      object-assign: 4.1.1
       react: 17.0.2
-      scheduler: 0.23.0
+      scheduler: 0.20.2
 
-  /react-draggable@3.3.2(react-dom@18.2.0)(react@17.0.2):
+  /react-draggable@3.3.2(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-oaz8a6enjbPtx5qb0oDWxtDNuybOylvto1QLydsXgKmwT7e3GXC2eMVDwEMIUYJIFqVG72XpOv673UuuAq6LhA==}
     peerDependencies:
       react: '>= 16.3.0'
@@ -18163,7 +18165,7 @@ packages:
       classnames: 2.5.1
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /react-error-overlay@6.0.11:
@@ -18204,7 +18206,7 @@ packages:
       invariant: 2.2.4
     dev: false
 
-  /react-immutable-pure-component@2.2.2(immutable@3.8.2)(react-dom@18.2.0)(react@17.0.2):
+  /react-immutable-pure-component@2.2.2(immutable@3.8.2)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-vkgoMJUDqHZfXXnjVlG3keCxSO/U6WeDQ5/Sl0GK2cH8TOxEzQ5jXqDXHEL/jqk6fsNxV05oH5kD7VNMUE2k+A==}
     peerDependencies:
       immutable: '>= 2 || >= 4.0.0-rc'
@@ -18213,7 +18215,7 @@ packages:
     dependencies:
       immutable: 3.8.2
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /react-inspector@6.0.2(react@17.0.2):
@@ -18342,7 +18344,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /react-pdf@5.7.2(@types/react@17.0.74)(react-dom@18.2.0)(react@17.0.2)(webpack@5.89.0):
+  /react-pdf@5.7.2(@types/react@17.0.74)(react-dom@17.0.2)(react@17.0.2)(webpack@5.89.0):
     resolution: {integrity: sha512-hdDwvf007V0i2rPCqQVS1fa70CXut17SN3laJYlRHzuqcu8sLLjEoeXihty6c0Ev5g1mw31b8OT8EwRw1s8C4g==}
     peerDependencies:
       react: ^16.3.0 || ^17.0.0 || ^18.0.0
@@ -18357,7 +18359,7 @@ packages:
       pdfjs-dist: 2.12.313
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       tiny-invariant: 1.3.1
       tiny-warning: 1.0.3
     transitivePeerDependencies:
@@ -18366,7 +18368,7 @@ packages:
       - worker-loader
     dev: false
 
-  /react-pivottable@0.11.0(react-dom@18.2.0)(react@17.0.2):
+  /react-pivottable@0.11.0(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-hFU10XYL28NWVRnm+RRyHrzsAn/xIJzPgwPebUE2Hx5JZQl/Zxty3WUL/5cAcdK4AmTb9FQBRopLKLwuiI6VlA==}
     peerDependencies:
       react: '>=15.0.0'
@@ -18375,9 +18377,9 @@ packages:
       immutability-helper: 2.9.1
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
-      react-draggable: 3.3.2(react-dom@18.2.0)(react@17.0.2)
-      react-sortablejs: 1.5.1(react-dom@18.2.0)(react@17.0.2)(sortablejs@1.15.1)
+      react-dom: 17.0.2(react@17.0.2)
+      react-draggable: 3.3.2(react-dom@17.0.2)(react@17.0.2)
+      react-sortablejs: 1.5.1(react-dom@17.0.2)(react@17.0.2)(sortablejs@1.15.1)
       sortablejs: 1.15.1
     dev: false
 
@@ -18396,7 +18398,7 @@ packages:
     resolution: {integrity: sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==}
     dev: false
 
-  /react-redux@8.1.3(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@18.2.0)(react-native@0.73.2)(react@17.0.2)(redux@4.2.1):
+  /react-redux@8.1.3(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@17.0.2)(react-native@0.73.2)(react@17.0.2)(redux@4.2.1):
     resolution: {integrity: sha512-n0ZrutD7DaX/j9VscF+uTALI3oUPa/pO4Z3soOBIjuRn/FzVu6aehhysxZCLi6y7duMf52WNZGMl7CtuK5EnRw==}
     peerDependencies:
       '@types/react': ^16.8 || ^17.0 || ^18.0
@@ -18424,7 +18426,7 @@ packages:
       '@types/use-sync-external-store': 0.0.3
       hoist-non-react-statics: 3.3.2
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-is: 18.2.0
       react-native: 0.73.2(@babel/core@7.23.7)(@babel/preset-env@7.23.8)(react@17.0.2)
       redux: 4.2.1
@@ -18440,7 +18442,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /react-router-dom@6.21.2(react-dom@18.2.0)(react@17.0.2):
+  /react-router-dom@6.21.2(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-tE13UukgUOh2/sqYr6jPzZTzmzc70aGRP4pAjG2if0IP3aUT+sBtAKUJh0qMh0zylJHGLmzS+XWVaON4UklHeg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -18449,7 +18451,7 @@ packages:
     dependencies:
       '@remix-run/router': 1.14.2
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-router: 6.21.2(react@17.0.2)
     dev: false
 
@@ -18587,7 +18589,7 @@ packages:
       react-is: 18.2.0
     dev: false
 
-  /react-smooth@2.0.5(prop-types@15.8.1)(react-dom@18.2.0)(react@17.0.2):
+  /react-smooth@2.0.5(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-BMP2Ad42tD60h0JW6BFaib+RJuV5dsXJK9Baxiv/HlNFjvRLqA9xrNKxVWnUIZPQfzUwGXIlU/dSYLU+54YGQA==}
     peerDependencies:
       prop-types: ^15.6.0
@@ -18597,11 +18599,11 @@ packages:
       fast-equals: 5.0.1
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
-      react-transition-group: 2.9.0(react-dom@18.2.0)(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
+      react-transition-group: 2.9.0(react-dom@17.0.2)(react@17.0.2)
     dev: false
 
-  /react-sortablejs@1.5.1(react-dom@18.2.0)(react@17.0.2)(sortablejs@1.15.1):
+  /react-sortablejs@1.5.1(react-dom@17.0.2)(react@17.0.2)(sortablejs@1.15.1):
     resolution: {integrity: sha512-bKIc1UVhjZt55Nb6WZFxZ8Jwyngg8CTt+w+iG1pA5k9LQsg1J0X6nLppHatSSDZDECtRZKp2z47tmmhPRJNj4g==}
     peerDependencies:
       react: '>=15.0.0'
@@ -18610,7 +18612,7 @@ packages:
     dependencies:
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       sortablejs: 1.15.1
     dev: false
 
@@ -18635,7 +18637,7 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-transition-group@2.9.0(react-dom@18.2.0)(react@17.0.2):
+  /react-transition-group@2.9.0(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==}
     peerDependencies:
       react: '>=15.0.0'
@@ -18645,11 +18647,11 @@ packages:
       loose-envify: 1.4.0
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-lifecycles-compat: 3.0.4
     dev: false
 
-  /react-transition-group@4.4.5(react-dom@18.2.0)(react@17.0.2):
+  /react-transition-group@4.4.5(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
     peerDependencies:
       react: '>=16.6.0'
@@ -18660,7 +18662,7 @@ packages:
       loose-envify: 1.4.0
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /react-use-localstorage@3.5.3(react@17.0.2):
@@ -18671,7 +18673,7 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-zoom-pan-pinch@2.6.1(react-dom@18.2.0)(react@17.0.2):
+  /react-zoom-pan-pinch@2.6.1(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-4Cgdnn6OwN4DomY/E9NpAf0TyCtslEgwdYn96ZV/f5LKuw/FE3gcIBJiaKFmMGThDGV0yKN5mzO8noi34+UE4Q==}
     engines: {node: '>=8', npm: '>=5'}
     peerDependencies:
@@ -18679,7 +18681,7 @@ packages:
       react-dom: '*'
     dependencies:
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /react@17.0.2:
@@ -18794,7 +18796,7 @@ packages:
       decimal.js-light: 2.5.1
     dev: false
 
-  /recharts@2.10.4(prop-types@15.8.1)(react-dom@18.2.0)(react@17.0.2):
+  /recharts@2.10.4(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-/Q7/wdf8bW91lN3NEeCjL9RWfaiXQViJFgdnas4Eix/I8B9HAI3tHHK/CW/zDfgRMh4fzW1zlfjoz1IAapLO1Q==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -18807,9 +18809,9 @@ packages:
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 17.0.2
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-is: 16.13.1
-      react-smooth: 2.0.5(prop-types@15.8.1)(react-dom@18.2.0)(react@17.0.2)
+      react-smooth: 2.0.5(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)
       recharts-scale: 0.4.5
       tiny-invariant: 1.3.1
       victory-vendor: 36.8.1
@@ -19355,10 +19357,11 @@ packages:
     dependencies:
       xmlchars: 2.2.0
 
-  /scheduler@0.23.0:
-    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
+  /scheduler@0.20.2:
+    resolution: {integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==}
     dependencies:
       loose-envify: 1.4.0
+      object-assign: 4.1.1
 
   /scheduler@0.24.0-canary-efb381bbf-20230505:
     resolution: {integrity: sha512-ABvovCDe/k9IluqSh4/ISoq8tIJnW8euVAWYt5j/bg6dRnqwQwiGO1F/V4AyK96NGF/FB04FhOUDuWj8IKfABA==}
@@ -20309,7 +20312,7 @@ packages:
       - debug
     dev: false
 
-  /swagger-ui-react@5.5.0(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@18.2.0)(react-native@0.73.2)(react@17.0.2):
+  /swagger-ui-react@5.5.0(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@17.0.2)(react-native@0.73.2)(react@17.0.2):
     resolution: {integrity: sha512-K2LSaVQwmPa3Rvp9n1ULVMjFArboOI4/mXy1bD6HkENzCABURGvEB5I0wG+L86ExbJd/OQ42iqKOYWcuwW7zvA==}
     peerDependencies:
       react: '>=17.0.0'
@@ -20334,11 +20337,11 @@ packages:
       react: 17.0.2
       react-copy-to-clipboard: 5.1.0(react@17.0.2)
       react-debounce-input: 3.3.0(react@17.0.2)
-      react-dom: 18.2.0(react@17.0.2)
+      react-dom: 17.0.2(react@17.0.2)
       react-immutable-proptypes: 2.2.0(immutable@3.8.2)
-      react-immutable-pure-component: 2.2.2(immutable@3.8.2)(react-dom@18.2.0)(react@17.0.2)
+      react-immutable-pure-component: 2.2.2(immutable@3.8.2)(react-dom@17.0.2)(react@17.0.2)
       react-inspector: 6.0.2(react@17.0.2)
-      react-redux: 8.1.3(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@18.2.0)(react-native@0.73.2)(react@17.0.2)(redux@4.2.1)
+      react-redux: 8.1.3(@types/react-dom@18.2.18)(@types/react@17.0.74)(react-dom@17.0.2)(react-native@0.73.2)(react@17.0.2)(redux@4.2.1)
       react-syntax-highlighter: 15.5.0(react@17.0.2)
       redux: 4.2.1
       redux-immutable: 4.0.0(immutable@3.8.2)

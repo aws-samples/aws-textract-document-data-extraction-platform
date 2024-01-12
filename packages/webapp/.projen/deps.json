@@ -163,6 +163,7 @@
     },
     {
       "name": "react-dom",
+      "version": "^17",
       "type": "runtime"
     },
     {

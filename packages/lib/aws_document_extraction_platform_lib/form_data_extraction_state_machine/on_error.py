@@ -44,27 +44,25 @@ def handler(event: OnErrorInput, context):
         raise Exception(
             "No form found in document {} with id {}".format(document_id, form_id)
         )
-    form_dict = JSONEncoder().default(form)
 
     # Mark the document execution as failed
-    form_dict["extractionExecution"]["status"] = "FAILED"
-    form_dict["extractionExecution"]["statusReason"] = get_sfn_error_message(
+    form.extraction_execution.status = "FAILED"
+    form.extraction_execution.status_reason = get_sfn_error_message(
         event["error_details"]
     )
-    status_transition_log = list(form_dict["statusTransitionLog"])
+    status_transition_log = list(form.status_transition_log)
     status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="EXTRACTION_FAILED",
-            actingUser=form_dict["updatedBy"],
+            actingUser=form.updated_by,
         )
     )
-    form_dict["statusTransitionLog"] = status_transition_log
+    form.status_transition_log = status_transition_log
 
-    form_dict = FormMetadata(**form_dict)
-    form_store.put_form_metadata(form_dict["updatedBy"], form_dict)
+    form_store.put_form_metadata(form.updated_by, form)
 
     with metric_publisher() as m:
-        m.add_form_count(form_dict)
+        m.add_form_count(form)
 
     return {}

@@ -29,12 +29,12 @@ class DocumentMetadataStore(Store):
         )
 
     def _key(self, document_id: str) -> Dict:
-        return {"documentId": document_id}
+        return {"document_id": document_id}
 
     def put_document_metadata(
         self, user: str, document: DocumentMetadata
     ) -> DocumentMetadata:
-        return super().put(self._key(document.documentId), user, document)
+        return super().put(self._key(document.document_id), user, document)
 
     def get_document_metadata(self, document_id: str) -> Optional[DocumentMetadata]:
         return super().get(self._key(document_id))

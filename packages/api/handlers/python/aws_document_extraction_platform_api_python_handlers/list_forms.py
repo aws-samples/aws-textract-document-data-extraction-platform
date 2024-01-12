@@ -1,7 +1,7 @@
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
 from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
-from aws_document_extraction_platform_lib.utils.ddb.store import to_paginated_response_args, to_pagination_parameters
+from aws_document_extraction_platform_lib.utils.ddb.store import PaginationParameters
 from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
 from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
@@ -16,13 +16,13 @@ def list_forms(input: ListFormsRequest, **kwargs) -> ListFormsOperationResponses
     LoggingInterceptor.get_logger(input).info("Start ListForms Operation")
 
     response = FormMetadataStore().list_all(
-        to_pagination_parameters(input.request_parameters)
+        PaginationParameters(page_size=input.request_parameters.page_size, next_token=input.request_parameters.next_token)
     )
     if response.error is not None:
         return Response.bad_request(ApiError(message=response.error))
 
     return Response.success(
-        ListFormsResponse(forms=response.items, **to_paginated_response_args(response))
+        ListFormsResponse(forms=response.items, next_token=response.next_token)
     )
 
 

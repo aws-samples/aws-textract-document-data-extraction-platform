@@ -27,10 +27,10 @@ class FormSchemaStore(Store):
         )
 
     def _key(self, schema_id: str) -> Dict:
-        return {"schemaId": schema_id}
+        return {"schema_id": schema_id}
 
     def put_form_schema(self, user: str, schema: FormSchema) -> FormSchema:
-        return super().put(self._key(schema.schemaId), user, schema)
+        return super().put(self._key(schema.schema_id), user, schema)
 
     def get_form_schema(self, schema_id: str) -> Optional[FormSchema]:
         return super().get(self._key(schema_id))

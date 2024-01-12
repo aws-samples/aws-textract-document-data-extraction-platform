@@ -47,27 +47,25 @@ def handler(event: StartDataExtractionInput, context) -> StartDataExtractionOutp
                 event["form"]["document_id"], event["form"]["form_id"]
             )
         )
-    form = JSONEncoder().default(form)
 
     # Mark the form data extraction as in progress
-    form["extractionExecution"] = ExtractionExecution(
+    form.extraction_execution = ExtractionExecution(
         status=ExtractionExecutionStatus("IN_PROGRESS"),
         executionId=arn_to_execution_id(event["sfn_execution_arn"]),
     )
-    status_transition_log = list(form["statusTransitionLog"])
+    status_transition_log = list(form.status_transition_log)
     status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="STARTED_EXTRACTION",
-            actingUser=form["updatedBy"],
+            actingUser=form.updated_by,
         )
     )
-    form["statusTransitionLog"] = status_transition_log
-    form = FormMetadata(**form)
-    store.put_form_metadata(form["updatedBy"], form)
+    form.status_transition_log = status_transition_log
+    store.put_form_metadata(form.updated_by, form)
 
     # Find any queries we should execute based on the schema
-    newSchemaSnapshot = FormJSONSchema(**(form["schemaSnapshot"]))
+    newSchemaSnapshot = form.schema_snapshot.model_copy()
     schema_queries = get_queries_from_schema(newSchemaSnapshot)
     textract_feature_types = ["FORMS", "TABLES"]
     textract_extra_args = {}

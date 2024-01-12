@@ -29,12 +29,12 @@ class FormReviewWorkflowTagStore(Store):
         )
 
     def _key(self, tag_id: str) -> Dict:
-        return {"tagId": tag_id}
+        return {"tag_id": tag_id}
 
     def put_form_review_workflow_tag(
         self, user: str, formReviewTag: FormReviewWorkflowTag
     ) -> FormReviewWorkflowTag:
-        return super().put(self._key(formReviewTag["tagId"]), user, formReviewTag)
+        return super().put(self._key(formReviewTag.tag_id), user, formReviewTag)
 
     def get_form_review_workflow_tag(
         self, tag_id: str

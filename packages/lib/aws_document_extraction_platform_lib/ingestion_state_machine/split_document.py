@@ -42,10 +42,10 @@ def _write_split_form_to_s3(
     Take the pages from the document that were classified as the given form, and write to s3 as a new pdf
     """
     form_location: S3Location = {
-        "bucket": document_location["bucket"],
+        "bucket": document_location.bucket,
         "objectKey": get_form_key(
             document_id,
-            get_file_name_from_document_key(document_location["objectKey"]),
+            get_file_name_from_document_key(document_location.object_key),
             form_id,
         ),
     }

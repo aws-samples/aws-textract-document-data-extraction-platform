@@ -1,5 +1,14 @@
 {
   "tasks": {
+    "bootstrap": {
+      "name": "bootstrap",
+      "steps": [
+        {
+          "exec": "nx run @aws/document-extraction-platform-infra:bootstrap",
+          "receiveArgs": true
+        }
+      ]
+    },
     "build": {
       "name": "build",
       "description": "Full release build for all affected projects",
@@ -58,6 +67,33 @@
       "steps": [
         {
           "exec": "ts-node --project tsconfig.dev.json .projenrc.ts"
+        }
+      ]
+    },
+    "deploy": {
+      "name": "deploy",
+      "steps": [
+        {
+          "exec": "nx run @aws/document-extraction-platform-infra:deploy --require-approval never --all",
+          "receiveArgs": true
+        }
+      ]
+    },
+    "destroy": {
+      "name": "destroy",
+      "steps": [
+        {
+          "exec": "nx run @aws/document-extraction-platform-infra:destroy --require-approval never --all",
+          "receiveArgs": true
+        }
+      ]
+    },
+    "dev": {
+      "name": "dev",
+      "steps": [
+        {
+          "exec": "nx run @aws/document-extraction-platform-webapp:dev",
+          "receiveArgs": true
         }
       ]
     },

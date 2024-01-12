@@ -160,7 +160,7 @@ export class SourceApi extends Construct {
 
     const listFormsLambda = new ListFormsFunction(
       this,
-      "ListFormst",
+      "ListForms",
       apiLambdaProps,
     );
     formMetadataTable.grantReadData(listFormsLambda);

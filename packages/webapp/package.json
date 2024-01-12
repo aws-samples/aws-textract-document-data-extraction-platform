@@ -53,7 +53,7 @@
     "lodash": "^4.17.21",
     "react": "^17",
     "react-ace": "^10",
-    "react-dom": "^18.2.0",
+    "react-dom": "^17",
     "react-pdf": "^5",
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5",

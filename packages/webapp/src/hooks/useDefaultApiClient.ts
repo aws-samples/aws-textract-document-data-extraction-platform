@@ -49,7 +49,7 @@ const buildClient = (runtimeContext: RuntimeContext): DefaultApi => {
 
   return new DefaultApi(
     new Configuration({
-      basePath: runtimeContext.apiUrl,
+      basePath: runtimeContext.sourceApiUrl.endsWith('/') ? runtimeContext.sourceApiUrl.slice(-1) : runtimeContext.sourceApiUrl,
       fetchApi: window.fetch.bind(window),
       middleware: [sigv4SignMiddleware],
     }),
@@ -60,6 +60,6 @@ export const useDefaultApiClient = () => {
   const runtimeContext = useContext(RuntimeConfigContext);
 
   return useMemo(() => {
-    return runtimeContext?.apiUrl ? buildClient(runtimeContext) : undefined;
-  }, [runtimeContext?.apiUrl]);
+    return runtimeContext?.sourceApiUrl ? buildClient(runtimeContext) : undefined;
+  }, [runtimeContext?.sourceApiUrl]);
 };

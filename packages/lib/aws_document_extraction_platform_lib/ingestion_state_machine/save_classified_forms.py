@@ -55,10 +55,10 @@ def _handle_processed_form(
     Take the pages from the document that were classified as the given form, and write to s3 as a new pdf
     """
     form_location: S3Location = {
-        "bucket": document_location["bucket"],
+        "bucket": document_location.bucket,
         "objectKey": get_document_key(
             document_id,
-            get_file_name_from_document_key(document_location["objectKey"]),
+            get_file_name_from_document_key(document_location.object_key),
         ),
     }
 
@@ -88,17 +88,15 @@ def handler(event: SaveClassifiedFormsInput, context):
     if document is None:
         raise Exception("No document found with id {}".format(document_id))
 
-    document_dict = JSONEncoder().default(document)
-
     schemas: Dict[str, FormSchema] = {}
 
     document_location = event["document_location"]
 
     document_pdf = read_pdf_from_s3(
-        document_location["bucket"], document_location["objectKey"]
+        document_location.bucket, document_location.object_key
     )
 
-    document_dict["numberOfPages"] = document_pdf.numPages
+    document.number_of_pages = document_pdf.numPages
 
     classified_forms: List[ClassifiedSplitForm] = []
     processed_forms: List[ClassifiedSplitForm] = []
@@ -121,36 +119,36 @@ def handler(event: SaveClassifiedFormsInput, context):
         form = classified_forms[i]
 
         schema = (
-            schemas[form["schema_id"]]
-            if form["schema_id"] in schemas
-            else schema_store.get_form_schema(form["schema_id"])
+            schemas[form.schema_id]
+            if form.schema_id in schemas
+            else schema_store.get_form_schema(form.schema_id)
         )
         if schema is None:
-            raise Exception("No schema found with id {}".format(form["schema_id"]))
-        schemas[form["schema_id"]] = schema
+            raise Exception("No schema found with id {}".format(form.schema_id))
+        schemas[form.schema_id] = schema
 
         form_store.put_form_metadata(
             username,
             FormMetadata(
                 documentId=document_id,
-                documentName=document_dict["name"],
-                formId=form["form_id"],
-                schemaId=form["schema_id"],
-                startPageIndex=form["start_page"],
-                endPageIndex=form["end_page"],
-                numberOfPages=form["end_page"]
-                - form["start_page"]
+                documentName=document.name,
+                formId=form.form_id,
+                schemaId=form.schema_id,
+                startPageIndex=form.start_page,
+                endPageIndex=form.end_page,
+                numberOfPages=form.end_page
+                - form.start_page
                 + 1,  # Start/end page indices are inclusive so add 1 for total pages
                 location=S3Location(
-                    bucket=form["location"]["bucket"],
-                    objectKey=form["location"]["objectKey"],
+                    bucket=form.location.bucket,
+                    objectKey=form.location.object_key,
                 ),
                 extractionExecution=ExtractionExecution(
                     status=ExtractionExecutionStatus("NOT_STARTED"),
                     executionId="not_started_yet",
                 ),
                 # Store a snapshot of the schema at the time of extraction, since these may evolve over time
-                schemaSnapshot=schema["schema"],
+                schemaSnapshot=schema.schema,
                 statusTransitionLog=[
                     StatusTransition(
                         timestamp=utc_now(),
@@ -162,14 +160,14 @@ def handler(event: SaveClassifiedFormsInput, context):
         )
 
         processed_forms.append(
-            _handle_processed_form(document_id, form["form_id"], form["location"], form)
+            _handle_processed_form(document_id, form.form_id, form.location, form)
         )
 
     # Update the ingestion status to success
-    document_dict["ingestionExecutionStatus"] = ExecutionStatus("SUCCEEDED")
-    document_dict["numberOfClassifiedForms"] = len(classified_forms)
+    document.ingestion_execution.status = ExecutionStatus("SUCCEEDED")
+    document.number_of_classified_forms = len(classified_forms)
 
-    status_transition_log = list(document_dict["statusTransitionLog"])
+    status_transition_log = list(document.status_transition_log)
     status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
@@ -177,15 +175,13 @@ def handler(event: SaveClassifiedFormsInput, context):
             actingUser=username,
         )
     )
-    document_dict["statusTransitionLog"] = status_transition_log
+    document.status_transition_log = status_transition_log
 
-    new_document = DocumentMetadata(**document_dict)
-
-    document_store.put_document_metadata(username, new_document)
+    document_store.put_document_metadata(username, document)
 
     # Write the classification time metrics
     with metric_publisher() as m:
-        m.add_classification_time(new_document)
-        m.add_document_count(new_document)
+        m.add_classification_time(document)
+        m.add_document_count(document)
 
     return {"forms": processed_forms}

@@ -1,58 +1,28 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import {
-  Duration,
-  NestedStack,
-  NestedStackProps,
-  aws_apigateway as apigateway,
-} from "aws-cdk-lib";
+import { Duration } from "aws-cdk-lib";
 import {
   CfnIdentityPool,
   CfnUserPool,
   UserPool,
   UserPoolClient,
-  UserPoolDomain,
 } from "aws-cdk-lib/aws-cognito";
-import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
-export interface AuthStackProps extends NestedStackProps {}
+export interface AuthProps {}
 
 /**
  * Creates Cognito resources for auth
  */
-export class AuthStack extends NestedStack {
+export class Auth extends Construct {
   public readonly userPool: UserPool;
   public readonly identityPool: CfnIdentityPool;
-  public readonly userPoolDomain: UserPoolDomain;
   public readonly userPoolClient: UserPoolClient;
 
-  constructor(scope: Construct, id: string, props: AuthStackProps) {
-    super(scope, id, props);
-
-    const cloudWatchRole = new iam.Role(this, "app_cloudwatchrole", {
-      assumedBy: new iam.CompositePrincipal(
-        new iam.ServicePrincipal("apigateway.amazonaws.com"),
-      ),
-      roleName: "app_cloudwatchrole",
-    });
-
-    // this is to get around weird CDK deployment issues where the
-    // apigw resource deployment fails due to the absence of the
-    // account cw logs role being set
-
-    cloudWatchRole.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName(
-        "service-role/AmazonAPIGatewayPushToCloudWatchLogs",
-      ),
-    );
-
-    new apigateway.CfnAccount(this, "account", {
-      cloudWatchRoleArn: cloudWatchRole.roleArn,
-    });
+  constructor(scope: Construct, id: string, _props?: AuthProps) {
+    super(scope, id);
 
     this.userPool = new UserPool(this, "UserPool", {
-      userPoolName: "UserPool",
       selfSignUpEnabled: false,
       signInAliases: {
         username: true,
@@ -86,12 +56,12 @@ export class AuthStack extends NestedStack {
       advancedSecurityMode: "ENFORCED",
     };
 
-    this.userPoolDomain = new UserPoolDomain(this, "UserPoolDomain", {
-      userPool: this.userPool,
-      cognitoDomain: {
-        domainPrefix: `${this.account}`,
-      },
-    });
+    // this.userPoolDomain = new UserPoolDomain(this, "UserPoolDomain", {
+    //   userPool: this.userPool,
+    //   cognitoDomain: {
+    //     domainPrefix: `${Stack.of(this).account}`,
+    //   },
+    // });
 
     this.userPoolClient = this.userPool.addClient("UserPoolClient", {
       authFlows: {

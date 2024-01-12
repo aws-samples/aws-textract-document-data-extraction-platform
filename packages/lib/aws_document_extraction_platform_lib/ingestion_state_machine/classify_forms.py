@@ -2,21 +2,13 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from typing import Any, TypedDict, List, Tuple, Set, Optional, Mapping
+from typing import Any, TypedDict, List
 
-from aws_document_extraction_platform_api_python_runtime.models.form_json_schema import FormJSONSchema
-from aws_document_extraction_platform_api_python_runtime.models.form_schema import FormSchema
 from trp import Document
 
 from aws_document_extraction_platform_lib.utils.textract.analysis import (
     get_full_textract_document_analysis,
     BoundingBox,
-    find_blocks_in_hitbox,
-)
-from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import FormSchemaStore
-from aws_document_extraction_platform_lib.utils.textract.extraction import (
-    ordered_object_schema_property_keys,
-    get_form_keys_from_schema,
 )
 from aws_document_extraction_platform_lib.utils.logger import get_logger
 

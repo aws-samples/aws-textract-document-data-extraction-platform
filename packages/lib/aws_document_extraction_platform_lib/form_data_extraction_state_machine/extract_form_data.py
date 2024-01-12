@@ -5,7 +5,6 @@
 import boto3
 import json
 from typing import TypedDict
-from aws_document_extraction_platform_api_python_runtime.api_client import JSONEncoder
 from aws_document_extraction_platform_api_python_runtime.models.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
@@ -60,65 +59,59 @@ def handler(event: ExtractFormDataInput, context):
     if document_metadata is None:
         raise Exception("No document found with id {}".format(document_id))
 
-    form_metadata_dict = JSONEncoder().default(obj=form_metadata)
-
     # Store the full textract result in s3. This is not used in the prototype but may be useful for implementing
     # "re-run" apis or testing changes to extraction logic
-    form_metadata_dict["textractOutputLocation"] = S3Location(
-        bucket=form_metadata_dict["location"]["bucket"],
+    form_metadata.textract_output_location = S3Location(
+        bucket=form_metadata.location.bucket,
         objectKey="{}/textract_output.json".format(
-            remove_extension(form_metadata_dict["location"]["objectKey"])
+            remove_extension(form_metadata.location.object_key)
         ),
     )
     boto3.client("s3").put_object(
-        Bucket=form_metadata_dict["textractOutputLocation"]["bucket"],
-        Key=form_metadata_dict["textractOutputLocation"]["objectKey"],
+        Bucket=form_metadata.textract_output_location.bucket,
+        Key=form_metadata.textract_output_location.object_key,
         Body=json.dumps(textract_result),
     )
-    schemaSnapshot = form_metadata_dict["schemaSnapshot"]
-    schema_snap = FormJSONSchema(**schemaSnapshot)
+    schemaSnapshot = form_metadata.schema_snapshot
+    schema_snap = schemaSnapshot.model_copy()
 
     # Extract data from the document, conforming to the given schema
     extracted_data = extract_schema_fields_from_document(
-        textract_result, form_metadata_dict["schemaSnapshot"]
+        textract_result, form_metadata.schema_snapshot
     )
 
     extracted_data_schema_snap = extract_schema_fields_from_document(
         textract_result, schema_snap
     )
 
-    log.info("Schema for extraction: %s", dict(form_metadata_dict["schemaSnapshot"]))
+    log.info("Schema for extraction: %s", dict(form_metadata.schema_snapshot))
     log.info("Extracted data: %s", extracted_data)
 
     # Write the extracted data to the form table
-    form_metadata_dict["extractedData"] = extracted_data_schema_snap.data
-    form_metadata_dict["originalExtractedData"] = extracted_data_schema_snap.data
-    form_metadata_dict["extractedDataMetadata"] = extracted_data_schema_snap.metadata
-    form_metadata_dict[
-        "averageConfidence"
-    ] = extracted_data_schema_snap.average_confidence
-    form_metadata_dict["extractionExecution"]["status"] = ExtractionExecutionStatus(
+    form_metadata.extracted_data = extracted_data_schema_snap.data
+    form_metadata.original_extracted_data = extracted_data_schema_snap.data
+    form_metadata.extracted_data_metadata = extracted_data_schema_snap.metadata
+    form_metadata.average_confidence = extracted_data_schema_snap.average_confidence
+    form_metadata.extraction_execution.status = ExtractionExecutionStatus(
         "READY_FOR_REVIEW"
     )
-    status_transition_log = list(form_metadata_dict["statusTransitionLog"])
+    status_transition_log = list(form_metadata.status_transition_log)
     status_transition_log.append(
         StatusTransition(
             timestamp=utc_now(),
             status="READY_FOR_REVIEW",
-            actingUser=form_metadata_dict["updatedBy"],
+            actingUser=form_metadata.updated_by,
         )
     )
-    form_metadata_dict["statusTransitionLog"] = status_transition_log
+    form_metadata.status_transition_log = status_transition_log
 
-    form_metadata_dict = FormMetadata(**form_metadata_dict)
-
-    form_store.put_form_metadata(form_metadata_dict["updatedBy"], form_metadata_dict)
+    form_store.put_form_metadata(form_metadata.updated_by, form_metadata)
 
     # Add metrics since processing has completed
     with metric_publisher() as m:
-        m.add_extraction_time(form_metadata_dict)
-        m.add_processing_time(document_metadata, form_metadata_dict)
-        m.add_form_count(form_metadata_dict)
-        m.add_average_confidence(form_metadata_dict)
+        m.add_extraction_time(form_metadata)
+        m.add_processing_time(document_metadata, form_metadata)
+        m.add_form_count(form_metadata)
+        m.add_average_confidence(form_metadata)
 
     return {}

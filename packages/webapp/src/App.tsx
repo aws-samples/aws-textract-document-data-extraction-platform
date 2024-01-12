@@ -3,7 +3,7 @@
 import "./App.css";
 
 import { AmplifyAuthenticator, AmplifySignIn } from "@aws-amplify/ui-react";
-import { Auth } from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import {
   AppLayout,
   BreadcrumbGroup,
@@ -16,18 +16,34 @@ import {
   SideNavigation,
 } from "aws-northstar";
 import { SideNavigationItemType } from "aws-northstar/components/SideNavigation";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./components/dashboard";
 import { Document } from "./components/document";
 import DocumentSchemas from "./components/document-schemas";
 import PDFFormReview from "./components/review";
+import { RuntimeConfigContext } from "./components/runtime-context";
 
 const App: React.FC = () => {
   const [user, setUser] = useState<any>();
   const openInNewTab = (url: string) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
+
+  const context = useContext(RuntimeConfigContext);
+  useEffect(() => {
+    if (context) {
+      Amplify.configure({
+        Auth: {
+          region: context.region,
+          userPoolId: context.userPoolId,
+          userPoolWebClientId: context.userPoolWebClientId,
+          identityPoolId: context.identityPoolId,
+        },
+      });
+    }
+  }, [context]);
+
   return (
     <AmplifyAuthenticator
       handleAuthStateChange={async () => {

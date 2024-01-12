@@ -28,7 +28,7 @@ class FormMetadataStore(Store):
         )
 
     def _key(self, document_id: str, form_id: str) -> Dict:
-        return {"documentId": document_id, "formId": form_id}
+        return {"document_id": document_id, "form_id": form_id}
 
     def put_form_metadata(self, user: str, form: FormMetadata) -> FormMetadata:
         return super().put(self._key(form.documentId, form.formId), user, form)
@@ -48,5 +48,5 @@ class FormMetadataStore(Store):
     ) -> PaginatedItemsResponse[FormMetadata]:
         return super().list(
             pagination_params,
-            fetch_page=fetch_page_with_query_for_key_equals("documentId", document_id),
+            fetch_page=fetch_page_with_query_for_key_equals("document_id", document_id),
         )

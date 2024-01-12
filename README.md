@@ -333,52 +333,37 @@ and credentials for your target AWS account. This can be a named profile, or the
 aws configure [--profile <AWS_PROFILE>]
 ```
 
-Next, bootstrap CDK (if you haven't done so already for your AWS account), and deploy.
+Next, bootstrap CDK (if you haven't done so already for your AWS account):
 
 ```bash
-cd packages/infra
-npx cdk bootstrap [--profile <AWS_PROFILE>]
-npx cdk deploy [--profile <AWS_PROFILE>]
-cd ../..
+pnpm run bootstrap [--profile <AWS_PROFILE>]
 ```
 
-#### Deploying locally to a sandbox environment
-
-- note you need bootstrap CDK to have been run before deploying in your aws account
+And deploy:
 
 ```bash
-npx cdk bootstrap [--profile <AWS_PROFILE>]
+pnpm run deploy [--profile <AWS_PROFILE>]
 ```
 
-If CDK boostrap stack has already been deployed, run the following command from the root of the project:
+#### Webapp Local Dev Server
 
-```bash
-cd packages/infra && yarn build && yarn deploy-sandbox --profile <AWS_PROFILE>
+The webapp "points" to a particular backend based on its `runtime-config.json` file.
+
+For local development, you will need to copy the generated `runtime-config.json` file into your `packages/webapp/public` directory. An example on how to do this is as follows:
+
+```
+curl https://dxxxxxxxxxx.cloudfront.net/runtime-config.json > packages/webapp/public/runtime-config.json
 ```
 
-#### Configure the Pipeline Source
-
-The pipeline includes creation of a CodeCommit repository named `monorepo`.
-
-Make sure you have [`git-remote-codecommit`](https://github.com/aws/git-remote-codecommit#step-3-install-git-remote-codecommit) installed.
-
-From the **root directory**:
-
-```bash
-git checkout -b mainline && git add --all && git commit -m "Initial Commit"
-git remote add awscodecommit codecommit://<AWS_PROFILE>@monorepo
-git push awscodecommit mainline -u
-```
-
-You can now visit the AWS console to find the CodePipeline and track its progress.
+Replace the url in the above command with the cloudfront URL of the UI for your deployment.
 
 
 ### Useful Commands
 
-- `npx projen` - Regenerate the project configuration files from the `.projenrc` file.
-- `npx nx run @aws/infra:build` - Build the CDK infrastructure package and all its dependencies.
-- `npx nx run @aws/infra:deploy-sandbox [--profile <AWS_PROFILE>]` Deploy a standalone instance of the application, useful for development/testing.
-- `npx nx run @aws/webapp:dev` - Run the local webapp dev server (prior to first run please read instructions in `packages/webapp/README.md`)
+- `pnpm projen` - Regenerate the project configuration files from the `.projenrc` file.
+- `pnpm build` - Build the project
+- `pnpm run deploy [--profile <AWS_PROFILE>]` Deploy the application
+- `pnpm run dev` - Run the local webapp dev server (prior to first run please read instructions above)
 
 ---
 
