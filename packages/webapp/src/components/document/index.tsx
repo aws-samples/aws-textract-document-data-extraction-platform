@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { DocumentMetadata, FormMetadata } from '@aws/document-extraction-platform-api-typescript-react-query-hooks';
+import {
+  DocumentMetadata,
+  FormMetadata,
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
 import {
   Button,
   Column,
@@ -11,68 +14,18 @@ import {
   Link,
   LoadingIndicator,
   Table,
-} from 'aws-northstar';
-import { Column as TableColumn } from 'aws-northstar/components/Table/types';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+} from "aws-northstar";
+import { Column as TableColumn } from "aws-northstar/components/Table/types";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { listAllPages } from '../../api/utils';
-import { updateStatus } from '../../utils/status-update-helper';
-import { PdfViewer } from '../pdf/pdf-viewer';
-import { ExtractionExecutionStatusIndicator } from '../status/extractionExecutionStatusIndicator';
-import { useDefaultApiClient } from '../../hooks/useDefaultApiClient';
+import { listAllPages } from "../../api/utils";
+import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
+import { updateStatus } from "../../utils/status-update-helper";
+import { PdfViewer } from "../pdf/pdf-viewer";
+import { ExtractionExecutionStatusIndicator } from "../status/extractionExecutionStatusIndicator";
 
 export interface DocumentProps {}
-
-const formColumnDefinitions: TableColumn<any>[] = [
-  {
-    id: 'formId',
-    width: 220,
-    Header: 'Form',
-    accessor: 'formId',
-    Cell: ({ value, row }) => {
-      const link = `/view/${row.original.documentId}/${value}`;
-      return (
-        <Link href={link} underlineHover={true}>
-          {row.original.documentName} {value}
-        </Link>
-      );
-    },
-  },
-  {
-    id: 'status',
-    width: 200,
-    Header: 'Status', // backlog/in review/reviewed
-    accessor: 'extractionExecution.status',
-    Cell: ({ value, row }) => (
-      <ExtractionExecutionStatusIndicator
-        status={value}
-        documentId={row.original.documentId}
-        formId={row.original.formId}
-        updateStatus={(documentId, formId) =>
-          updateStatus(API, documentId, formId, 'REVIEWING')
-        }
-        statusReason={row.original.extractionExecution.statusReason}
-      />
-    ),
-  },
-  {
-    id: 'startPageIndex',
-    width: 100,
-    Header: 'Start Page',
-    accessor: 'startPageIndex',
-    // Page index starts from 0, and page number starts from 1
-    Cell: ({ value }) => value + 1,
-  },
-  {
-    id: 'endPageIndex',
-    width: 100,
-    Header: 'End Page',
-    accessor: 'endPageIndex',
-    // Page index starts from 0, and page number starts from 1
-    Cell: ({ value }) => value + 1,
-  },
-];
 
 /**
  * Detail page for a document
@@ -89,10 +42,60 @@ export const Document: React.FC<DocumentProps> = () => {
 
   const API = useDefaultApiClient()!;
 
+  const formColumnDefinitions: TableColumn<any>[] = [
+    {
+      id: "formId",
+      width: 220,
+      Header: "Form",
+      accessor: "formId",
+      Cell: ({ value, row }) => {
+        const link = `/view/${row.original.documentId}/${value}`;
+        return (
+          <Link href={link} underlineHover={true}>
+            {row.original.documentName} {value}
+          </Link>
+        );
+      },
+    },
+    {
+      id: "status",
+      width: 200,
+      Header: "Status", // backlog/in review/reviewed
+      accessor: "extractionExecution.status",
+      Cell: ({ value, row }) => (
+        <ExtractionExecutionStatusIndicator
+          status={value}
+          documentId={row.original.documentId}
+          formId={row.original.formId}
+          updateStatus={(docId, formId) =>
+            updateStatus(API, docId, formId, "REVIEWING")
+          }
+          statusReason={row.original.extractionExecution.statusReason}
+        />
+      ),
+    },
+    {
+      id: "startPageIndex",
+      width: 100,
+      Header: "Start Page",
+      accessor: "startPageIndex",
+      // Page index starts from 0, and page number starts from 1
+      Cell: ({ value }) => value + 1,
+    },
+    {
+      id: "endPageIndex",
+      width: 100,
+      Header: "End Page",
+      accessor: "endPageIndex",
+      // Page index starts from 0, and page number starts from 1
+      Cell: ({ value }) => value + 1,
+    },
+  ];
+
   const fetchForms = useCallback(async () => {
     setIsLoadingForms(true);
     setForms(
-      await listAllPages(API.listDocumentForms.bind(API), 'forms', {
+      await listAllPages(API.listDocumentForms.bind(API), "forms", {
         documentId: documentId!,
       }),
     );
@@ -135,8 +138,8 @@ export const Document: React.FC<DocumentProps> = () => {
               <Grid item xs={12}>
                 <Container
                   style={{
-                    marginBottom: '0px',
-                    boxShadow: 'none',
+                    marginBottom: "0px",
+                    boxShadow: "none",
                   }}
                 >
                   <Table
@@ -144,7 +147,7 @@ export const Document: React.FC<DocumentProps> = () => {
                       <Inline>
                         <Button
                           variant="icon"
-                          icon={'refresh'}
+                          icon={"refresh"}
                           onClick={async () => {
                             await fetchForms();
                           }}

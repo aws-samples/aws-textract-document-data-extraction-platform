@@ -1,7 +1,6 @@
 /*! Copyright [Amazon.com](http://amazon.com/), Inc. or its affiliates. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0 */
-import ErrorMessage from "@aws-northstar/ui/components/CognitoAuth/components/ErrorMessage";
-import { LoadingIndicator } from "aws-northstar";
+import { LoadingIndicator, Alert } from "aws-northstar";
 import React, { createContext, useEffect, useState } from "react";
 
 export interface RuntimeContext {
@@ -16,7 +15,7 @@ export interface RuntimeContext {
  * Context for storing the runtimeContext.
  */
 export const RuntimeConfigContext = createContext<RuntimeContext | undefined>(
-  undefined
+  undefined,
 );
 
 const RuntimeContextProvider: React.FC<any> = ({ children }) => {
@@ -40,7 +39,7 @@ const RuntimeContextProvider: React.FC<any> = ({ children }) => {
           setRuntimeContext(runtimeCtx as RuntimeContext);
         } else {
           setError(
-            "runtime-config.json should have region, userPoolId, userPoolWebClientId & identityPoolId."
+            "runtime-config.json should have region, userPoolId, userPoolWebClientId & identityPoolId.",
           );
         }
       })
@@ -50,12 +49,14 @@ const RuntimeContextProvider: React.FC<any> = ({ children }) => {
   }, [setRuntimeContext]);
 
   return error ? (
-    <ErrorMessage>{error}</ErrorMessage>
+    <Alert type="error">{error}</Alert>
   ) : runtimeContext ? (
     <RuntimeConfigContext.Provider value={runtimeContext}>
       {children}
     </RuntimeConfigContext.Provider>
-  ) : <LoadingIndicator size="large" />;
+  ) : (
+    <LoadingIndicator size="large" />
+  );
 };
 
 export default RuntimeContextProvider;

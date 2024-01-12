@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { FormMetadata, FormSchema } from '@aws/document-extraction-platform-api-typescript-react-query-hooks';
-import { Grid, LoadingIndicator } from 'aws-northstar';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {
+  FormMetadata,
+  FormSchema,
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
+import { Grid, LoadingIndicator } from "aws-northstar";
+import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { FormReviewPanel } from '../form-review-panel';
-import { useDefaultApiClient } from '../../hooks/useDefaultApiClient';
+import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
+import { FormReviewPanel } from "../form-review-panel";
 
 export interface PDFFormReviewProps {
   readonly isReadOnly: boolean;

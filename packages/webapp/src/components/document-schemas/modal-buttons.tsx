@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { Button } from 'aws-northstar';
-import React from 'react';
+import { Button } from "aws-northstar";
+import React from "react";
 
 export interface ModalButtonsProps {
   loading: boolean;
@@ -15,14 +15,25 @@ export interface ModalButtonsProps {
  * @param cancelOnClick function to be called when the cancel button is clicked
  * @returns Component that creates and styles the buttons that should be displayed in the modal footer.
  */
-export const ModalButtons: React.FC<ModalButtonsProps> = ({ loading, submitOnClick, cancelOnClick }) => {
-
+export const ModalButtons: React.FC<ModalButtonsProps> = ({
+  loading,
+  submitOnClick,
+  cancelOnClick,
+}) => {
   return (
-
-    <div style={{ display: 'flex', float: 'right', justifyContent: 'space-between' }}>
-      {/* @ts-ignore */}
-      <Button style={{ marginRight: '10px' }} variant="primary" onClick={cancelOnClick} >Cancel</Button>
-      <Button variant="primary" onClick={submitOnClick} loading={loading}>Submit</Button>
+    <div
+      style={{
+        display: "flex",
+        float: "right",
+        justifyContent: "space-between",
+      }}
+    >
+      <Button variant="primary" onClick={cancelOnClick}>
+        Cancel
+      </Button>
+      <Button variant="primary" onClick={submitOnClick} loading={loading}>
+        Submit
+      </Button>
     </div>
   );
 };

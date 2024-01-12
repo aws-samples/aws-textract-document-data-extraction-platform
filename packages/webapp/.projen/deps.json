@@ -30,15 +30,21 @@
       "type": "build"
     },
     {
-      "name": "@types/react",
-      "type": "build"
-    },
-    {
       "name": "@types/react-dom",
       "type": "build"
     },
     {
+      "name": "@types/react-pdf",
+      "version": "^5",
+      "type": "build"
+    },
+    {
       "name": "@types/react-router-dom",
+      "type": "build"
+    },
+    {
+      "name": "@types/react",
+      "version": "^17",
       "type": "build"
     },
     {
@@ -115,20 +121,8 @@
       "type": "runtime"
     },
     {
-      "name": "@aws-northstar/ui",
-      "type": "runtime"
-    },
-    {
       "name": "@aws/document-extraction-platform-api-typescript-react-query-hooks",
       "version": "0.0.0",
-      "type": "runtime"
-    },
-    {
-      "name": "@cloudscape-design/board-components",
-      "type": "runtime"
-    },
-    {
-      "name": "@cloudscape-design/components",
       "type": "runtime"
     },
     {
@@ -163,10 +157,6 @@
       "type": "runtime"
     },
     {
-      "name": "react",
-      "type": "runtime"
-    },
-    {
       "name": "react-ace",
       "version": "^10",
       "type": "runtime"
@@ -192,6 +182,11 @@
     {
       "name": "react-zoom-pan-pinch",
       "version": "^2",
+      "type": "runtime"
+    },
+    {
+      "name": "react",
+      "version": "^17",
       "type": "runtime"
     },
     {

@@ -1,42 +1,45 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { DocumentMetadata, FormSchema } from '@aws/document-extraction-platform-api-typescript-react-query-hooks';
-import { Button, Inline, Link, Modal, Select } from 'aws-northstar';
-import FileUpload from 'aws-northstar/components/FileUpload';
-import { SelectOption } from 'aws-northstar/components/Select/types';
-import Table from 'aws-northstar/components/Table';
-import { Column as TableColumn } from 'aws-northstar/components/Table/types';
-import Grid from 'aws-northstar/layouts/Grid';
-import React, { useCallback, useState } from 'react';
+import {
+  DocumentMetadata,
+  FormSchema,
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
+import { Button, Inline, Link, Modal, Select } from "aws-northstar";
+import FileUpload from "aws-northstar/components/FileUpload";
+import { SelectOption } from "aws-northstar/components/Select/types";
+import Table from "aws-northstar/components/Table";
+import { Column as TableColumn } from "aws-northstar/components/Table/types";
+import Grid from "aws-northstar/layouts/Grid";
+import React, { useCallback, useState } from "react";
 
 const documentListColumns: TableColumn<DocumentMetadata>[] = [
   {
-    id: 'name',
+    id: "name",
     width: 200,
-    Header: 'Name',
-    accessor: 'name',
+    Header: "Name",
+    accessor: "name",
     Cell: ({ value, row }) => (
       <Link href={`/view/${row.original.documentId}`}>{value}</Link>
     ),
   },
   {
-    id: 'createdBy',
+    id: "createdBy",
     width: 150,
-    Header: 'Uploaded By',
-    accessor: 'createdBy',
+    Header: "Uploaded By",
+    accessor: "createdBy",
   },
   {
-    id: 'createdTimestamp',
+    id: "createdTimestamp",
     width: 150,
-    Header: 'Uploaded At',
-    accessor: 'createdTimestamp',
-    Cell: ({ value }) => <>{value ? new Date(value).toLocaleString() : '-'}</>,
+    Header: "Uploaded At",
+    accessor: "createdTimestamp",
+    Cell: ({ value }) => <>{value ? new Date(value).toLocaleString() : "-"}</>,
   },
   {
-    id: 'numberOfPages',
+    id: "numberOfPages",
     width: 100,
-    Header: 'Pages',
-    accessor: 'numberOfPages',
+    Header: "Pages",
+    accessor: "numberOfPages",
   },
 ];
 
@@ -92,7 +95,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
       {reloadAction ? (
         <Button
           variant="icon"
-          icon={'refresh'}
+          icon={"refresh"}
           onClick={async () => {
             await reloadAction();
           }}
@@ -144,7 +147,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Table
-            tableTitle={'Uploaded Documents'}
+            tableTitle={"Uploaded Documents"}
             actionGroup={actionGroup}
             columnDefinitions={documentListColumns}
             items={documents}

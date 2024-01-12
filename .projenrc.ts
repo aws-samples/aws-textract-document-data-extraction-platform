@@ -5,6 +5,7 @@ import { InfrastructureTsProject } from "@aws/pdk/infrastructure";
 import { NodePackageManager } from "projen/lib/javascript";
 import { PythonProject } from "projen/lib/python";
 import * as path from "path";
+import { DependencyType } from "projen";
 
 const monorepo = new MonorepoTsProject({
   devDeps: ["@aws/pdk"],
@@ -101,15 +102,28 @@ const webapp = new CloudscapeReactTsWebsiteProject({
     "humanize-duration",
     "react-zoom-pan-pinch@^2",
     "react-router-dom@^6",
-    "react@^17",
   ],
   devDeps: [
     "@types/lodash",
     "@types/humanize-duration",
-    "@types/react@^17",
     "react-app-rewired@^2",
-    "@types/react-router-dom"
+    "@types/react-router-dom",
+    "@types/react-pdf@^5",
   ],
+});
+
+// TODO: Consider upgrading to northstar v2 / cloudscape
+webapp.deps.removeDependency("@aws-northstar/ui");
+webapp.deps.removeDependency("@cloudscape-design/components");
+webapp.deps.removeDependency("@cloudscape-design/board-components");
+
+// TODO: Consider upgrade to react 18
+[webapp, api.library.typescriptReactQueryHooks!].forEach(project => {
+  project.deps.removeDependency("react", DependencyType.BUILD);
+  project.deps.removeDependency("react", DependencyType.PEER);
+  project.deps.removeDependency("@types/react");
+  project.addDeps("react@^17");
+  project.addDevDeps("@types/react@^17");
 });
 
 // Use react-app-rewired tasks instead of default create react app tasks.

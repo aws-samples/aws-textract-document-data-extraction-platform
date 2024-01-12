@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { StatusTransition } from '@aws/document-extraction-platform-api-typescript-react-query-hooks';
-import humanizeDuration from 'humanize-duration';
-import React, { useMemo } from 'react';
+import { StatusTransition } from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
+import humanizeDuration from "humanize-duration";
+import React, { useMemo } from "react";
 
 export interface DurationBetweenProps {
   fromStatuses: string[];
@@ -42,10 +42,10 @@ export const DurationBetween: React.FC<DurationBetweenProps> = ({
     <>
       {fromTimestamp && toTimestamp
         ? humanizeDuration(
-          new Date(toTimestamp).getTime() - new Date(fromTimestamp).getTime(),
-          { largest: 2, round: true },
-        )
-        : 'N/A'}
+            new Date(toTimestamp).getTime() - new Date(fromTimestamp).getTime(),
+            { largest: 2, round: true },
+          )
+        : "N/A"}
     </>
   );
 };
