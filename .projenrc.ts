@@ -18,6 +18,8 @@ const monorepo = new MonorepoTsProject({
 });
 configureTsProject(monorepo);
 
+monorepo.package.addPackageResolutions("fast-xml-parser@^4.2.5", "nth-check@^2.0.1", "semver@^7.5.2");
+
 const api = new TypeSafeApiProject({
   parent: monorepo,
   outdir: "packages/api",

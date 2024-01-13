@@ -90,8 +90,23 @@
       "type": "override"
     },
     {
+      "name": "fast-xml-parser",
+      "version": "^4.2.5",
+      "type": "override"
+    },
+    {
+      "name": "nth-check",
+      "version": "^2.0.1",
+      "type": "override"
+    },
+    {
       "name": "react-router-dom",
       "version": "^5",
+      "type": "override"
+    },
+    {
+      "name": "semver",
+      "version": "^7.5.2",
       "type": "override"
     },
     {
