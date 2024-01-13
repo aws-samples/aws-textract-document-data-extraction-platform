@@ -5,13 +5,19 @@
 from typing import TypedDict, List, no_type_check
 from PyPDF2 import PdfFileReader
 
-from aws_document_extraction_platform_lib.ingestion_state_machine.classify_forms import ClassifiedForm
+from aws_document_extraction_platform_lib.ingestion_state_machine.classify_forms import (
+    ClassifiedForm,
+)
 from aws_document_extraction_platform_lib.utils.s3.location import (
     S3Location,
     get_form_key,
     get_file_name_from_document_key,
 )
-from aws_document_extraction_platform_lib.utils.pdf import read_pdf_from_s3, get_pdf_pages, write_pdf_to_s3
+from aws_document_extraction_platform_lib.utils.pdf import (
+    read_pdf_from_s3,
+    get_pdf_pages,
+    write_pdf_to_s3,
+)
 
 
 class SplitDocumentInput(TypedDict):
@@ -42,10 +48,10 @@ def _write_split_form_to_s3(
     Take the pages from the document that were classified as the given form, and write to s3 as a new pdf
     """
     form_location: S3Location = {
-        "bucket": document_location.bucket,
+        "bucket": document_location["bucket"],
         "objectKey": get_form_key(
             document_id,
-            get_file_name_from_document_key(document_location.object_key),
+            get_file_name_from_document_key(document_location["objectKey"]),
             form_id,
         ),
     }

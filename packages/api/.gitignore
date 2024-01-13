@@ -4,4 +4,5 @@ node_modules/
 !/.projen/tasks.json
 !/.projen/deps.json
 !/.projen/files.json
+!/LICENSE
 !/project.json

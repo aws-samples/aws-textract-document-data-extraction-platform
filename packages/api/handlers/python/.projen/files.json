@@ -7,6 +7,7 @@
     ".projen/deps.json",
     ".projen/files.json",
     ".projen/tasks.json",
+    "LICENSE",
     "openapitools.json",
     "poetry.toml",
     "project.json",

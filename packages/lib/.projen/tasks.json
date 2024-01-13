@@ -38,6 +38,29 @@
         }
       ]
     },
+    "lint": {
+      "name": "lint",
+      "steps": [
+        {
+          "exec": "licenseheaders -E .py -x '*/__init__.py' -d aws_document_extraction_platform_lib -t ../../header.txt"
+        },
+        {
+          "exec": "if [ -d tests ]; then licenseheaders -E .py -x '*/__init__.py' -d tests -t ../../header.txt; fi"
+        },
+        {
+          "exec": "if [ -d test ]; then licenseheaders -E .py -x '*/__init__.py' -d test -t ../../header.txt; fi"
+        },
+        {
+          "exec": "black aws_document_extraction_platform_lib"
+        },
+        {
+          "exec": "if [ -d tests ]; then black tests; fi"
+        },
+        {
+          "exec": "if [ -d test ]; then black test; fi"
+        }
+      ]
+    },
     "package": {
       "name": "package",
       "description": "Creates the distribution package",
@@ -91,6 +114,9 @@
       "steps": [
         {
           "exec": "pytest"
+        },
+        {
+          "spawn": "lint"
         }
       ]
     }

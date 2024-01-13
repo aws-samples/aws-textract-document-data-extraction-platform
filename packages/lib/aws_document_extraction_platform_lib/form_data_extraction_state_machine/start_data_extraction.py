@@ -2,21 +2,30 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from aws_document_extraction_platform_api_python_runtime.api_client import JSONEncoder
 from typing import TypedDict, List, Dict
 
-from aws_document_extraction_platform_api_python_runtime.models.extraction_execution import ExtractionExecution
+from aws_document_extraction_platform_api_python_runtime.models.extraction_execution import (
+    ExtractionExecution,
+)
 from aws_document_extraction_platform_api_python_runtime.models.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
-from aws_document_extraction_platform_api_python_runtime.models.status_transition import StatusTransition
-from aws_document_extraction_platform_api_python_runtime.models.form_metadata import FormMetadata
-from aws_document_extraction_platform_api_python_runtime.models.form_json_schema import FormJSONSchema
+from aws_document_extraction_platform_api_python_runtime.models.status_transition import (
+    StatusTransition,
+)
 
-from aws_document_extraction_platform_lib.ingestion_state_machine.split_document import ClassifiedSplitForm
-from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
-from aws_document_extraction_platform_lib.utils.sfn.execution_id import arn_to_execution_id
-from aws_document_extraction_platform_lib.utils.textract.queries import get_queries_from_schema
+from aws_document_extraction_platform_lib.ingestion_state_machine.split_document import (
+    ClassifiedSplitForm,
+)
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import (
+    FormMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.sfn.execution_id import (
+    arn_to_execution_id,
+)
+from aws_document_extraction_platform_lib.utils.textract.queries import (
+    get_queries_from_schema,
+)
 from aws_document_extraction_platform_lib.utils.time import utc_now
 
 

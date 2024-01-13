@@ -48,7 +48,7 @@ export class Source extends Construct {
       "FormReviewWorkflowTags",
       {
         partitionKey: {
-          name: "tag_id",
+          name: "tagId",
           type: AttributeType.STRING,
         },
         environmentVariableName: "FORM_REVIEW_WORKFLOW_TAGS_TABLE_NAME",
@@ -57,7 +57,7 @@ export class Source extends Construct {
 
     const documentMetadataTable = new Table(this, "DocumentMetadata", {
       partitionKey: {
-        name: "document_id",
+        name: "documentId",
         type: AttributeType.STRING,
       },
       environmentVariableName: "DOCUMENT_METADATA_TABLE_NAME",
@@ -65,11 +65,11 @@ export class Source extends Construct {
 
     const formMetadataTable = new Table(this, "FormMetadata", {
       partitionKey: {
-        name: "document_id",
+        name: "documentId",
         type: AttributeType.STRING,
       },
       sortKey: {
-        name: "form_id",
+        name: "formId",
         type: AttributeType.STRING,
       },
       environmentVariableName: "FORM_METADATA_TABLE_NAME",
@@ -77,7 +77,7 @@ export class Source extends Construct {
 
     const formSchemaTable = new Table(this, "FormSchemas", {
       partitionKey: {
-        name: "schema_id",
+        name: "schemaId",
         type: AttributeType.STRING,
       },
       environmentVariableName: "FORM_SCHEMA_TABLE_NAME",

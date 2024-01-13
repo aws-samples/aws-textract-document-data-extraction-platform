@@ -2,7 +2,10 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-from aws_document_extraction_platform_lib.utils.base64 import base64_decode, base64_encode
+from aws_document_extraction_platform_lib.utils.base64 import (
+    base64_decode,
+    base64_encode,
+)
 
 
 def arn_to_execution_id(execution_arn: str) -> str:

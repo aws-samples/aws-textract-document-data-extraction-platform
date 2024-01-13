@@ -12,7 +12,9 @@ from aws_document_extraction_platform_lib.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from aws_document_extraction_platform_api_python_runtime.models.document_metadata import DocumentMetadata
+from aws_document_extraction_platform_api_python_runtime.models.document_metadata import (
+    DocumentMetadata,
+)
 
 
 class DocumentMetadataStore(Store):
@@ -29,7 +31,7 @@ class DocumentMetadataStore(Store):
         )
 
     def _key(self, document_id: str) -> Dict:
-        return {"document_id": document_id}
+        return {"documentId": document_id}
 
     def put_document_metadata(
         self, user: str, document: DocumentMetadata

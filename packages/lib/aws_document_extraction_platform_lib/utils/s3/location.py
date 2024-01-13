@@ -5,7 +5,9 @@
 import boto3
 from botocore.config import Config
 from typing import TypedDict
-from aws_document_extraction_platform_api_python_runtime.models.s3_location import S3Location as S3LocationModel
+from aws_document_extraction_platform_api_python_runtime.models.s3_location import (
+    S3Location as S3LocationModel,
+)
 
 
 class S3Location(TypedDict):
@@ -62,8 +64,8 @@ def get_presigned_get_url_for_pdf(location: S3LocationModel) -> str:
     ).generate_presigned_url(
         "get_object",
         Params={
-            "Bucket": location["bucket"],
-            "Key": location["objectKey"],
+            "Bucket": location.bucket,
+            "Key": location.object_key,
             "ResponseContentType": "application/pdf",
         },
     )

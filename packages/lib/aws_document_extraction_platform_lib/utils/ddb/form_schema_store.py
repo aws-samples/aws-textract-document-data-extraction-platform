@@ -12,7 +12,9 @@ from aws_document_extraction_platform_lib.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from aws_document_extraction_platform_api_python_runtime.models.form_schema import FormSchema
+from aws_document_extraction_platform_api_python_runtime.models.form_schema import (
+    FormSchema,
+)
 
 
 class FormSchemaStore(Store):
@@ -27,7 +29,7 @@ class FormSchemaStore(Store):
         )
 
     def _key(self, schema_id: str) -> Dict:
-        return {"schema_id": schema_id}
+        return {"schemaId": schema_id}
 
     def put_form_schema(self, user: str, schema: FormSchema) -> FormSchema:
         return super().put(self._key(schema.schema_id), user, schema)

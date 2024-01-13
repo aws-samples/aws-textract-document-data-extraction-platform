@@ -358,7 +358,9 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
             <Button
               variant="primary"
               onClick={async () => {
-                history.push(`/review/${docForm!.documentId}/${docForm!.formId}`);
+                history.push(
+                  `/review/${docForm!.documentId}/${docForm!.formId}`,
+                );
                 await updateStatus(
                   API,
                   docForm!.documentId,

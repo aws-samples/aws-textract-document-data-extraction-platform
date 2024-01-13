@@ -1,6 +1,14 @@
+#
+#   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#   SPDX-License-Identifier: MIT-0
+#
 from dataclasses import asdict
-from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import DocumentMetadataStore
-from aws_document_extraction_platform_lib.utils.sfn.execution_id import arn_to_execution_id
+from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import (
+    DocumentMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.sfn.execution_id import (
+    arn_to_execution_id,
+)
 from aws_document_extraction_platform_lib.utils.time import utc_now
 import boto3
 import os
@@ -8,14 +16,22 @@ import json
 
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
-from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
+from aws_document_extraction_platform_api_python_handlers.interceptors import (
+    DEFAULT_INTERCEPTORS,
+)
+from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import (
+    LoggingInterceptor,
+)
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
-    submit_source_document_handler, SubmitSourceDocumentRequest, SubmitSourceDocumentOperationResponses
+    submit_source_document_handler,
+    SubmitSourceDocumentRequest,
+    SubmitSourceDocumentOperationResponses,
 )
 
 
-def submit_source_document(input: SubmitSourceDocumentRequest, **kwargs) -> SubmitSourceDocumentOperationResponses:
+def submit_source_document(
+    input: SubmitSourceDocumentRequest, **kwargs
+) -> SubmitSourceDocumentOperationResponses:
     """
     Type-safe handler for the SubmitSourceDocument operation
     """
@@ -81,5 +97,6 @@ def submit_source_document(input: SubmitSourceDocumentRequest, **kwargs) -> Subm
 
 # Entry point for the AWS Lambda handler for the SubmitSourceDocument operation.
 # The submit_source_document_handler method wraps the type-safe handler and manages marshalling inputs and outputs
-handler = submit_source_document_handler(interceptors=DEFAULT_INTERCEPTORS)(submit_source_document)
-
+handler = submit_source_document_handler(interceptors=DEFAULT_INTERCEPTORS)(
+    submit_source_document
+)

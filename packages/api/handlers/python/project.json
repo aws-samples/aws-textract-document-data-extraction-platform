@@ -81,6 +81,13 @@
         "command": "pnpm dlx projen generate",
         "cwd": "packages/api/handlers/python"
       }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm dlx projen lint",
+        "cwd": "packages/api/handlers/python"
+      }
     }
   },
   "implicitDependencies": [

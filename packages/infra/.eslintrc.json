@@ -7,7 +7,8 @@
   "root": true,
   "plugins": [
     "@typescript-eslint",
-    "import"
+    "import",
+    "header"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -46,15 +47,7 @@
       "error"
     ],
     "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "**/test/**",
-          "**/build-tools/**"
-        ],
-        "optionalDependencies": false,
-        "peerDependencies": true
-      }
+      "off"
     ],
     "import/no-unresolved": [
       "error"
@@ -120,6 +113,14 @@
           "method"
         ]
       }
+    ],
+    "header/header": [
+      2,
+      "line",
+      [
+        " Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.",
+        " SPDX-License-Identifier: MIT-0"
+      ]
     ]
   },
   "overrides": []

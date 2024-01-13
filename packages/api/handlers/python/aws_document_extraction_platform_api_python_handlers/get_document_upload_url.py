@@ -1,3 +1,7 @@
+#
+#   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#   SPDX-License-Identifier: MIT-0
+#
 import os
 import boto3
 from botocore.config import Config
@@ -5,14 +9,22 @@ from uuid import uuid4
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
 from aws_document_extraction_platform_lib.utils.s3.location import get_document_key
-from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
-from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
+from aws_document_extraction_platform_api_python_handlers.interceptors import (
+    DEFAULT_INTERCEPTORS,
+)
+from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import (
+    LoggingInterceptor,
+)
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
-    get_document_upload_url_handler, GetDocumentUploadUrlRequest, GetDocumentUploadUrlOperationResponses
+    get_document_upload_url_handler,
+    GetDocumentUploadUrlRequest,
+    GetDocumentUploadUrlOperationResponses,
 )
 
 
-def get_document_upload_url(input: GetDocumentUploadUrlRequest, **kwargs) -> GetDocumentUploadUrlOperationResponses:
+def get_document_upload_url(
+    input: GetDocumentUploadUrlRequest, **kwargs
+) -> GetDocumentUploadUrlOperationResponses:
     """
     Type-safe handler for the GetDocumentUploadUrl operation
     """
@@ -51,5 +63,6 @@ def get_document_upload_url(input: GetDocumentUploadUrlRequest, **kwargs) -> Get
 
 # Entry point for the AWS Lambda handler for the GetDocumentUploadUrl operation.
 # The get_document_upload_url_handler method wraps the type-safe handler and manages marshalling inputs and outputs
-handler = get_document_upload_url_handler(interceptors=DEFAULT_INTERCEPTORS)(get_document_upload_url)
-
+handler = get_document_upload_url_handler(interceptors=DEFAULT_INTERCEPTORS)(
+    get_document_upload_url
+)

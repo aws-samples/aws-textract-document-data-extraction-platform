@@ -1,14 +1,28 @@
+#
+#   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#   SPDX-License-Identifier: MIT-0
+#
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import FormSchemaStore
-from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
-from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
+from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import (
+    FormSchemaStore,
+)
+from aws_document_extraction_platform_api_python_handlers.interceptors import (
+    DEFAULT_INTERCEPTORS,
+)
+from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import (
+    LoggingInterceptor,
+)
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
-    update_form_schema_handler, UpdateFormSchemaRequest, UpdateFormSchemaOperationResponses
+    update_form_schema_handler,
+    UpdateFormSchemaRequest,
+    UpdateFormSchemaOperationResponses,
 )
 
 
-def update_form_schema(input: UpdateFormSchemaRequest, **kwargs) -> UpdateFormSchemaOperationResponses:
+def update_form_schema(
+    input: UpdateFormSchemaRequest, **kwargs
+) -> UpdateFormSchemaOperationResponses:
     """
     Type-safe handler for the UpdateFormSchema operation
     """
@@ -38,5 +52,6 @@ def update_form_schema(input: UpdateFormSchemaRequest, **kwargs) -> UpdateFormSc
 
 # Entry point for the AWS Lambda handler for the UpdateFormSchema operation.
 # The update_form_schema_handler method wraps the type-safe handler and manages marshalling inputs and outputs
-handler = update_form_schema_handler(interceptors=DEFAULT_INTERCEPTORS)(update_form_schema)
-
+handler = update_form_schema_handler(interceptors=DEFAULT_INTERCEPTORS)(
+    update_form_schema
+)

@@ -12,7 +12,7 @@
     },
     {
       "name": "licenseheaders",
-      "version": "^0.8.8",
+      "version": "0.8.8",
       "type": "devenv"
     },
     {
@@ -52,7 +52,7 @@
     },
     {
       "name": "python",
-      "version": "^3.9",
+      "version": "^3.11",
       "type": "runtime"
     },
     {

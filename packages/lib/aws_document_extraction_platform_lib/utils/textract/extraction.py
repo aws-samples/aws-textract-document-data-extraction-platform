@@ -8,7 +8,9 @@ import statistics
 import dateutil
 from typing import Dict, List, Any, Optional, TypedDict
 
-from aws_document_extraction_platform_api_python_runtime.models.form_json_schema import FormJSONSchema
+from aws_document_extraction_platform_api_python_runtime.models.form_json_schema import (
+    FormJSONSchema,
+)
 from trp import Document, Field, Cell, Table, BaseBlock
 from trp.trp2 import TDocument, TDocumentSchema, TBlock
 from trp.t_pipeline import order_blocks_by_geo
@@ -192,17 +194,17 @@ class StatefulDocumentLookupData:
         :return: the table cell (if present)
         """
         if not (
-            "extractionMetadata" in schema
-            and "tablePosition" in schema["extractionMetadata"]
-            and "rowPosition" in schema["extractionMetadata"]
-            and "columnPosition" in schema["extractionMetadata"]
+            schema.extraction_metadata is not None
+            and schema.extraction_metadata.table_position is not None
+            and schema.extraction_metadata.row_position is not None
+            and schema.extraction_metadata.column_position is not None
         ):
             return None
 
         # Positions in the schema are 1-indexed
-        t = int(schema["extractionMetadata"]["tablePosition"] - 1)
-        r = int(schema["extractionMetadata"]["rowPosition"] - 1)
-        c = int(schema["extractionMetadata"]["columnPosition"] - 1)
+        t = int(schema.extraction_metadata.table_position - 1)
+        r = int(schema.extraction_metadata.row_position - 1)
+        c = int(schema.extraction_metadata.column_position - 1)
         if (
             0 <= t < len(self.tables)
             and 0 <= r < len(self.tables[t].table.rows)
@@ -316,10 +318,10 @@ def ordered_object_schema_property_keys(schema: FormJSONSchema) -> List[str]:
     """
 
     def _get_order(property_key: str) -> float:
-        property = schema["properties"][property_key]
-        return float(property["order"]) if "order" in property else math.inf
+        property = schema.properties[property_key]
+        return float(property.order) if property.order is not None else math.inf
 
-    return sorted((schema["properties"] or {}).keys(), key=_get_order)
+    return sorted((schema.properties or {}).keys(), key=_get_order)
 
 
 def get_form_keys_from_schema(schema: FormJSONSchema) -> List[str]:
@@ -328,13 +330,12 @@ def get_form_keys_from_schema(schema: FormJSONSchema) -> List[str]:
     """
     keys = []
     if (
-        "extractionMetadata" in schema
-        and "formKey" in schema["extractionMetadata"]
-        and schema["extractionMetadata"]["formKey"] is not None
+        schema.extraction_metadata is not None
+        and schema.extraction_metadata.form_key is not None
     ):
-        keys.append(schema["extractionMetadata"]["formKey"])
-    if "title" in schema and schema["title"] is not None:
-        keys.append(schema["title"])
+        keys.append(schema.extraction_metadata.form_key)
+    if schema.title is not None:
+        keys.append(schema.title)
     return keys
 
 
@@ -375,18 +376,18 @@ def _coerce_value(value: str, schema: FormJSONSchema):
     Return the value in the type specified by the schema (where possible)
     """
     try:
-        if schema["typeOf"] == "integer":
+        if schema.type_of == "integer":
             return int(value.replace(",", ""))
-        elif schema["typeOf"] == "number":
+        elif schema.type_of == "number":
             return float(value.replace(",", ""))
-        elif schema["typeOf"] == "boolean":
+        elif schema.type_of == "boolean":
             # TODO: May wish to consider other falsy values where we expect a boolean value from a form
             return value.lower() not in {"no", "false", ""}
         else:
             # Schema type is 'string'
-            if "formatType" in schema:
+            if schema.format_type is not None:
                 # TODO: May wish to consider supporting full range of built in formats https://json-schema.org/understanding-json-schema/reference/string.html#built-in-formats
-                if schema["formatType"] in {"date", "date-time"}:
+                if schema.format_type in {"date", "date-time"}:
                     # Python's date parser handles lots of formats, but may wish to extend if there are other common formats not supported
                     return dateutil.parser.parse(value).isoformat()
             return value
@@ -394,7 +395,7 @@ def _coerce_value(value: str, schema: FormJSONSchema):
         log.exception(e)
         log.warning(
             "Unable to parse value {} into type {}, will return as raw string".format(
-                value, schema["typeOf"]
+                value, schema.type_of
             )
         )
         return value
@@ -421,7 +422,7 @@ def _extract_schema_fields(
     """
     Extract the fields defined in the schema from the document lookup data
     """
-    if schema["typeOf"] == "object":
+    if schema.type_of == "object":
         object_data: Dict = {}
         object_metadata: Dict = {}
         found_any_field = False
@@ -429,7 +430,7 @@ def _extract_schema_fields(
         for property_key in ordered_object_schema_property_keys(schema):
             extracted_data = _extract_schema_fields(
                 document_data,
-                schema["properties"][property_key],
+                schema.properties[property_key],
                 property_path + ("" if len(property_path) == 0 else ".") + property_key,
             )
             object_data[property_key] = extracted_data.data
@@ -445,7 +446,7 @@ def _extract_schema_fields(
             else 0,
         )
 
-    elif schema["typeOf"] == "array":
+    elif schema.type_of == "array":
         # TODO: May wish to consider enhancing this algorithm for arrays, perhaps also taking into account the min/max
         # length properties if set
         # For now we keep extracting until we can't find anything from the array's subschema in the document

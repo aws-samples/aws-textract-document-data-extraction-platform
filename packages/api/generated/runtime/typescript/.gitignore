@@ -4,7 +4,6 @@
 !/.projen/deps.json
 !/.projen/files.json
 !/package.json
-!/LICENSE
 logs
 *.log
 npm-debug.log*
@@ -43,3 +42,4 @@ src
 README.md
 .openapi-generator
 !/project.json
+!/LICENSE

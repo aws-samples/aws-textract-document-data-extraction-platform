@@ -1,3 +1,5 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
 import {
   DefaultApi,
   Configuration,
@@ -49,7 +51,9 @@ const buildClient = (runtimeContext: RuntimeContext): DefaultApi => {
 
   return new DefaultApi(
     new Configuration({
-      basePath: runtimeContext.sourceApiUrl.endsWith('/') ? runtimeContext.sourceApiUrl.slice(0, -1) : runtimeContext.sourceApiUrl,
+      basePath: runtimeContext.sourceApiUrl.endsWith("/")
+        ? runtimeContext.sourceApiUrl.slice(0, -1)
+        : runtimeContext.sourceApiUrl,
       fetchApi: window.fetch.bind(window),
       middleware: [sigv4SignMiddleware],
     }),
@@ -60,6 +64,8 @@ export const useDefaultApiClient = () => {
   const runtimeContext = useContext(RuntimeConfigContext);
 
   return useMemo(() => {
-    return runtimeContext?.sourceApiUrl ? buildClient(runtimeContext) : undefined;
+    return runtimeContext?.sourceApiUrl
+      ? buildClient(runtimeContext)
+      : undefined;
   }, [runtimeContext?.sourceApiUrl]);
 };

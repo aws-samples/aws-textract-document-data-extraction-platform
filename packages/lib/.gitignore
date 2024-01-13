@@ -82,3 +82,4 @@ dmypy.json
 .pytype/
 cython_debug/
 !/project.json
+!/LICENSE

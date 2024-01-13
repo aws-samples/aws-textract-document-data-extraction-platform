@@ -4,10 +4,17 @@
 #
 from typing import TypedDict, Dict
 
-from aws_document_extraction_platform_api_python_runtime.models.status_transition import StatusTransition
+from aws_document_extraction_platform_api_python_runtime.models.status_transition import (
+    StatusTransition,
+)
 
-from aws_document_extraction_platform_lib.utils.sfn.errors import SfnErrorDetails, get_sfn_error_message
-from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import DocumentMetadataStore
+from aws_document_extraction_platform_lib.utils.sfn.errors import (
+    SfnErrorDetails,
+    get_sfn_error_message,
+)
+from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import (
+    DocumentMetadataStore,
+)
 from aws_document_extraction_platform_lib.utils.time import utc_now
 from aws_document_extraction_platform_lib.utils.metrics.metrics import metric_publisher
 from aws_document_extraction_platform_lib.utils.logger import get_logger

@@ -1,18 +1,36 @@
+#
+#   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#   SPDX-License-Identifier: MIT-0
+#
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import DocumentMetadataStore
-from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
-from aws_document_extraction_platform_lib.utils.metrics.accuracy import compute_extraction_accuracy_percentage
+from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import (
+    DocumentMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import (
+    FormMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.metrics.accuracy import (
+    compute_extraction_accuracy_percentage,
+)
 from aws_document_extraction_platform_lib.utils.metrics.metrics import metric_publisher
 from aws_document_extraction_platform_lib.utils.time import utc_now
-from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
-from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
+from aws_document_extraction_platform_api_python_handlers.interceptors import (
+    DEFAULT_INTERCEPTORS,
+)
+from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import (
+    LoggingInterceptor,
+)
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
-    update_status_handler, UpdateStatusRequest, UpdateStatusOperationResponses
+    update_status_handler,
+    UpdateStatusRequest,
+    UpdateStatusOperationResponses,
 )
 
 
-def update_status(input: UpdateStatusRequest, **kwargs) -> UpdateStatusOperationResponses:
+def update_status(
+    input: UpdateStatusRequest, **kwargs
+) -> UpdateStatusOperationResponses:
     """
     Type-safe handler for the UpdateStatus operation
     """
@@ -35,7 +53,7 @@ def update_status(input: UpdateStatusRequest, **kwargs) -> UpdateStatusOperation
             )
         )
 
-    if new_status == document_form.data_extraction.status:
+    if new_status == document_form.extraction_execution.status:
         return Response.bad_request(
             ApiError(message="Cannot update status to the same status")
         )
@@ -48,7 +66,7 @@ def update_status(input: UpdateStatusRequest, **kwargs) -> UpdateStatusOperation
         )
     )
     document_form.status_transition_log = status_transition_log
-    document_form.data_extraction.status = new_status
+    document_form.extraction_execution.status = new_status
 
     # When a review has been completed, add the accuracy and review time metrics
     if new_status == "REVIEWED":
@@ -56,7 +74,6 @@ def update_status(input: UpdateStatusRequest, **kwargs) -> UpdateStatusOperation
             document_form
         )
         document = DocumentMetadataStore().get_document_metadata(document_id)
-        document_form = FormMetadata(**document_form)
         if document is None:
             return Response.not_found(
                 ApiError(message="No document found with id {}".format(document_id))

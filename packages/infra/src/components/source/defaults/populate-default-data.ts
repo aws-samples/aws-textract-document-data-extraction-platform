@@ -38,7 +38,7 @@ export class PopulateDefaultData extends Construct {
     [W_8BEN].forEach((schema) => {
       new AwsCustomResource(
         this,
-        `defaultSchema${schema.title.replace(/\s/g, "")}`,
+        `DefaultSchema${schema.title.replace(/\s/g, "")}`,
         {
           policy: AwsCustomResourcePolicy.fromStatements([
             new PolicyStatement({
@@ -74,7 +74,7 @@ export class PopulateDefaultData extends Construct {
     REVIEW_WORKFLOW_TAGS.forEach((tag) => {
       new AwsCustomResource(
         this,
-        `defaultFormReviewWorkflowTag${tag.tagText.replace(/\s/g, "")}`,
+        `DefaultFormReviewTag${tag.tagText.replace(/\s/g, "")}`,
         {
           policy: AwsCustomResourcePolicy.fromStatements([
             new PolicyStatement({

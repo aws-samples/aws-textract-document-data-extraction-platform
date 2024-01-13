@@ -1,3 +1,5 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
 import { CdkGraph, FilterPreset, Filters } from "@aws/pdk/cdk-graph";
 import { CdkGraphDiagramPlugin } from "@aws/pdk/cdk-graph-plugin-diagram";
 import { CdkGraphThreatComposerPlugin } from "@aws/pdk/cdk-graph-plugin-threat-composer";

@@ -37,6 +37,11 @@
       "type": "build"
     },
     {
+      "name": "eslint-plugin-header",
+      "version": "^3",
+      "type": "build"
+    },
+    {
       "name": "eslint-plugin-import",
       "type": "build"
     },

@@ -300,9 +300,9 @@ defined using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/)
 
 - `node` version 18+
 - `pnpm` (`npm install -g pnpm`)
-- Python 3.9
-  - Your `python` command must point to Python 3.9 prior to your first build. (Test with `python --version`)
-  - You can use [`pyenv`](https://github.com/pyenv/pyenv) to manage python versions, eg: `pyenv install 3.9.11 && pyenv global 3.9.11 && eval "$(pyenv init --path)"`)
+- Python 3.11
+  - Your `python` command must point to Python 3.11 prior to your first build. (Test with `python --version`)
+  - You can use [`pyenv`](https://github.com/pyenv/pyenv) to manage python versions, eg: `pyenv install 3.11.2 && pyenv global 3.11.2 && eval "$(pyenv init --path)"`)
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [CDK version 2](https://github.com/aws/aws-cdk#getting-started)
 - Java 11+ (used by OpenAPI generator), (eg [Amazon Correto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/what-is-corretto-17.html))
@@ -344,6 +344,12 @@ And deploy:
 ```bash
 pnpm run deploy [--profile <AWS_PROFILE>]
 ```
+
+#### Create a Cognito User
+
+Once the application has deployed, you can visit the AWS console and add a new user in the Cognito User Pool (see the last "Create a user" section of the [Cognito documentation](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html#creating-a-new-user-using-the-console)).
+
+When you create the user, select "Send an email invitation" and "Mark email address as verified". The email invitation will contain a temporary password which can be used for the first sign in to the website.
 
 #### Webapp Local Dev Server
 

@@ -6,6 +6,9 @@ import { NodePackageManager } from "projen/lib/javascript";
 import { PythonProject } from "projen/lib/python";
 import * as path from "path";
 import { DependencyType } from "projen";
+import { configureTsProject } from "./projenrc/utils/typescript";
+import { configureProject } from "./projenrc/utils/common";
+import { configurePyProject } from "./projenrc/utils/python";
 
 const monorepo = new MonorepoTsProject({
   devDeps: ["@aws/pdk"],
@@ -13,6 +16,7 @@ const monorepo = new MonorepoTsProject({
   packageManager: NodePackageManager.PNPM,
   projenrcTs: true,
 });
+configureTsProject(monorepo);
 
 const api = new TypeSafeApiProject({
   parent: monorepo,
@@ -42,6 +46,7 @@ const api = new TypeSafeApiProject({
 
 api.handlers.python!.addDependency("boto3@^1");
 api.handlers.python!.addDependency("botocore@^1");
+configurePyProject(api.handlers.python!);
 
 const pythonLibrary = new PythonProject({
   parent: monorepo,
@@ -54,7 +59,7 @@ const pythonLibrary = new PythonProject({
   authorName: "aws",
   version: "0.0.0",
   deps: [
-    "python@^3.9",
+    "python@^3.11",
     "boto3@^1",
     "botocore@^1",
     "amazon-textract-response-parser@^1",
@@ -62,13 +67,12 @@ const pythonLibrary = new PythonProject({
     "thefuzz@^0.19",
   ],
   devDeps: [
-    "black@^22",
-    "licenseheaders@^0.8.8",
     "moto@^4",
     `boto3-stubs@{version="^1", extras=["s3"]}`,
     "types-python-dateutil@^2",
   ],
 });
+configurePyProject(pythonLibrary);
 monorepo.addPythonPoetryDependency(pythonLibrary, api.runtime.python!);
 monorepo.addPythonPoetryDependency(api.handlers.python!, pythonLibrary);
 
@@ -83,6 +87,7 @@ pythonLibrary.packageTask.exec(
 pythonLibrary.packageTask.exec(
   `pip install -r dist/lambda/requirements.txt --target dist/lambda --upgrade --platform manylinux2014_x86_64 --only-binary :all:`
 );
+
 
 const webapp = new CloudscapeReactTsWebsiteProject({
   parent: monorepo,
@@ -111,6 +116,7 @@ const webapp = new CloudscapeReactTsWebsiteProject({
     "@types/react-pdf@^5",
   ],
 });
+configureTsProject(webapp);
 
 // TODO: Consider upgrading to northstar v2 / cloudscape
 webapp.deps.removeDependency("@aws-northstar/ui");
@@ -172,6 +178,7 @@ const infra = new InfrastructureTsProject({
     "cdk-nag",
   ],
 });
+configureTsProject(infra);
 
 monorepo.addImplicitDependency(infra, api.handlers.python!);
 monorepo.addImplicitDependency(infra, webapp);
@@ -180,5 +187,8 @@ monorepo.addTask("bootstrap", { receiveArgs: true }).exec(`nx run ${infra.name}:
 monorepo.addTask("deploy", { receiveArgs: true }).exec(`nx run ${infra.name}:deploy --require-approval never --all`, { receiveArgs: true });
 monorepo.addTask("destroy", { receiveArgs: true }).exec(`nx run ${infra.name}:destroy --require-approval never --all`, { receiveArgs: true });
 monorepo.addTask("dev", { receiveArgs: true }).exec(`nx run ${webapp.name}:dev`, { receiveArgs: true });
+
+monorepo.subprojects.forEach(p => configureProject(p));
+configureProject(monorepo);
 
 monorepo.synth();

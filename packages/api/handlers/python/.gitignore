@@ -86,3 +86,4 @@ cython_debug/
 !/openapitools.json
 .openapi-generator
 !/project.json
+!/LICENSE

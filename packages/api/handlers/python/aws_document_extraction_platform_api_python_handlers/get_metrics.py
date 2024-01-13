@@ -1,14 +1,27 @@
+#
+#   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#   SPDX-License-Identifier: MIT-0
+#
 from typing import List
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import FormSchemaStore
+from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import (
+    FormSchemaStore,
+)
 from aws_document_extraction_platform_lib.utils.ddb.store import PaginationParameters
 from aws_document_extraction_platform_lib.utils.metrics.metrics import Metrics
-from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
-from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
-from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
-    get_metrics_handler, GetMetricsRequest, GetMetricsOperationResponses
+from aws_document_extraction_platform_api_python_handlers.interceptors import (
+    DEFAULT_INTERCEPTORS,
 )
+from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import (
+    LoggingInterceptor,
+)
+from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
+    get_metrics_handler,
+    GetMetricsRequest,
+    GetMetricsOperationResponses,
+)
+
 
 def _list_all_schemas() -> List[FormSchema]:
     """
@@ -40,7 +53,7 @@ def get_metrics(input: GetMetricsRequest, **kwargs) -> GetMetricsOperationRespon
     start_timestamp = input.request_parameters.start_timestamp
     end_timestamp = input.request_parameters.end_timestamp
 
-    schema_ids = [schema.schemaId for schema in _list_all_schemas()]
+    schema_ids = [schema.schema_id for schema in _list_all_schemas()]
 
     return Response.success(
         Metrics().get_aggregate_metrics(start_timestamp, end_timestamp, schema_ids)
@@ -50,4 +63,3 @@ def get_metrics(input: GetMetricsRequest, **kwargs) -> GetMetricsOperationRespon
 # Entry point for the AWS Lambda handler for the GetMetrics operation.
 # The get_metrics_handler method wraps the type-safe handler and manages marshalling inputs and outputs
 handler = get_metrics_handler(interceptors=DEFAULT_INTERCEPTORS)(get_metrics)
-

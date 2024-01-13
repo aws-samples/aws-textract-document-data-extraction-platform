@@ -74,6 +74,13 @@
         "command": "pnpm dlx projen publish",
         "cwd": "packages/lib"
       }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm dlx projen lint",
+        "cwd": "packages/lib"
+      }
     }
   },
   "implicitDependencies": [

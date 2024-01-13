@@ -1,6 +1,16 @@
 {
   "dependencies": [
     {
+      "name": "black",
+      "version": "^22",
+      "type": "devenv"
+    },
+    {
+      "name": "licenseheaders",
+      "version": "0.8.8",
+      "type": "devenv"
+    },
+    {
       "name": "aws-document-extraction-platform-api-python-runtime",
       "version": "{path=\"../../generated/runtime/python\", develop=true}",
       "type": "runtime"

@@ -4,7 +4,6 @@
 !/.projen/deps.json
 !/.projen/files.json
 !/package.json
-!/LICENSE
 !/.npmignore
 logs
 *.log
@@ -43,3 +42,4 @@ public/api.json
 !/.eslintrc.json
 /build/
 !/project.json
+!/LICENSE

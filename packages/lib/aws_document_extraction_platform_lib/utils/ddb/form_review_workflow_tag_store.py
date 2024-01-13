@@ -12,7 +12,9 @@ from aws_document_extraction_platform_lib.utils.ddb.store import (
     PaginationParameters,
     PaginatedItemsResponse,
 )
-from aws_document_extraction_platform_api_python_runtime.models.form_review_workflow_tag import FormReviewWorkflowTag
+from aws_document_extraction_platform_api_python_runtime.models.form_review_workflow_tag import (
+    FormReviewWorkflowTag,
+)
 
 
 class FormReviewWorkflowTagStore(Store):
@@ -29,7 +31,7 @@ class FormReviewWorkflowTagStore(Store):
         )
 
     def _key(self, tag_id: str) -> Dict:
-        return {"tag_id": tag_id}
+        return {"tagId": tag_id}
 
     def put_form_review_workflow_tag(
         self, user: str, formReviewTag: FormReviewWorkflowTag

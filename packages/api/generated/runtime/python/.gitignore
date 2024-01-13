@@ -88,3 +88,4 @@ docs
 README.md
 .openapi-generator
 !/project.json
+!/LICENSE

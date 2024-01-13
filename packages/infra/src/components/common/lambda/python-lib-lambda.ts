@@ -24,7 +24,7 @@ export class PythonLibLambda extends LambdaFunction {
     { handler, ...props }: PythonLibLambdaProps,
   ) {
     super(scope, id, {
-      runtime: Runtime.PYTHON_3_9,
+      runtime: Runtime.PYTHON_3_11,
       code: Code.fromAsset("../lib/dist/lambda"),
       handler: `aws_document_extraction_platform_lib/${handler}.handler`,
       timeout: Duration.seconds(30),

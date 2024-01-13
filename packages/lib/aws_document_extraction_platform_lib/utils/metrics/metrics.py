@@ -11,13 +11,25 @@ import math
 
 import boto3
 from aws_document_extraction_platform_api_python_runtime import Configuration
-from aws_document_extraction_platform_api_python_runtime.models.aggregate_metrics import AggregateMetrics
-from aws_document_extraction_platform_api_python_runtime.models.status_transition import StatusTransition
-from aws_document_extraction_platform_api_python_runtime.models.document_metadata import DocumentMetadata
-from aws_document_extraction_platform_api_python_runtime.models.form_metadata import FormMetadata
+from aws_document_extraction_platform_api_python_runtime.models.aggregate_metrics import (
+    AggregateMetrics,
+)
+from aws_document_extraction_platform_api_python_runtime.models.status_transition import (
+    StatusTransition,
+)
+from aws_document_extraction_platform_api_python_runtime.models.document_metadata import (
+    DocumentMetadata,
+)
+from aws_document_extraction_platform_api_python_runtime.models.form_metadata import (
+    FormMetadata,
+)
 import botocore
 
-from aws_document_extraction_platform_lib.utils.time import millis_between, utc_now_datetime, to_datetime
+from aws_document_extraction_platform_lib.utils.time import (
+    millis_between,
+    utc_now_datetime,
+    to_datetime,
+)
 from aws_document_extraction_platform_lib.utils.misc import only_defined_values
 
 METRIC_NAMESPACE = "aws/disclosure-data-extraction"
@@ -250,7 +262,7 @@ class Metrics:
         Return the different dimensions for which to publish form metrics
         """
         # No dimensions, and by schema
-        return [[], [MetricDimension(name="SchemaId", value=form["schemaId"])]]
+        return [[], [MetricDimension(name="SchemaId", value=form.schema_id)]]
 
     def add_classification_time(self, document: DocumentMetadata):
         """
@@ -259,8 +271,8 @@ class Metrics:
         self._add_duration_metrics(
             Metric.CLASSIFICATION_TIME,
             [],
-            document["statusTransitionLog"],
-            document["numberOfPages"] if "numberOfPages" in document else 1,
+            document.status_transition_log,
+            document.number_of_pages if document.number_of_pages is not None else 1,
         )
 
     def add_extraction_time(self, form: FormMetadata):
@@ -271,8 +283,8 @@ class Metrics:
             self._add_duration_metrics(
                 Metric.EXTRACTION_TIME,
                 dimensions,
-                form["statusTransitionLog"],
-                form["numberOfPages"],
+                form.status_transition_log,
+                form.number_of_pages,
             )
 
     def add_processing_time(self, document: DocumentMetadata, form: FormMetadata):
@@ -280,13 +292,13 @@ class Metrics:
         Add a metric for the total time taken from the document upload to form data extraction
         """
         # Concatenate both status transition logs for a full timeline from the beginning of uploading the document to the form finishing extraction
-        full_status_log = document["statusTransitionLog"] + form["statusTransitionLog"]
+        full_status_log = document.status_transition_log + form.status_transition_log
         for dimensions in self._dimensions_for_form(form):
             self._add_duration_metrics(
                 Metric.PROCESSING_TIME,
                 dimensions,
                 full_status_log,
-                form["numberOfPages"],
+                form.number_of_pages,
             )
 
     def add_wait_time(self, form: FormMetadata):
@@ -297,8 +309,8 @@ class Metrics:
             self._add_duration_metrics(
                 Metric.WAIT_FOR_REVIEW_TIME,
                 dimensions,
-                form["statusTransitionLog"],
-                form["numberOfPages"],
+                form.status_transition_log,
+                form.number_of_pages,
             )
 
     def add_review_time(self, form: FormMetadata):
@@ -309,8 +321,8 @@ class Metrics:
             self._add_duration_metrics(
                 Metric.REVIEW_TIME,
                 dimensions,
-                form["statusTransitionLog"],
-                form["numberOfPages"],
+                form.status_transition_log,
+                form.number_of_pages,
             )
 
     def add_end_to_end_time(self, document: DocumentMetadata, form: FormMetadata):
@@ -318,13 +330,13 @@ class Metrics:
         Add a metric for the total time taken from the document upload to review completed
         """
         # Concatenate both status transition logs for a full timeline from the beginning of uploading the document to the form being reviewed
-        full_status_log = document["statusTransitionLog"] + form["statusTransitionLog"]
+        full_status_log = document.status_transition_log + form.status_transition_log
         for dimensions in self._dimensions_for_form(form):
             self._add_duration_metrics(
                 Metric.END_TO_END_TIME,
                 dimensions,
                 full_status_log,
-                form["numberOfPages"],
+                form.number_of_pages,
             )
 
     def add_document_count(self, document: DocumentMetadata):
@@ -338,7 +350,7 @@ class Metrics:
             [
                 MetricDimension(
                     name="Status",
-                    value=document["ingestionExecution"]["status"],
+                    value=document.ingestion_execution.status,
                 )
             ],
         )
@@ -350,9 +362,7 @@ class Metrics:
         """
         # For consistency with the document count metrics we publish either success/failed for extraction.
         # In the success case here we would otherwise report "READY_FOR_REVIEW"
-        status = (
-            "FAILED" if form["extractionExecution"]["status"] == "FAILED" else "SUCCESS"
-        )
+        status = "FAILED" if form.extraction_execution.status == "FAILED" else "SUCCESS"
 
         for dimensions in self._dimensions_for_form(form):
             self._add_count_metric(Metric.FORM_COUNT, dimensions)
@@ -369,12 +379,12 @@ class Metrics:
         for dimensions in self._dimensions_for_form(form):
             self._add_metric(
                 Metric.EXTRACTION_ACCURACY_DISTANCE,
-                form["extractionAccuracy"]["fieldDistancePercentage"],
+                form.extraction_accuracy.field_distance_percentage,
                 dimensions,
             )
             self._add_metric(
                 Metric.EXTRACTION_ACCURACY_CORRECTNESS,
-                form["extractionAccuracy"]["fieldDistancePercentage"],
+                form.extraction_accuracy.field_distance_percentage,
                 dimensions,
             )
 
@@ -385,7 +395,7 @@ class Metrics:
         for dimensions in self._dimensions_for_form(form):
             self._add_metric(
                 Metric.AVERAGE_CONFIDENCE,
-                form["averageConfidence"],
+                form.average_confidence,
                 dimensions,
             )
 

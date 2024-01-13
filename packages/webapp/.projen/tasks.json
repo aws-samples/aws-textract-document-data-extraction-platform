@@ -130,13 +130,13 @@
       },
       "steps": [
         {
-          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@testing-library/jest-dom,@testing-library/react,@testing-library/user-event,@types/humanize-duration,@types/jest,@types/lodash,@types/node,@types/react-dom,@types/react-pdf,@types/react-router-dom,@types/react,@types/swagger-ui-react,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-import,eslint-plugin-prettier,eslint,prettier,projen,react-app-rewired,typescript,@material-ui/icons,ace-builds,aws-northstar,aws4fetch,humanize-duration,lodash,react-ace,react-dom,react-pdf,react-router-dom,react-scripts,react-zoom-pan-pinch,react,web-vitals"
+          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@testing-library/jest-dom,@testing-library/react,@testing-library/user-event,@types/humanize-duration,@types/jest,@types/lodash,@types/node,@types/react-dom,@types/react-pdf,@types/react-router-dom,@types/react,@types/swagger-ui-react,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-header,eslint-plugin-import,eslint-plugin-prettier,eslint,prettier,projen,react-app-rewired,typescript,@material-ui/icons,ace-builds,aws-northstar,aws4fetch,humanize-duration,lodash,react-ace,react-dom,react-pdf,react-router-dom,react-scripts,react-zoom-pan-pinch,react,web-vitals"
         },
         {
           "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "pnpm update @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/humanize-duration @types/jest @types/lodash @types/node @types/react-dom @types/react-pdf @types/react-router-dom @types/react @types/swagger-ui-react @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint prettier projen react-app-rewired typescript @material-ui/icons ace-builds aws-northstar aws4fetch humanize-duration lodash react-ace react-dom react-pdf react-router-dom react-scripts react-zoom-pan-pinch react web-vitals"
+          "exec": "pnpm update @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/humanize-duration @types/jest @types/lodash @types/node @types/react-dom @types/react-pdf @types/react-router-dom @types/react @types/swagger-ui-react @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-header eslint-plugin-import eslint-plugin-prettier eslint prettier projen react-app-rewired typescript @material-ui/icons ace-builds aws-northstar aws4fetch humanize-duration lodash react-ace react-dom react-pdf react-router-dom react-scripts react-zoom-pan-pinch react web-vitals"
         },
         {
           "exec": "npx projen"

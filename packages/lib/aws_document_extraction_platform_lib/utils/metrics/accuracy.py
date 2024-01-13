@@ -5,24 +5,29 @@
 import statistics
 from typing import List
 
-from aws_document_extraction_platform_api_python_runtime.models.extraction_accuracy import ExtractionAccuracy
+from aws_document_extraction_platform_api_python_runtime.models.extraction_accuracy import (
+    ExtractionAccuracy,
+)
+from aws_document_extraction_platform_api_python_runtime.models.form_metadata import (
+    FormMetadata,
+)
 from thefuzz import fuzz
 from aws_document_extraction_platform_lib.utils.logger import get_logger
 
 log = get_logger(__name__)
 
 
-def _mean_accuracy(values: List) -> ExtractionAccuracy:
+def _mean_accuracy(values: List[ExtractionAccuracy]) -> ExtractionAccuracy:
     """
     Return the mean of the given extraction accuracy values
     """
     if len(values) > 0:
         return ExtractionAccuracy(
             fieldDistancePercentage=statistics.mean(
-                [float(value["fieldDistancePercentage"]) for value in values]
+                [float(value.field_distance_percentage) for value in values]
             ),
             fieldCorrectnessPercentage=statistics.mean(
-                [float(value["fieldCorrectnessPercentage"]) for value in values]
+                [float(value.field_correctness_percentage) for value in values]
             ),
         )
 
@@ -73,13 +78,13 @@ def _compute_extraction_accuracy_percentage(
     )
 
 
-def compute_extraction_accuracy_percentage(form) -> ExtractionAccuracy:
+def compute_extraction_accuracy_percentage(form: FormMetadata) -> ExtractionAccuracy:
     """
     Return the extraction accuracy percentage of a reviewed form
     """
     try:
         return _compute_extraction_accuracy_percentage(
-            form["originalExtractedData"], form["extractedData"]
+            form.original_extracted_data, form.extracted_data
         )
     except Exception as e:
         log.exception(e)

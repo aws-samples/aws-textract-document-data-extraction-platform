@@ -7,7 +7,10 @@ import urllib.parse
 import decimal
 import json
 from typing import Optional, Dict, Mapping, Any, Generic, TypeVar, TypedDict, List
-from aws_document_extraction_platform_lib.utils.base64 import base64_decode, base64_encode
+from aws_document_extraction_platform_lib.utils.base64 import (
+    base64_decode,
+    base64_encode,
+)
 
 from aws_document_extraction_platform_lib.utils.time import utc_now
 
@@ -249,7 +252,7 @@ class Store(Generic[Document]):
         return self.table.get_item(Key=key, ConsistentRead=True).get("Item")
 
     def _deserialize(self, document_dict: Dict):
-        return self.model.from_dict(_sanitise_ddb_document_response(document_dict))
+        return self.model.model_validate(_sanitise_ddb_document_response(document_dict))
 
     def _serialize(self, document: Document) -> Dict:
         return _sanitise_dict_for_ddb(document.to_dict())

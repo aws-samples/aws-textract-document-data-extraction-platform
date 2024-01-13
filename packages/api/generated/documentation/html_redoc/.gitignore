@@ -7,3 +7,4 @@ node_modules/
 !/openapitools.json
 index.html
 !/project.json
+!/LICENSE

@@ -1,15 +1,31 @@
+#
+#   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#   SPDX-License-Identifier: MIT-0
+#
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
-from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
-from aws_document_extraction_platform_lib.utils.s3.location import get_presigned_get_url_for_pdf
-from aws_document_extraction_platform_api_python_handlers.interceptors import DEFAULT_INTERCEPTORS
-from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import LoggingInterceptor
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import (
+    FormMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.s3.location import (
+    get_presigned_get_url_for_pdf,
+)
+from aws_document_extraction_platform_api_python_handlers.interceptors import (
+    DEFAULT_INTERCEPTORS,
+)
+from aws_document_extraction_platform_api_python_runtime.interceptors.powertools.logger import (
+    LoggingInterceptor,
+)
 from aws_document_extraction_platform_api_python_runtime.api.operation_config import (
-    get_document_form_handler, GetDocumentFormRequest, GetDocumentFormOperationResponses
+    get_document_form_handler,
+    GetDocumentFormRequest,
+    GetDocumentFormOperationResponses,
 )
 
 
-def get_document_form(input: GetDocumentFormRequest, **kwargs) -> GetDocumentFormOperationResponses:
+def get_document_form(
+    input: GetDocumentFormRequest, **kwargs
+) -> GetDocumentFormOperationResponses:
     """
     Type-safe handler for the GetDocumentForm operation
     """
@@ -35,5 +51,6 @@ def get_document_form(input: GetDocumentFormRequest, **kwargs) -> GetDocumentFor
 
 # Entry point for the AWS Lambda handler for the GetDocumentForm operation.
 # The get_document_form_handler method wraps the type-safe handler and manages marshalling inputs and outputs
-handler = get_document_form_handler(interceptors=DEFAULT_INTERCEPTORS)(get_document_form)
-
+handler = get_document_form_handler(interceptors=DEFAULT_INTERCEPTORS)(
+    get_document_form
+)

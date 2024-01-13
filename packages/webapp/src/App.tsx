@@ -130,23 +130,32 @@ const App: React.FC = () => {
               }
             >
               <Switch>
-                <Route exact path="/" component={() => <Dashboard />} key={"dashboard"} />
-                <Route exact
+                <Route
+                  exact
+                  path="/"
+                  component={() => <Dashboard />}
+                  key={"dashboard"}
+                />
+                <Route
+                  exact
                   path="/docs"
                   component={() => <DocumentSchemas />}
                   key={"docs"}
                 />
-                <Route exact
+                <Route
+                  exact
                   path="/review/:documentId/:formId"
                   component={() => <PDFFormReview isReadOnly={false} />}
                   key={"review"}
                 />
-                <Route exact
+                <Route
+                  exact
                   path="/view/:documentId/:formId"
                   component={() => <PDFFormReview isReadOnly={true} />}
                   key={"view"}
                 />
-                <Route exact
+                <Route
+                  exact
                   path="/view/:documentId"
                   component={() => <Document />}
                   key={"viewDocument"}

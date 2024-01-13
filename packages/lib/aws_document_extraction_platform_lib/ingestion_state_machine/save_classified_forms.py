@@ -2,37 +2,50 @@
 #   Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #   SPDX-License-Identifier: MIT-0
 #
-import json
-from multiprocessing import process
 from typing import TypedDict, List, Dict, no_type_check
 
-from aws_document_extraction_platform_api_python_runtime.models.execution_status import ExecutionStatus
-from aws_document_extraction_platform_api_python_runtime.models.form_metadata import FormMetadata
-from aws_document_extraction_platform_api_python_runtime.models.form_schema import FormSchema
-from aws_document_extraction_platform_api_python_runtime.models.s3_location import S3Location
-from aws_document_extraction_platform_api_python_runtime.models.extraction_execution import ExtractionExecution
+from aws_document_extraction_platform_api_python_runtime.models.execution_status import (
+    ExecutionStatus,
+)
+from aws_document_extraction_platform_api_python_runtime.models.form_metadata import (
+    FormMetadata,
+)
+from aws_document_extraction_platform_api_python_runtime.models.form_schema import (
+    FormSchema,
+)
+from aws_document_extraction_platform_api_python_runtime.models.extraction_execution import (
+    ExtractionExecution,
+)
 from aws_document_extraction_platform_api_python_runtime.models.extraction_execution_status import (
     ExtractionExecutionStatus,
 )
-from aws_document_extraction_platform_api_python_runtime.models.status_transition import StatusTransition
-from aws_document_extraction_platform_api_python_runtime.models.document_metadata import DocumentMetadata
+from aws_document_extraction_platform_api_python_runtime.models.status_transition import (
+    StatusTransition,
+)
 
-from aws_document_extraction_platform_lib.api.utils.api import CallingUserDict, _get_caller
-from aws_document_extraction_platform_lib.ingestion_state_machine.classify_forms import ClassifiedForm
+from aws_document_extraction_platform_lib.utils.api import CallingUserDict
+from aws_document_extraction_platform_lib.ingestion_state_machine.classify_forms import (
+    ClassifiedForm,
+)
 from aws_document_extraction_platform_lib.ingestion_state_machine.split_document import (
     ClassifiedSplitForm,
 )
-from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import FormMetadataStore
-from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import DocumentMetadataStore
-from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import FormSchemaStore
-from aws_document_extraction_platform_lib.utils.logger import get_logger
+from aws_document_extraction_platform_lib.utils.ddb.form_metadata_store import (
+    FormMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.ddb.document_metadata_store import (
+    DocumentMetadataStore,
+)
+from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import (
+    FormSchemaStore,
+)
 from aws_document_extraction_platform_lib.utils.s3.location import (
+    S3Location,
     get_document_key,
     get_file_name_from_document_key,
 )
 from aws_document_extraction_platform_lib.utils.time import utc_now
 from aws_document_extraction_platform_lib.utils.metrics.metrics import metric_publisher
-from aws_document_extraction_platform_api_python_runtime.api_client import JSONEncoder
 from aws_document_extraction_platform_lib.utils.pdf import read_pdf_from_s3
 
 
@@ -55,10 +68,10 @@ def _handle_processed_form(
     Take the pages from the document that were classified as the given form, and write to s3 as a new pdf
     """
     form_location: S3Location = {
-        "bucket": document_location.bucket,
+        "bucket": document_location["bucket"],
         "objectKey": get_document_key(
             document_id,
-            get_file_name_from_document_key(document_location.object_key),
+            get_file_name_from_document_key(document_location["objectKey"]),
         ),
     }
 
@@ -80,8 +93,7 @@ def handler(event: SaveClassifiedFormsInput, context):
 
     document_id = event["document_id"]
     schema_id = event["schema_id"]
-    caller = _get_caller(event)
-    username = caller.username
+    username = event["caller"]["username"]
 
     document = document_store.get_document_metadata(document_id)
 
@@ -93,7 +105,7 @@ def handler(event: SaveClassifiedFormsInput, context):
     document_location = event["document_location"]
 
     document_pdf = read_pdf_from_s3(
-        document_location.bucket, document_location.object_key
+        document_location["bucket"], document_location["objectKey"]
     )
 
     document.number_of_pages = document_pdf.numPages
@@ -117,38 +129,39 @@ def handler(event: SaveClassifiedFormsInput, context):
 
     for i in range(0, len(classified_forms)):
         form = classified_forms[i]
+        form_schema_id = form["schema_id"]
 
         schema = (
-            schemas[form.schema_id]
-            if form.schema_id in schemas
-            else schema_store.get_form_schema(form.schema_id)
+            schemas[form_schema_id]
+            if form_schema_id in schemas
+            else schema_store.get_form_schema(form_schema_id)
         )
         if schema is None:
-            raise Exception("No schema found with id {}".format(form.schema_id))
-        schemas[form.schema_id] = schema
+            raise Exception("No schema found with id {}".format(form_schema_id))
+        schemas[form_schema_id] = schema
 
         form_store.put_form_metadata(
             username,
             FormMetadata(
                 documentId=document_id,
                 documentName=document.name,
-                formId=form.form_id,
-                schemaId=form.schema_id,
-                startPageIndex=form.start_page,
-                endPageIndex=form.end_page,
-                numberOfPages=form.end_page
-                - form.start_page
+                formId=form["form_id"],
+                schemaId=form_schema_id,
+                startPageIndex=form["start_page"],
+                endPageIndex=form["end_page"],
+                numberOfPages=form["end_page"]
+                - form["start_page"]
                 + 1,  # Start/end page indices are inclusive so add 1 for total pages
                 location=S3Location(
-                    bucket=form.location.bucket,
-                    objectKey=form.location.object_key,
+                    bucket=form["location"]["bucket"],
+                    objectKey=form["location"]["objectKey"],
                 ),
                 extractionExecution=ExtractionExecution(
                     status=ExtractionExecutionStatus("NOT_STARTED"),
                     executionId="not_started_yet",
                 ),
                 # Store a snapshot of the schema at the time of extraction, since these may evolve over time
-                schemaSnapshot=schema.schema,
+                schemaSnapshot=schema.var_schema,
                 statusTransitionLog=[
                     StatusTransition(
                         timestamp=utc_now(),
@@ -160,7 +173,7 @@ def handler(event: SaveClassifiedFormsInput, context):
         )
 
         processed_forms.append(
-            _handle_processed_form(document_id, form.form_id, form.location, form)
+            _handle_processed_form(document_id, form["form_id"], form["location"], form)
         )
 
     # Update the ingestion status to success

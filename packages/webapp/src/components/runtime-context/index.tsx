@@ -1,5 +1,5 @@
-/*! Copyright [Amazon.com](http://amazon.com/), Inc. or its affiliates. All Rights Reserved.
-SPDX-License-Identifier: Apache-2.0 */
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
 import { LoadingIndicator, Alert } from "aws-northstar";
 import React, { createContext, useEffect, useState } from "react";
 
