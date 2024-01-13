@@ -459,12 +459,16 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
           <Column>
             <Heading variant="h2">Extracted Data</Heading>
             <br />
-            <SchemaEditor
-              jsonSchema={stringifyDataAccordingToSchema(
-                docForm.extractedData,
-                docForm.schemaSnapshot,
-              )}
-            />
+            {docForm.extractedData ? (
+              <SchemaEditor
+                jsonSchema={stringifyDataAccordingToSchema(
+                  docForm.extractedData,
+                  docForm.schemaSnapshot,
+                )}
+              />
+            ) : (
+              <Alert type="info">Data extraction has not yet completed</Alert>
+            )}
           </Column>
         </ColumnLayout>
       </Modal>
