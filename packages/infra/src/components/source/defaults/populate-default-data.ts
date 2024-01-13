@@ -9,7 +9,6 @@ import {
 import { Construct } from "constructs";
 import { W_8BEN } from "./form-schemas/w-8ben";
 import { REVIEW_WORKFLOW_TAGS } from "./review-workflow-tags/tags";
-import { ApiExtended } from "../../../constructs/api-extended";
 import { SourceApi } from "../api";
 
 export interface PopulateDefaultDataProps {
@@ -27,19 +26,19 @@ export class PopulateDefaultData extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { sourceApi }: PopulateDefaultDataProps
+    { sourceApi }: PopulateDefaultDataProps,
   ) {
     super(scope, id);
 
-    this.defaultFormSchemas(sourceApi.api);
-    this.defaultFormReviewWorkflowTags(sourceApi.api);
+    this.defaultFormSchemas(sourceApi);
+    this.defaultFormReviewWorkflowTags(sourceApi);
   }
 
-  private defaultFormSchemas = (api: ApiExtended) => {
+  private defaultFormSchemas = (api: SourceApi) => {
     [W_8BEN].forEach((schema) => {
       new AwsCustomResource(
         this,
-        `defaultSchema${schema.title.replace(/\s/g, "")}`,
+        `DefaultSchema${schema.title.replace(/\s/g, "")}`,
         {
           policy: AwsCustomResourcePolicy.fromStatements([
             new PolicyStatement({
@@ -52,10 +51,7 @@ export class PopulateDefaultData extends Construct {
             service: "Lambda",
             action: "invoke",
             parameters: {
-              FunctionName:
-                // @ts-ignore
-                api.integrations.createFormSchema.integration.lambdaFunction
-                  .functionArn,
+              FunctionName: api.createFormSchema.functionArn,
               Payload: JSON.stringify({
                 pathParameters: {},
                 queryStringParameters: {},
@@ -65,20 +61,20 @@ export class PopulateDefaultData extends Construct {
               }),
             },
             physicalResourceId: PhysicalResourceId.of(
-              `CreateDefaultSchema${schema.title.replace(/\s/g, "")}`
+              `CreateDefaultSchema${schema.title.replace(/\s/g, "")}`,
             ),
             outputPaths: ["status"],
           },
-        }
+        },
       );
     });
   };
 
-  private defaultFormReviewWorkflowTags = (api: ApiExtended) => {
+  private defaultFormReviewWorkflowTags = (api: SourceApi) => {
     REVIEW_WORKFLOW_TAGS.forEach((tag) => {
       new AwsCustomResource(
         this,
-        `defaultFormReviewWorkflowTag${tag.tagText.replace(/\s/g, "")}`,
+        `DefaultFormReviewTag${tag.tagText.replace(/\s/g, "")}`,
         {
           policy: AwsCustomResourcePolicy.fromStatements([
             new PolicyStatement({
@@ -91,11 +87,7 @@ export class PopulateDefaultData extends Construct {
             service: "Lambda",
             action: "invoke",
             parameters: {
-              FunctionName:
-                /*eslint-disable */
-                // @ts-ignore
-                api.integrations.createFormReviewWorkflowTag.integration.lambdaFunction.functionArn,
-                /*eslint-enable */
+              FunctionName: api.createFormReviewWorkflowTag.functionArn,
               Payload: JSON.stringify({
                 pathParameters: {},
                 queryStringParameters: {},
@@ -105,11 +97,11 @@ export class PopulateDefaultData extends Construct {
               }),
             },
             physicalResourceId: PhysicalResourceId.of(
-              `CreateFormReviewWorkflowTag${tag.tagText.replace(/\s/g, "")}`
+              `CreateFormReviewWorkflowTag${tag.tagText.replace(/\s/g, "")}`,
             ),
             outputPaths: ["status"],
           },
-        }
+        },
       );
     });
   };

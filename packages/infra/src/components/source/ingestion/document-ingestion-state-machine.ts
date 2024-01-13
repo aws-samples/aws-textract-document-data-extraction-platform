@@ -18,9 +18,9 @@ import { Construct } from "constructs";
 import { FormDataExtractionStateMachine } from "./form-data-extraction-state-machine";
 import { Table } from "../../common/dynamodb/table";
 import {
-  PythonLambda,
-  PythonLambdaProps,
-} from "../../common/lambda/python-lambda";
+  PythonLibLambda,
+  PythonLibLambdaProps,
+} from "../../common/lambda/python-lib-lambda";
 import { grantPublishMetrics } from "../../common/metrics/permissions";
 import { TextractStateMachine } from "../textract/textract-state-machine";
 
@@ -46,15 +46,15 @@ export class DocumentIngestionStateMachine extends Construct {
       documentMetadataTable,
       formMetadataTable,
       formSchemaTable,
-    }: DocumentIngestionStateMachineProps
+    }: DocumentIngestionStateMachineProps,
   ) {
     super(scope, id);
 
     const buildLambda = (
       handler: string,
-      extraProps?: Omit<PythonLambdaProps, "handler">
+      extraProps?: Omit<PythonLibLambdaProps, "handler">,
     ) =>
-      new PythonLambda(this, handler, {
+      new PythonLibLambda(this, handler, {
         handler: `ingestion_state_machine/${handler}`,
         timeout: Duration.minutes(15),
         environment: {
@@ -89,7 +89,7 @@ export class DocumentIngestionStateMachine extends Construct {
       "TextractStateMachine",
       {
         sourceBucket,
-      }
+      },
     );
 
     const saveClassifiedFormsLambda = buildLambda("save_classified_forms");
@@ -110,7 +110,7 @@ export class DocumentIngestionStateMachine extends Construct {
         }),
         payloadResponseOnly: true,
         resultPath: "$.Payload.SaveClassifiedFormsOutput",
-      })
+      }),
     );
 
     const formDataExtractionStateMachine = new FormDataExtractionStateMachine(
@@ -122,7 +122,7 @@ export class DocumentIngestionStateMachine extends Construct {
         formMetadataTable,
         formSchemaTable,
         textractStateMachine,
-      }
+      },
     );
 
     const extractFormData = new StepFunctionsStartExecution(
@@ -137,7 +137,7 @@ export class DocumentIngestionStateMachine extends Construct {
         }),
         integrationPattern: IntegrationPattern.RUN_JOB,
         resultPath: "$.Payload.ExtractFormDataOutput",
-      }
+      },
     );
 
     this.stateMachine = new StateMachine(
@@ -147,14 +147,14 @@ export class DocumentIngestionStateMachine extends Construct {
         definition: saveClassifiedForms.next(
           new Map(this, "ForEachClassifiedForm", {
             itemsPath: JsonPath.stringAt(
-              "$.Payload.SaveClassifiedFormsOutput.forms"
+              "$.Payload.SaveClassifiedFormsOutput.forms",
             ),
             outputPath: "$.Payload.ExtractFormDataOutput",
             resultPath: "$.Payload.ExtractFormDataOutput",
-          }).iterator(extractFormData)
+          }).iterator(extractFormData),
         ),
         tracingEnabled: true,
-      }
+      },
     );
   }
 }

@@ -285,30 +285,28 @@ For more information refer to the spec.yaml's `FormJSONSchema`.
 
 ## Project Structure
 
-This is an [NX](https://nx.dev/) monorepo project, which uses [projen](https://github.com/projen/projen) to manage project files and dependencies. Infrastructure is
+This is a [PDK](https://aws.github.io/aws-pdk/) project, which uses [projen](https://github.com/projen/projen) to manage project files and dependencies. Infrastructure is
 defined using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/).
 
 - `.projenrc.ts` - The entry point for projen, defining the high level projects and their dependencies in the monorepo.
 - `packages/infra` - Contains the CDK infrastructure for the prototype.
-- `packages/api/core` - Contains the OpenAPI specification (`spec.yaml`), code generation tooling, and CDK construct for creating API infrastructure based on the specification.
-- `packages/lambdas` - Python project containing all lambda handlers for serving API requests, or executing as Step Functions state machine steps.
+- `packages/api` - Contains the [Type Safe API](https://aws.github.io/aws-pdk/developer_guides/type-safe-api/index.html), including an OpenAPI specification (`packages/api/model/src/main/openapi/main.yaml`), and API business logic (`packages/api/handlers/python`).
+- `packages/lib` - Python project containing all lambda handlers for executing as Step Functions state machine steps, and other
 - `packages/webapp` - The user interface written using [React](https://reactjs.org/)
 
 ## Development
 
 ### Prerequisites
 
-- `node` version 14+
-- `yarn` (`npm install -g yarn`)
-- `npx` (`npm install -g npx`)
-- Python 3.9
-  - Your `python` command must point to Python 3.9 prior to your first build. (Test with `python --version`)
-  - You can use [`pyenv`](https://github.com/pyenv/pyenv) to manage python versions, eg: `pyenv install 3.9.11 && pyenv global 3.9.11 && eval "$(pyenv init --path)"`)
+- `node` version 18+
+- `pnpm` (`npm install -g pnpm`)
+- Python 3.11
+  - Your `python` command must point to Python 3.11 prior to your first build. (Test with `python --version`)
+  - You can use [`pyenv`](https://github.com/pyenv/pyenv) to manage python versions, eg: `pyenv install 3.11.2 && pyenv global 3.11.2 && eval "$(pyenv init --path)"`)
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [CDK version 2](https://github.com/aws/aws-cdk#getting-started)
-- [`git-remote-codecommit`](https://github.com/aws/git-remote-codecommit#step-3-install-git-remote-codecommit)
-- Java 11 (used by OpenAPI generator), (eg [Amazon Correto 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/what-is-corretto-11.html))
-- poetry `pip install poetry`
+- Java 11+ (used by OpenAPI generator), (eg [Amazon Correto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/what-is-corretto-17.html))
+- poetry (`pip install poetry`)
 
 ### Getting Started
 
@@ -317,114 +315,61 @@ defined using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/)
 To build the prototype from scratch, use the following command:
 
 ```bash
-yarn
+pnpm install && pnpm build
 ```
 
-This will install all dependencies for packages except for the generated package `api_python_client`. This package needs the .env to be able to install. So if there is an error,
-Error: Invalid projects: api_python_client, just continue with npx projen to create the .env necessary. Installation of api_python_client will be a few steps later.
+This will install dependencies and build the repository.
 
-```bash
-yarn projen
-```
+#### Subsequent Builds
 
-This will activate the python virtual environment that contains python 3.9 that's required for this repository.
+For subsequent builds, `pnpm build` is sufficient.
 
-To build all packages in this repository
+#### Deploy
 
-```bash
- yarn build
-```
-
-For subsequent builds, `yarn` need not be run. `npx projen` need only be run when the `.projenrc.ts` file (or files in the `projenrc` folder) is changed.
-
-#### Deploy the CI/CD Pipeline
-
-Ensure you have an AWS profile set up with the region in which the CI/CD pipeline should be deployed,
+Ensure you have an AWS profile set up with the region in which the application should be deployed,
 and credentials for your target AWS account. This can be a named profile, or the default profile (omit the `--profile` argument).
 
 ```bash
 aws configure [--profile <AWS_PROFILE>]
 ```
 
-Next, bootstrap CDK and deploy the pipeline from the `packages/infra` directory:
+Next, bootstrap CDK (if you haven't done so already for your AWS account):
 
 ```bash
-cd packages/infra
-npx cdk bootstrap [--profile <AWS_PROFILE>]
-npx cdk deploy [--profile <AWS_PROFILE>]
-cd ../..
+pnpm run bootstrap [--profile <AWS_PROFILE>]
 ```
 
-#### Deploying locally to a sandbox environment
-
-- note you need bootstrap CDK to have been run before deploying in your aws account
+And deploy:
 
 ```bash
-npx cdk bootstrap [--profile <AWS_PROFILE>]
+pnpm run deploy [--profile <AWS_PROFILE>]
 ```
 
-If CDK boostrap stack has already been deployed, run the following command from the root of the project:
+#### Create a Cognito User
 
-```bash
-cd packages/infra && yarn build && yarn deploy-sandbox --profile <AWS_PROFILE>
-```
+Once the application has deployed, you can visit the AWS console and add a new user in the Cognito User Pool (see the last "Create a user" section of the [Cognito documentation](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html#creating-a-new-user-using-the-console)).
 
-#### Configure the Pipeline Source
+When you create the user, select "Send an email invitation" and "Mark email address as verified". The email invitation will contain a temporary password which can be used for the first sign in to the website.
 
-The pipeline includes creation of a CodeCommit repository named `monorepo`.
+#### Webapp Local Dev Server
 
-Make sure you have [`git-remote-codecommit`](https://github.com/aws/git-remote-codecommit#step-3-install-git-remote-codecommit) installed.
+The webapp "points" to a particular backend based on its `runtime-config.json` file.
 
-From the **root directory**:
-
-```bash
-git checkout -b mainline && git add --all && git commit -m "Initial Commit"
-git remote add awscodecommit codecommit://<AWS_PROFILE>@monorepo
-git push awscodecommit mainline -u
-```
-
-You can now visit the AWS console to find the CodePipeline and track its progress.
-
-#### [OPTIONAL] Configure the Pipeline Source with SonarQube
-
-`packages/infra/cdk.context.json` file must include your sonarqube settings like so. This will add `sonarqubeScannerConfig` to the cdk context.
+For local development, you will need to copy the generated `runtime-config.json` file into your `packages/webapp/public` directory. An example on how to do this is as follows:
 
 ```
-{
-  "sonarqubeScannerConfig": {
-    "sonarqubeEndpoint": "https://www.example.sonar.qube.com",
-    "sonarqubeAuthorizedGroup": "<YOUR_AUTHORIZED_GROUP_NAME>",
-    "sonarqubeDefaultProfileOrGateName": "<YOUR_DEFAULT_PROFILE>",
-    "sonarqubeSpecificProfileOrGateName": "<YOUR_SPECIFIC_PROFILE>",
-    "sonarqubeProjectName": "<YOUR_DESIRED_SONARQUBE_PROJECT_NAME>",
-    "sonarqubeTags": [
-      "example_tag1",
-      "example_tag2",
-      "example_tag3"
-    ],
-    "preArchiveCommands": [
-      "cd packages/infra && cat cdk.context.json | jq 'del(.sonarqubeScannerConfig)' > cdk.context.json"
-    ]
-  }
-}
+curl https://dxxxxxxxxxx.cloudfront.net/runtime-config.json > packages/webapp/public/runtime-config.json
 ```
 
-Add the following snippet to the PDKPipeline construct to get sonarqube configured in `packages/infra/src/pipeline-stack.ts`. This will grab the object `sonarqubeScannerConfig` from the cdk context.
+Replace the url in the above command with the cloudfront URL of the UI for your deployment.
 
-```
-this.pipeline = new pipeline.PDKPipeline(this, "ApplicationPipeline", {
-      ...
-      // Optional: if you use SonarQube, you can provide config to execute a code scan here
-      sonarCodeScannerConfig: this.node.tryGetContext("sonarqubeScannerConfig"),
-    });
-```
 
 ### Useful Commands
 
-- `npx projen` - Regenerate the project configuration files from the `.projenrc` file.
-- `npx nx run @aws/infra:build` - Build the CDK infrastructure package and all its dependencies.
-- `npx nx run @aws/infra:deploy-sandbox [--profile <AWS_PROFILE>]` Deploy a standalone instance of the application, useful for development/testing.
-- `npx nx run @aws/webapp:dev` - Run the local webapp dev server (prior to first run please read instructions in `packages/webapp/README.md`)
+- `pnpm projen` - Regenerate the project configuration files from the `.projenrc` file.
+- `pnpm build` - Build the project
+- `pnpm run deploy [--profile <AWS_PROFILE>]` Deploy the application
+- `pnpm run dev` - Run the local webapp dev server (prior to first run please read instructions above)
 
 ---
 

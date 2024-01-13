@@ -28,7 +28,10 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
-!/.projenrc.js
+public/runtime-config.json
+public/api.json
+!/.prettierignore
+!/.prettierrc.json
 !/.npmrc
 !/test/
 !/tsconfig.json
@@ -38,7 +41,5 @@ jspm_packages/
 /dist/
 !/.eslintrc.json
 /build/
-!/LICENSE
-public/runtime-configuration.js
-public/api-docs
 !/project.json
+!/LICENSE

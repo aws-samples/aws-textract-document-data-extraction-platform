@@ -1,9 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 import {
-  Authorizers,
-  Integrations,
-} from "@aws-prototyping-sdk/open-api-gateway";
+  Api,
+  CreateFormReviewWorkflowTagFunction,
+  CreateFormSchemaFunction,
+  DeleteFormSchemaFunction,
+  GetDocumentFormFunction,
+  GetDocumentFunction,
+  GetDocumentUploadUrlFunction,
+  GetFormSchemaFunction,
+  GetMetricsFunction,
+  ListDocumentFormsFunction,
+  ListDocumentsFunction,
+  ListFormReviewWorkflowTagsFunction,
+  ListFormSchemasFunction,
+  ListFormsFunction,
+  SubmitSourceDocumentFunction,
+  UpdateFormReviewFunction,
+  UpdateFormSchemaFunction,
+  UpdateStatusFunction,
+} from "@aws/document-extraction-platform-api-typescript-infra";
+import { Authorizers, Integrations } from "@aws/pdk/type-safe-api";
 import { Stack } from "aws-cdk-lib";
 import { Cors } from "aws-cdk-lib/aws-apigateway";
 import { UserPool } from "aws-cdk-lib/aws-cognito";
@@ -14,11 +31,10 @@ import {
   PolicyDocument,
   PolicyStatement,
 } from "aws-cdk-lib/aws-iam";
+import { FunctionProps, IFunction } from "aws-cdk-lib/aws-lambda";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
-import { ApiExtended } from "../../../constructs/api-extended";
 import { Table } from "../../common/dynamodb/table";
-import { PythonLambda } from "../../common/lambda/python-lambda";
 import {
   grantPublishMetrics,
   grantReadMetrics,
@@ -39,7 +55,10 @@ export interface SourceApiProps {
  * Construct defining the API methods and integrations
  */
 export class SourceApi extends Construct {
-  public readonly api: ApiExtended;
+  public readonly api: Api;
+
+  public readonly createFormSchema: IFunction;
+  public readonly createFormReviewWorkflowTag: IFunction;
 
   constructor(
     scope: Construct,
@@ -52,112 +71,169 @@ export class SourceApi extends Construct {
       formMetadataTable,
       formSchemaTable,
       formReviewWorkflowTagsTable,
-    }: SourceApiProps
+    }: SourceApiProps,
   ) {
     super(scope, id);
 
-    const buildLambda = (handler: string) => {
-      const lambda = new PythonLambda(this, handler, {
-        handler: `api/${handler}`,
-        environment: {
-          SOURCE_DOCUMENT_BUCKET: sourceDocumentBucket.bucketName,
-          DOCUMENT_INGESTION_STATE_MACHINE_ARN:
-            documentIngestionStateMachine.stateMachine.stateMachineArn,
-          ...documentMetadataTable.environment,
-          ...formMetadataTable.environment,
-          ...formSchemaTable.environment,
-          ...formReviewWorkflowTagsTable.environment,
-        },
-      });
-      // Grant all lambdas permissions to list users in the user pool for the generic api wrapper to look up any
-      // callers authenticated via cognito
-      lambda.addToRolePolicy(
+    const apiLambdaProps = {
+      environment: {
+        SOURCE_DOCUMENT_BUCKET: sourceDocumentBucket.bucketName,
+        DOCUMENT_INGESTION_STATE_MACHINE_ARN:
+          documentIngestionStateMachine.stateMachine.stateMachineArn,
+        ...documentMetadataTable.environment,
+        ...formMetadataTable.environment,
+        ...formSchemaTable.environment,
+        ...formReviewWorkflowTagsTable.environment,
+      },
+      initialPolicy: [
+        // Grant all lambdas permissions to list users in the user pool for the generic api wrapper to look up any
+        // callers authenticated via cognito
         new PolicyStatement({
           effect: Effect.ALLOW,
           actions: ["cognito-idp:ListUsers"],
           resources: [userPool.userPoolArn],
-        })
+        }),
+      ],
+      memorySize: 256,
+    } satisfies Partial<FunctionProps>;
+
+    const createFormReviewWorkflowTagLambda =
+      new CreateFormReviewWorkflowTagFunction(
+        this,
+        "CreateFormReviewWorkflowTag",
+        apiLambdaProps,
       );
-      return lambda;
-    };
-
-    const createFormReviewWorkflowTagLambda = buildLambda(
-      "form_review_workflow_tags/create_form_review_workflow_tag"
-    );
+    this.createFormReviewWorkflowTag = createFormReviewWorkflowTagLambda;
     formReviewWorkflowTagsTable.grantReadWriteData(
-      createFormReviewWorkflowTagLambda
+      createFormReviewWorkflowTagLambda,
     );
 
-    const listFormReviewWorkflowTagsLambda = buildLambda(
-      "form_review_workflow_tags/list_form_review_workflow_tags"
-    );
+    const listFormReviewWorkflowTagsLambda =
+      new ListFormReviewWorkflowTagsFunction(
+        this,
+        "listFormReviewWorkflowTags",
+        apiLambdaProps,
+      );
     formReviewWorkflowTagsTable.grantReadData(listFormReviewWorkflowTagsLambda);
 
-    const getDocumentUploadUrlLambda = buildLambda("get_document_upload_url");
+    const getDocumentUploadUrlLambda = new GetDocumentUploadUrlFunction(
+      this,
+      "GetDocumentUploadUrl",
+      apiLambdaProps,
+    );
     sourceDocumentBucket.grantReadWrite(getDocumentUploadUrlLambda);
 
-    const submitSourceDocumentLambda = buildLambda("submit_source_document");
+    const submitSourceDocumentLambda = new SubmitSourceDocumentFunction(
+      this,
+      "SubmitSourceDocument",
+      apiLambdaProps,
+    );
 
     sourceDocumentBucket.grantReadWrite(submitSourceDocumentLambda);
     documentIngestionStateMachine.stateMachine.grantStartExecution(
-      submitSourceDocumentLambda
+      submitSourceDocumentLambda,
     );
     documentMetadataTable.grantReadWriteData(submitSourceDocumentLambda);
 
-    const getDocumentLambda = buildLambda("get_document");
+    const getDocumentLambda = new GetDocumentFunction(
+      this,
+      "GetDocument",
+      apiLambdaProps,
+    );
     documentMetadataTable.grantReadData(getDocumentLambda);
     sourceDocumentBucket.grantRead(getDocumentLambda);
 
-    const listDocumentsLambda = buildLambda("list_documents");
+    const listDocumentsLambda = new ListDocumentsFunction(
+      this,
+      "ListDocuments",
+      apiLambdaProps,
+    );
     documentMetadataTable.grantReadData(listDocumentsLambda);
 
-    const listDocumentFormsLambda = buildLambda("list_document_forms");
+    const listDocumentFormsLambda = new ListDocumentFormsFunction(
+      this,
+      "ListDocumentForms",
+      apiLambdaProps,
+    );
     documentMetadataTable.grantReadData(listDocumentFormsLambda);
     formMetadataTable.grantReadData(listDocumentFormsLambda);
 
-    const listFormsLambda = buildLambda("list_forms");
+    const listFormsLambda = new ListFormsFunction(
+      this,
+      "ListForms",
+      apiLambdaProps,
+    );
     formMetadataTable.grantReadData(listFormsLambda);
 
-    const getDocumentFormLambda = buildLambda("get_document_form");
+    const getDocumentFormLambda = new GetDocumentFormFunction(
+      this,
+      "GetDocumentForm",
+      apiLambdaProps,
+    );
     formMetadataTable.grantReadData(getDocumentFormLambda);
     sourceDocumentBucket.grantRead(getDocumentFormLambda);
 
-    const createFormSchemaLambda = buildLambda(
-      "form_schema/create_form_schema"
+    const createFormSchemaLambda = new CreateFormSchemaFunction(
+      this,
+      "CreateFormSchema",
+      apiLambdaProps,
     );
+    this.createFormSchema = createFormSchemaLambda;
     formSchemaTable.grantReadWriteData(createFormSchemaLambda);
 
-    const updateFormSchemaLambda = buildLambda(
-      "form_schema/update_form_schema"
+    const updateFormSchemaLambda = new UpdateFormSchemaFunction(
+      this,
+      "UpdateFormSchema",
+      apiLambdaProps,
     );
     formSchemaTable.grantReadWriteData(updateFormSchemaLambda);
 
-    const deleteFormSchemaLambda = buildLambda(
-      "form_schema/delete_form_schema"
+    const deleteFormSchemaLambda = new DeleteFormSchemaFunction(
+      this,
+      "DeleteFormSchema",
+      apiLambdaProps,
     );
     formSchemaTable.grantReadWriteData(deleteFormSchemaLambda);
 
-    const getFormSchemaLambda = buildLambda("form_schema/get_form_schema");
+    const getFormSchemaLambda = new GetFormSchemaFunction(
+      this,
+      "GetFormSchema",
+      apiLambdaProps,
+    );
     formSchemaTable.grantReadData(getFormSchemaLambda);
 
-    const listFormSchemasLambda = buildLambda("form_schema/list_form_schemas");
+    const listFormSchemasLambda = new ListFormSchemasFunction(
+      this,
+      "ListFormSchemas",
+      apiLambdaProps,
+    );
     formSchemaTable.grantReadData(listFormSchemasLambda);
 
-    const updateFormReviewLambda = buildLambda(
-      "form_review/update_form_review"
+    const updateFormReviewLambda = new UpdateFormReviewFunction(
+      this,
+      "UpdateFormReview",
+      apiLambdaProps,
     );
     formMetadataTable.grantReadWriteData(updateFormReviewLambda);
 
-    const updateStatusLambda = buildLambda("form_review/update_status");
+    const updateStatusLambda = new UpdateStatusFunction(
+      this,
+      "UpdateStatus",
+      apiLambdaProps,
+    );
     formMetadataTable.grantReadWriteData(updateStatusLambda);
     documentMetadataTable.grantReadData(updateStatusLambda);
     grantPublishMetrics(updateStatusLambda);
 
-    const getMetricsLambda = buildLambda("metrics/get_metrics");
+    const getMetricsLambda = new GetMetricsFunction(
+      this,
+      "GetMetrics",
+      apiLambdaProps,
+    );
     formSchemaTable.grantReadData(getMetricsLambda);
     grantReadMetrics(getMetricsLambda);
 
-    this.api = new ApiExtended(this, "Api", {
+    this.api = new Api(this, "Api", {
       defaultAuthorizer: Authorizers.iam(),
       corsOptions: {
         allowOrigins: Cors.ALL_ORIGINS,

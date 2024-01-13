@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import React from 'react';
+import React from "react";
 
-import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-github';
-import 'ace-builds/src-noconflict/ext-language_tools';
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-json";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/ext-language_tools";
 
 export interface SchemaEditorProps {
   jsonSchema: string;
@@ -17,13 +17,15 @@ export interface SchemaEditorProps {
  * @param jsonSchema the schema to be displayed
  * @returns Component for creating a schema editor. Built with react-ace.
  */
-export const SchemaEditor: React.FC<SchemaEditorProps> = ({ onChange, jsonSchema }) => {
-
+export const SchemaEditor: React.FC<SchemaEditorProps> = ({
+  onChange,
+  jsonSchema,
+}) => {
   return (
     <>
       <AceEditor
         mode="json"
-        width={'100%'}
+        width={"100%"}
         highlightActiveLine={true}
         tabSize={2}
         theme="github"

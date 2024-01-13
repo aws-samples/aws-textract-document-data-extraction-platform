@@ -8,8 +8,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "lib": [
-      "es2019",
-      "dom"
+      "es2019"
     ],
     "module": "CommonJS",
     "noEmitOnError": false,
@@ -24,11 +23,9 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "ES2019",
-    "skipLibCheck": true
+    "target": "ES2019"
   },
   "include": [
-    ".projenrc.js",
     "src/**/*.ts",
     "test/**/*.ts"
   ],

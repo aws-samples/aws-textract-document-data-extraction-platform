@@ -24,6 +24,7 @@ const addEslintRulesConfig = (project: TypeScriptProject) => {
  * Apply custom eslint config to the project
  */
 export const configureEslint = (project: TypeScriptProject) => {
+  project.addDevDeps("eslint-plugin-header@^3");
   addEslintHeaderConfig(project);
   addEslintRulesConfig(project);
 };

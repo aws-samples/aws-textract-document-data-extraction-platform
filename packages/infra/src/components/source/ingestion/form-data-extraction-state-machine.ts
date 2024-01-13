@@ -17,9 +17,9 @@ import {
 import { Construct } from "constructs";
 import { Table } from "../../common/dynamodb/table";
 import {
-  PythonLambda,
-  PythonLambdaProps,
-} from "../../common/lambda/python-lambda";
+  PythonLibLambda,
+  PythonLibLambdaProps,
+} from "../../common/lambda/python-lib-lambda";
 import { grantPublishMetrics } from "../../common/metrics/permissions";
 import { TextractStateMachine } from "../textract/textract-state-machine";
 
@@ -46,15 +46,15 @@ export class FormDataExtractionStateMachine extends Construct {
       formMetadataTable,
       formSchemaTable,
       sourceBucket,
-    }: FormIngestionStateMachineProps
+    }: FormIngestionStateMachineProps,
   ) {
     super(scope, id);
 
     const buildLambda = (
       handler: string,
-      extraProps?: Omit<PythonLambdaProps, "handler">
+      extraProps?: Omit<PythonLibLambdaProps, "handler">,
     ) =>
-      new PythonLambda(this, handler, {
+      new PythonLibLambda(this, handler, {
         handler: `form_data_extraction_state_machine/${handler}`,
         timeout: Duration.minutes(15),
         environment: {
@@ -97,7 +97,7 @@ export class FormDataExtractionStateMachine extends Construct {
         }),
         payloadResponseOnly: true,
         resultPath: "$.Payload.StartDataExtractionOutput",
-      })
+      }),
     );
 
     const runTextract = withErrorHandler(
@@ -107,16 +107,16 @@ export class FormDataExtractionStateMachine extends Construct {
           Payload: {
             DocumentLocation: JsonPath.stringAt("$.Payload.Form.location"),
             FeatureTypes: JsonPath.stringAt(
-              "$.Payload.StartDataExtractionOutput.textract_feature_types"
+              "$.Payload.StartDataExtractionOutput.textract_feature_types",
             ),
             ExtraTextractArgs: JsonPath.stringAt(
-              "$.Payload.StartDataExtractionOutput.textract_extra_args"
+              "$.Payload.StartDataExtractionOutput.textract_extra_args",
             ),
           },
         }),
         integrationPattern: IntegrationPattern.RUN_JOB,
         resultPath: "$.Payload.TextractOutput",
-      })
+      }),
     );
     const extractFormDataLambda = buildLambda("extract_form_data");
     formMetadataTable.grantReadWriteData(extractFormDataLambda);
@@ -126,7 +126,7 @@ export class FormDataExtractionStateMachine extends Construct {
         effect: Effect.ALLOW,
         actions: ["textract:GetDocumentAnalysis"],
         resources: ["*"],
-      })
+      }),
     );
     sourceBucket.grantReadWrite(extractFormDataLambda);
     grantPublishMetrics(extractFormDataLambda);
@@ -140,7 +140,7 @@ export class FormDataExtractionStateMachine extends Construct {
         }),
         payloadResponseOnly: true,
         resultPath: "$.Payload.ExtractFormDataOutput",
-      })
+      }),
     );
 
     this.stateMachine = new StateMachine(this, "StateMachine", {

@@ -6,7 +6,7 @@ import {
   DocumentMetadata,
   FormMetadata,
   FormSchema,
-} from '@aws/api-typescript-runtime';
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
 import {
   Button,
   Column,
@@ -16,17 +16,17 @@ import {
   KeyValuePair,
   Stack,
   Tabs,
-} from 'aws-northstar';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { DocumentsTable } from './documents-table';
-import { FormsTable } from './forms-table';
-import { API } from '../../api/client';
+} from "aws-northstar";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { DocumentsTable } from "./documents-table";
+import { FormsTable } from "./forms-table";
 import {
   friendlyDuration,
   friendlyPercent,
   getMetricsForLastThreeMonths,
-} from '../../api/metrics';
-import { listAllPages } from '../../api/utils';
+} from "../../api/metrics";
+import { listAllPages } from "../../api/utils";
+import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
 
 export interface DashboardProps {}
 
@@ -45,18 +45,20 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const [documents, setDocuments] = useState<DocumentMetadata[]>([]);
   const [forms, setForms] = useState<FormMetadata[]>([]);
   const [metrics, setMetrics] = useState<AggregateMetrics>();
-  const tabHistoryKey = 'dashboardTab';
-  const defaultTab = 'documents';
+  const tabHistoryKey = "dashboardTab";
+  const defaultTab = "documents";
+
+  const API = useDefaultApiClient()!;
 
   const fetchMetrics = useCallback(async () => {
-    setMetrics(await getMetricsForLastThreeMonths());
+    setMetrics(await getMetricsForLastThreeMonths(API));
   }, []);
 
   const fetchDocuments = useCallback(async () => {
     setDocumentsLoaded(false);
     const documentsResponse = await listAllPages(
       API.listDocuments.bind(API),
-      'documents',
+      "documents",
     );
     setDocuments(documentsResponse);
     setDocumentsLoaded(true);
@@ -66,7 +68,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     setSchemasLoaded(false);
     const schemasResponse = await listAllPages(
       API.listFormSchemas.bind(API),
-      'schemas',
+      "schemas",
     );
     setSchemas(schemasResponse);
     setSchemasLoaded(true);
@@ -74,7 +76,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   const fetchForms = useCallback(async () => {
     setFormsLoaded(false);
-    const formsResponse = await listAllPages(API.listForms.bind(API), 'forms');
+    const formsResponse = await listAllPages(API.listForms.bind(API), "forms");
     setForms(formsResponse);
     setFormsLoaded(true);
   }, []);
@@ -97,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     });
 
     await fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       body: file,
     });
     await API.submitSourceDocument({
@@ -120,7 +122,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const tabs = useMemo(() => {
     return [
       {
-        label: 'Documents',
+        label: "Documents",
         id: defaultTab,
         content: (
           <DocumentsTable
@@ -133,8 +135,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
         ),
       },
       {
-        label: 'Forms',
-        id: 'forms',
+        label: "Forms",
+        id: "forms",
         content: (
           <FormsTable
             forms={forms}
@@ -157,7 +159,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={2}>
-        {' '}
+        {" "}
       </Grid>
       <Grid item xs={12}>
         <Container
@@ -167,7 +169,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
             <>
               <Button
                 variant="icon"
-                icon={'refresh'}
+                icon={"refresh"}
                 onClick={fetchData}
                 loading={!dataLoaded}
               />
@@ -179,11 +181,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <Stack>
                 <KeyValuePair
                   label="Documents Processed"
-                  value={metrics?.totalProcessedDocumentCount ?? '-'}
+                  value={metrics?.totalProcessedDocumentCount ?? "-"}
                 />
                 <KeyValuePair
                   label="Forms Extracted"
-                  value={metrics?.totalSuccessfulFormCount ?? '-'}
+                  value={metrics?.totalSuccessfulFormCount ?? "-"}
                 />
               </Stack>
             </Column>
@@ -219,7 +221,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
           }
           activeId={localStorage.getItem(tabHistoryKey) ?? defaultTab}
           tabs={tabs}
-          variant={'container'}
+          variant={"container"}
         />
       </Grid>
     </Grid>

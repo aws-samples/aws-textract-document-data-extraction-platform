@@ -19,7 +19,7 @@ export const grantPublishMetrics = (lambda: LambdaFunction) =>
           "cloudwatch:namespace": METRICS_NAMESPACE,
         },
       },
-    })
+    }),
   );
 
 /**
@@ -31,5 +31,5 @@ export const grantReadMetrics = (lambda: LambdaFunction) =>
       effect: Effect.ALLOW,
       actions: ["cloudwatch:GetMetricStatistics"],
       resources: ["*"],
-    })
+    }),
   );

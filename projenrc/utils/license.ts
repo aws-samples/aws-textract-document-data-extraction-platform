@@ -44,6 +44,7 @@ export const licenseFile = ({
   fileName,
   variant,
 }: LicenseFileProps) => {
+  project.tryRemoveFile("LICENSE");
   const lines =
     variant === LicenseVariant.SHORT
       ? [...getShortLicense(" ").map((line) => line.trimEnd()), ""]

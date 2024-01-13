@@ -1,13 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { FormMetadata, FormSchema } from '@aws/api-typescript-runtime';
-import { Grid, LoadingIndicator } from 'aws-northstar';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {
+  FormMetadata,
+  FormSchema,
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
+import { Grid, LoadingIndicator } from "aws-northstar";
+import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { API } from '../../api/client';
-import { FormReviewPanel } from '../form-review-panel';
+import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
+import { FormReviewPanel } from "../form-review-panel";
 
 export interface PDFFormReviewProps {
   readonly isReadOnly: boolean;
@@ -27,10 +30,12 @@ const PDFFormReview: React.FC<PDFFormReviewProps> = (
     formId: string;
   }>();
 
+  const API = useDefaultApiClient()!;
+
   const fetchFormAndSchema = useCallback(async () => {
     const form = await API.getDocumentForm({
-      documentId,
-      formId,
+      documentId: documentId!,
+      formId: formId!,
     });
 
     const schema = await API.getFormSchema({

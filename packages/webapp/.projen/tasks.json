@@ -40,7 +40,7 @@
           "exec": "mkdir -p public/api-docs"
         },
         {
-          "exec": "cp -r ../api/documentation/html2/* public/api-docs"
+          "exec": "cp -r ../api/generated/documentation/html_redoc/index.html public/api-docs/index.html"
         }
       ]
     },
@@ -51,6 +51,10 @@
     "dev": {
       "name": "dev",
       "description": "Starts the react application",
+      "env": {
+        "ESLINT_NO_DEV_ERRORS": "true",
+        "TSC_COMPILE_ON_ERROR": "true"
+      },
       "steps": [
         {
           "exec": "DISABLE_ESLINT_PLUGIN=true react-app-rewired start"
@@ -62,7 +66,8 @@
       "description": "Runs eslint against the codebase",
       "steps": [
         {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test build-tools"
+          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern $@ src test build-tools",
+          "receiveArgs": true
         }
       ]
     },
@@ -71,7 +76,7 @@
       "description": "Install project dependencies and update lockfile (non-frozen)",
       "steps": [
         {
-          "exec": "yarn install --check-files"
+          "exec": "pnpm i --no-frozen-lockfile"
         }
       ]
     },
@@ -80,7 +85,7 @@
       "description": "Install project dependencies using frozen lockfile",
       "steps": [
         {
-          "exec": "yarn install --check-files --frozen-lockfile"
+          "exec": "pnpm i --frozen-lockfile"
         }
       ]
     },
@@ -125,28 +130,13 @@
       },
       "steps": [
         {
-          "exec": "yarn upgrade npm-check-updates"
+          "exec": "pnpx npm-check-updates@16 --upgrade --target=minor --peer --dep=dev,peer,prod,optional --filter=@testing-library/jest-dom,@testing-library/react,@testing-library/user-event,@types/humanize-duration,@types/jest,@types/lodash,@types/node,@types/react-dom,@types/react-pdf,@types/react-router-dom,@types/react,@types/swagger-ui-react,@typescript-eslint/eslint-plugin,@typescript-eslint/parser,constructs,eslint-config-prettier,eslint-import-resolver-typescript,eslint-plugin-header,eslint-plugin-import,eslint-plugin-prettier,eslint,prettier,projen,react-app-rewired,typescript,@material-ui/icons,ace-builds,aws-northstar,aws4fetch,humanize-duration,lodash,react-ace,react-dom,react-pdf,react-router-dom,react-scripts,react-zoom-pan-pinch,react,web-vitals"
         },
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@aws-amplify/api,@aws-amplify/auth,@aws-amplify/ui-react,aws-amplify'"
+          "exec": "pnpm i --no-frozen-lockfile"
         },
         {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@aws-amplify/api,@aws-amplify/auth,@aws-amplify/ui-react,aws-amplify'"
-        },
-        {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@aws-amplify/api,@aws-amplify/auth,@aws-amplify/ui-react,aws-amplify'"
-        },
-        {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@aws-amplify/api,@aws-amplify/auth,@aws-amplify/ui-react,aws-amplify'"
-        },
-        {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@aws-amplify/api,@aws-amplify/auth,@aws-amplify/ui-react,aws-amplify'"
-        },
-        {
-          "exec": "yarn install --check-files"
-        },
-        {
-          "exec": "yarn upgrade @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/humanize-duration @types/jest @types/node @types/react-dom @types/react-pdf @types/react-router-dom @types/react @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint npm-check-updates projen react-app-rewired react-scripts typescript @aws-amplify/api @aws-amplify/auth @aws-amplify/ui-react @aws/api-typescript-runtime @material-ui/icons @types/lodash ace-builds aws-amplify aws-northstar aws4fetch graphql humanize-duration lodash react react-ace react-dom react-pdf react-router-dom react-scripts react-zoom-pan-pinch web-vitals"
+          "exec": "pnpm update @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/humanize-duration @types/jest @types/lodash @types/node @types/react-dom @types/react-pdf @types/react-router-dom @types/react @types/swagger-ui-react @typescript-eslint/eslint-plugin @typescript-eslint/parser constructs eslint-config-prettier eslint-import-resolver-typescript eslint-plugin-header eslint-plugin-import eslint-plugin-prettier eslint prettier projen react-app-rewired typescript @material-ui/icons ace-builds aws-northstar aws4fetch humanize-duration lodash react-ace react-dom react-pdf react-router-dom react-scripts react-zoom-pan-pinch react web-vitals"
         },
         {
           "exec": "npx projen"
@@ -167,7 +157,8 @@
     }
   },
   "env": {
-    "PATH": "$(npx -c \"node --print process.env.PATH\")"
+    "PATH": "$(pnpm -c exec \"node --print process.env.PATH\")",
+    "DISABLE_ESLINT_PLUGIN": "true"
   },
   "//": "~~ Generated by projen. To modify, edit .projenrc.js and run \"npx projen\"."
 }

@@ -1,53 +1,53 @@
 {
-  "name": "@aws/api",
+  "name": "@aws/document-extraction-platform-api",
   "root": "packages/api",
   "targets": {
     "default": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen default",
+        "command": "pnpm dlx projen default",
         "cwd": "packages/api"
       }
     },
     "pre-compile": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen pre-compile",
+        "command": "pnpm dlx projen pre-compile",
         "cwd": "packages/api"
       }
     },
     "compile": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen compile",
+        "command": "pnpm dlx projen compile",
         "cwd": "packages/api"
       }
     },
     "post-compile": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen post-compile",
+        "command": "pnpm dlx projen post-compile",
         "cwd": "packages/api"
       }
     },
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen test",
+        "command": "pnpm dlx projen test",
         "cwd": "packages/api"
       }
     },
     "package": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen package",
+        "command": "pnpm dlx projen package",
         "cwd": "packages/api"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx projen build",
+        "command": "pnpm dlx projen build",
         "cwd": "packages/api"
       }
     }

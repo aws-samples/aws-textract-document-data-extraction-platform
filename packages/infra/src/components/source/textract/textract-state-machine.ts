@@ -19,7 +19,7 @@ import {
 } from "aws-cdk-lib/aws-stepfunctions";
 import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import { Construct } from "constructs";
-import { PythonLambda } from "../../common/lambda/python-lambda";
+import { PythonLibLambda } from "../../common/lambda/python-lib-lambda";
 
 export interface TextractStateMachineProps {
   readonly sourceBucket: Bucket;
@@ -35,12 +35,12 @@ export class TextractStateMachine extends Construct {
   constructor(
     scope: Construct,
     id: string,
-    { sourceBucket }: TextractStateMachineProps
+    { sourceBucket }: TextractStateMachineProps,
   ) {
     super(scope, id);
 
     const buildLambda = (handler: string) =>
-      new PythonLambda(this, handler, {
+      new PythonLibLambda(this, handler, {
         handler: `textract_state_machine/${handler}`,
       });
 
@@ -51,7 +51,7 @@ export class TextractStateMachine extends Construct {
         effect: Effect.ALLOW,
         actions: ["textract:StartDocumentAnalysis"],
         resources: ["*"],
-      })
+      }),
     );
     sourceBucket.grantRead(startLambda);
 
@@ -77,7 +77,7 @@ export class TextractStateMachine extends Construct {
       lambdaFunction: startLambda,
       payload: TaskInput.fromObject({
         document_location: TaskInput.fromJsonPathAt(
-          "$.Payload.DocumentLocation"
+          "$.Payload.DocumentLocation",
         ).value,
         feature_types: JsonPath.stringAt("$.Payload.FeatureTypes"),
         extra_textract_args: JsonPath.stringAt("$.Payload.ExtraTextractArgs"),
@@ -119,12 +119,12 @@ export class TextractStateMachine extends Construct {
             arnFormat: ArnFormat.COLON_RESOURCE_NAME,
           }),
         ],
-      })
+      }),
     );
 
     onCompleteLambda.addEnvironment(
       "STATE_MACHINE_ARN",
-      this.stateMachine.stateMachineArn
+      this.stateMachine.stateMachineArn,
     );
   }
 }

@@ -21,7 +21,7 @@ export class Table extends DynamoTable {
   constructor(
     scope: Construct,
     id: string,
-    { environmentVariableName, ...props }: TableProps
+    { environmentVariableName, ...props }: TableProps,
   ) {
     super(scope, id, {
       billingMode: BillingMode.PAY_PER_REQUEST,

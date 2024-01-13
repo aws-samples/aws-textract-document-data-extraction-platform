@@ -4,7 +4,7 @@ import {
   FormMetadata,
   FormSchema,
   FormReviewWorkflowTag,
-} from '@aws/api-typescript-runtime';
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
 import {
   Alert,
   Badge,
@@ -20,35 +20,35 @@ import {
   Input,
   Modal,
   Multiselect,
-} from 'aws-northstar';
-import Table, { Row } from 'aws-northstar/components/Table';
-import { Column as TableColumn } from 'aws-northstar/components/Table/types';
-import Grid from 'aws-northstar/layouts/Grid';
-import _ from 'lodash';
+} from "aws-northstar";
+import Table, { Row } from "aws-northstar/components/Table";
+import { Column as TableColumn } from "aws-northstar/components/Table/types";
+import Grid from "aws-northstar/layouts/Grid";
+import _ from "lodash";
 import React, {
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { useHistory } from 'react-router-dom';
+} from "react";
+import { useHistory } from "react-router-dom";
 
-import { API } from '../../api/client';
-import { listAllPages } from '../../api/utils';
+import { listAllPages } from "../../api/utils";
+import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
 import {
   flattenFormSchema,
   FormValue,
   stringifyDataAccordingToSchema,
   stringifySchema,
-} from '../../utils/review-panel/schema-helper';
+} from "../../utils/review-panel/schema-helper";
 import {
   ReviewMultiselectTagOption,
   tagIdsToTags,
-} from '../../utils/review-tags-helper';
-import { updateStatus } from '../../utils/status-update-helper';
-import { SchemaEditor } from '../document-schemas/schema-editor';
-import { DrawWrapper, PdfViewer } from '../pdf/pdf-viewer';
+} from "../../utils/review-tags-helper";
+import { updateStatus } from "../../utils/status-update-helper";
+import { SchemaEditor } from "../document-schemas/schema-editor";
+import { DrawWrapper, PdfViewer } from "../pdf/pdf-viewer";
 
 export interface FormReviewPanelProps {
   readonly documentForm: FormMetadata;
@@ -103,7 +103,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
     formValueList
       .filter((x) => x.key === `${row.original.key}`)
       .map((f) => {
-        _.update(f, 'value', function () {
+        _.update(f, "value", function () {
           return e;
         });
       });
@@ -116,11 +116,13 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
   const flattenedFields = useMemo(() => flattenFormSchema(docForm), [docForm]);
   const [formValues, setFormValues] = useState<FormValue[]>(flattenedFields);
 
+  const API = useDefaultApiClient()!;
+
   useEffect(() => {
     void (async () => {
       const tags = await listAllPages(
         API.listFormReviewWorkflowTags.bind(API),
-        'tags',
+        "tags",
       );
       setAvailableReviewWorkflowTags(tags);
       setReviewTags(tagsToMultiselectOptions(tags));
@@ -139,7 +141,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
     drawRef.current((ctx, { width, height }) => {
       // Only draw the box if we're on the right page to display it
       if (field.page !== undefined && field.page + 1 === pageNumber) {
-        ctx.fillStyle = 'rgba(144, 238, 144, 0.5)';
+        ctx.fillStyle = "rgba(144, 238, 144, 0.5)";
         ctx.fillRect(
           field.boundingBox.left * width,
           field.boundingBox.top * height,
@@ -189,17 +191,17 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
   const formFields: TableColumn<any>[] = useMemo(
     () => [
       {
-        id: 'fieldName',
+        id: "fieldName",
         width: 200,
-        Header: 'Name',
-        accessor: 'key',
+        Header: "Name",
+        accessor: "key",
         Cell: ({ value }) => <Box marginTop={1}>{value}</Box>,
       },
       {
-        id: 'fieldValue',
+        id: "fieldValue",
         width: 300,
-        Header: 'Value',
-        accessor: 'value',
+        Header: "Value",
+        accessor: "value",
         Cell: ({ value, row }) => {
           if (isReadOnly) {
             return <Box marginTop={1}>{value}</Box>;
@@ -209,7 +211,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
               <Input
                 type="text"
                 controlId={row.id}
-                value={value ? value : ''}
+                value={value ? value : ""}
                 onFocus={() => {
                   onSelectRow(row.original);
                 }}
@@ -224,19 +226,19 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
         },
       },
       {
-        id: 'confidence',
+        id: "confidence",
         width: 100,
-        Header: 'Confidence',
-        accessor: 'confidence',
+        Header: "Confidence",
+        accessor: "confidence",
         Cell: ({ value }) => (
-          <Box marginTop={1}>{Number(value).toFixed(2) + ' %'}</Box>
+          <Box marginTop={1}>{Number(value).toFixed(2) + " %"}</Box>
         ),
       },
       {
-        id: 'method',
+        id: "method",
         width: 100,
-        Header: 'Extraction Method',
-        accessor: 'extractionMethod',
+        Header: "Extraction Method",
+        accessor: "extractionMethod",
         Cell: ({ value }) => <Box marginTop={1}>{value}</Box>,
       },
     ],
@@ -249,7 +251,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
     setIsSubmittingReview(true);
     setShowSuccessAlert(false);
     const reviewNotes = (
-      document.getElementById('reviewNotesTextArea') as HTMLInputElement
+      document.getElementById("reviewNotesTextArea") as HTMLInputElement
     ).value;
     await API.updateFormReview({
       updateFormInput: {
@@ -266,7 +268,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
     });
 
     if (isReviewComplete) {
-      await updateStatus(docForm.documentId, docForm.formId, 'REVIEWED');
+      await updateStatus(API, docForm.documentId, docForm.formId, "REVIEWED");
     }
 
     setShowSuccessAlert(true);
@@ -279,10 +281,10 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
       <Grid item xs={12}>
         <textarea
           disabled={isReadOnly}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           placeholder="Review Notes"
           id="reviewNotesTextArea"
-          defaultValue={docForm?.notes ?? ''}
+          defaultValue={docForm?.notes ?? ""}
         ></textarea>
       </Grid>
       <Grid item xs={5}>
@@ -293,7 +295,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
             </Box>
           </Grid>
           <Grid item xs={10}>
-            <Box width={'200px'}>
+            <Box width={"200px"}>
               {isReadOnly ? (
                 tagIdsToTags(
                   docForm?.tags ?? [],
@@ -309,7 +311,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
                   disabled={isReadOnly}
                   options={reviewTags}
                   value={selectedReviewTags}
-                  controlId={'tags'}
+                  controlId={"tags"}
                   checkboxes={true}
                 />
               )}
@@ -331,10 +333,10 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
               Review complete
             </Checkbox>
           </Grid>
-          <Grid item xs={'auto'}>
+          <Grid item xs={"auto"}>
             <Button
               disabled={isReadOnly}
-              variant={'primary'}
+              variant={"primary"}
               loading={isSubmittingReview}
               onClick={async () => updateExtractedData()}
             >
@@ -349,7 +351,7 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
   return (
     <Container
       headingVariant="h2"
-      title={isReadOnly ? 'Viewing Form' : 'Reviewing Form'}
+      title={isReadOnly ? "Viewing Form" : "Reviewing Form"}
       actionGroup={
         <Inline>
           {isReadOnly && (
@@ -360,9 +362,10 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
                   `/review/${docForm!.documentId}/${docForm!.formId}`,
                 );
                 await updateStatus(
+                  API,
                   docForm!.documentId,
                   docForm!.formId,
-                  'REVIEWING',
+                  "REVIEWING",
                 );
               }}
             >
@@ -384,8 +387,8 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
         <Grid item xs={12}>
           <Container
             style={{
-              marginBottom: '0px',
-              boxShadow: 'none',
+              marginBottom: "0px",
+              boxShadow: "none",
             }}
           >
             <ColumnLayout>
@@ -394,12 +397,12 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
                   <Grid item xs={12}>
                     <Container
                       style={{
-                        marginBottom: '0px',
-                        boxShadow: 'none',
+                        marginBottom: "0px",
+                        boxShadow: "none",
                       }}
                       footerContent={reviewToolbar}
                     >
-                      <Box style={{ backgroundColor: 'red' }}>
+                      <Box style={{ backgroundColor: "red" }}>
                         <Table
                           onSelectionChange={onSelectionChange}
                           getRowId={(row) => row.key}
@@ -456,12 +459,16 @@ export const FormReviewPanel: React.FC<FormReviewPanelProps> = ({
           <Column>
             <Heading variant="h2">Extracted Data</Heading>
             <br />
-            <SchemaEditor
-              jsonSchema={stringifyDataAccordingToSchema(
-                docForm.extractedData,
-                docForm.schemaSnapshot,
-              )}
-            />
+            {docForm.extractedData ? (
+              <SchemaEditor
+                jsonSchema={stringifyDataAccordingToSchema(
+                  docForm.extractedData,
+                  docForm.schemaSnapshot,
+                )}
+              />
+            ) : (
+              <Alert type="info">Data extraction has not yet completed</Alert>
+            )}
           </Column>
         </ColumnLayout>
       </Modal>

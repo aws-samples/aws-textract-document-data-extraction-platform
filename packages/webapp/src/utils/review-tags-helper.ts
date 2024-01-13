@@ -13,8 +13,9 @@ export interface ReviewMultiselectTagOption {
 
 // return list of review workflow tags matching the passed in list of tag ids
 export const tagIdsToTags = (ids: any, tags: any) => {
-  return tags && ids ? tags.filter((tag: any) => {
-    return ids.includes(tag.tagId);
-  }) : [];
+  return tags && ids
+    ? tags.filter((tag: any) => {
+        return ids.includes(tag.tagId);
+      })
+    : [];
 };
-

@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import { ExtractionExecutionStatus } from '@aws/api-typescript-runtime';
+import { ExtractionExecutionStatus } from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
 import {
   Inline,
   Link,
   NORTHSTAR_COLORS,
   Popover,
   StatusIndicator,
-} from 'aws-northstar';
-import Icon from 'aws-northstar/components/Icon';
-import React from 'react';
-import { InProgressStatusIndicator } from './inProgressStatusIndicator';
+} from "aws-northstar";
+import Icon from "aws-northstar/components/Icon";
+import React from "react";
+import { InProgressStatusIndicator } from "./inProgressStatusIndicator";
 
 export interface ExtractionExecutionStatusIndicatorProps {
   readonly status: ExtractionExecutionStatus;
@@ -24,15 +24,15 @@ export interface ExtractionExecutionStatusIndicatorProps {
  * Display the status of form data extraction
  */
 export const ExtractionExecutionStatusIndicator: React.FC<
-ExtractionExecutionStatusIndicatorProps
+  ExtractionExecutionStatusIndicatorProps
 > = ({ status, statusReason, documentId, formId, updateStatus }) => {
   const link = `/review/${documentId}/${formId}`;
 
   switch (status) {
-    case 'NOT_STARTED':
-    case 'IN_PROGRESS':
+    case "NOT_STARTED":
+    case "IN_PROGRESS":
       return <InProgressStatusIndicator label="Extracting Data" />;
-    case 'READY_FOR_REVIEW':
+    case "READY_FOR_REVIEW":
       return (
         <>
           <Inline spacing="xs">
@@ -52,7 +52,7 @@ ExtractionExecutionStatusIndicatorProps
           </Inline>
         </>
       );
-    case 'REVIEWING':
+    case "REVIEWING":
       return (
         <>
           <Inline spacing="xs">
@@ -68,7 +68,7 @@ ExtractionExecutionStatusIndicatorProps
           </Inline>
         </>
       );
-    case 'REVIEWED':
+    case "REVIEWED":
       return (
         <>
           <Inline spacing="xs">

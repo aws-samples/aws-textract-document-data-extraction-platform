@@ -5,7 +5,7 @@ import {
   FormSchema,
   AggregateMetrics,
   CreateFormSchemaRequest,
-} from '@aws/api-typescript-runtime';
+} from "@aws/document-extraction-platform-api-typescript-react-query-hooks";
 import {
   Alert,
   Button,
@@ -14,36 +14,36 @@ import {
   Inline,
   Input,
   Modal,
-} from 'aws-northstar';
-import Table, { Column as TableColumn } from 'aws-northstar/components/Table';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ModalButtons } from './modal-buttons';
-import { SchemaEditor } from './schema-editor';
+} from "aws-northstar";
+import Table, { Column as TableColumn } from "aws-northstar/components/Table";
+import React, { useCallback, useEffect, useState } from "react";
+import { ModalButtons } from "./modal-buttons";
+import { SchemaEditor } from "./schema-editor";
 
-import { API } from '../../api/client';
 import {
   friendlyPercent,
   getMetricsForLastThreeMonths,
-} from '../../api/metrics';
-import { listAllPages } from '../../api/utils';
-import { stringifySchema } from '../../utils/review-panel/schema-helper';
+} from "../../api/metrics";
+import { listAllPages } from "../../api/utils";
+import { useDefaultApiClient } from "../../hooks/useDefaultApiClient";
+import { stringifySchema } from "../../utils/review-panel/schema-helper";
 
 export interface DocumentSchemaProps {}
 
 const SCHEMA_TEMPLATE: FormJSONSchema = {
-  description: '',
-  typeOf: 'object',
+  description: "",
+  typeOf: "object",
   properties: {
     myFormField: {
-      title: 'My Form Field',
-      typeOf: 'string',
+      title: "My Form Field",
+      typeOf: "string",
       order: 1,
       extractionMetadata: {
-        formKey: 'Key for this form field as present in the document',
+        formKey: "Key for this form field as present in the document",
         tablePosition: 1,
         rowPosition: 1,
         columnPosition: 1,
-        textractQuery: 'What is my form field?',
+        textractQuery: "What is my form field?",
       },
     },
   },
@@ -67,17 +67,19 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
     useState<boolean>(false);
   const [isAddSchemaModalVisible, setIsAddSchemaModalVisible] =
     useState<boolean>(false);
-  let [newSchema, setNewSchema] = useState<string>('');
-  let [addNewSchema, setAddNewSchema] = useState<string>('');
-  let [formTitle, setFormTitle] = useState<string>('');
-  let [formDesc, setFormDesc] = useState<string>('');
+  let [newSchema, setNewSchema] = useState<string>("");
+  let [addNewSchema, setAddNewSchema] = useState<string>("");
+  let [formTitle, setFormTitle] = useState<string>("");
+  let [formDesc, setFormDesc] = useState<string>("");
   let [errorMessage, setErrorMessage] = useState<string | undefined>();
+
+  const API = useDefaultApiClient()!;
 
   const fetchSchemas = useCallback(async () => {
     setDataLoaded(false);
     const [schemasResponse, metricsResponse] = await Promise.all([
-      listAllPages(API.listFormSchemas.bind(API), 'schemas'),
-      getMetricsForLastThreeMonths(),
+      listAllPages(API.listFormSchemas.bind(API), "schemas"),
+      getMetricsForLastThreeMonths(API),
     ]);
     setSchemas(schemasResponse);
     setMetrics(metricsResponse);
@@ -111,7 +113,7 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
           setAddNewSchema(stringifySchema(SCHEMA_TEMPLATE));
           setIsAddSchemaModalVisible(true);
           setErrorMessage(undefined);
-          setErrorMessage('');
+          setErrorMessage("");
         }}
       >
         Add
@@ -126,35 +128,35 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
 
   const schemaListColumns: TableColumn<any>[] = [
     {
-      id: 'title',
+      id: "title",
       width: 120,
-      Header: 'Name',
-      accessor: 'title',
+      Header: "Name",
+      accessor: "title",
     },
     {
-      id: 'schemaId',
+      id: "schemaId",
       width: 150,
-      Header: 'Id',
-      accessor: 'schemaId',
+      Header: "Id",
+      accessor: "schemaId",
     },
     {
-      id: 'updatedBy',
+      id: "updatedBy",
       width: 150,
-      Header: 'Updated By',
-      accessor: 'updatedBy',
+      Header: "Updated By",
+      accessor: "updatedBy",
     },
     {
-      id: 'updatedTimestamp',
+      id: "updatedTimestamp",
       width: 150,
-      Header: 'Last Updated',
-      accessor: 'updatedTimestamp',
+      Header: "Last Updated",
+      accessor: "updatedTimestamp",
       Cell: ({ value }) => <>{new Date(value).toLocaleString()}</>,
     },
     {
-      id: 'accuracyPercent',
+      id: "accuracyPercent",
       width: 100,
-      Header: 'Average Accuracy',
-      accessor: 'schemaId',
+      Header: "Average Accuracy",
+      accessor: "schemaId",
       Cell: ({ value }) => (
         <>
           {friendlyPercent(
@@ -185,7 +187,7 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
       });
     } catch (error: any) {
       setIsSubmittingSchema(false);
-      setErrorMessage('Could not update schema. ' + error.message);
+      setErrorMessage("Could not update schema. " + error.message);
     }
 
     if (schemasResponse) {
@@ -217,7 +219,7 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
       schemasResponse = await API.createFormSchema(input);
     } catch (error: any) {
       setIsSubmittingAddSchema(false);
-      setErrorMessage('Could not create schema. ' + error.message);
+      setErrorMessage("Could not create schema. " + error.message);
     }
 
     if (schemasResponse) {
@@ -242,7 +244,7 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
     <>
       <Modal
         width="70%"
-        title={selectedRow?.title || ''}
+        title={selectedRow?.title || ""}
         visible={isSchemaModalVisible}
         onClose={() => {
           setIsSchemaModalVisible(false);
@@ -340,11 +342,11 @@ const DocumentSchemas: React.FC<DocumentSchemaProps> = () => {
 
       <Grid container spacing={1}>
         <Grid item xs={2}>
-          {' '}
+          {" "}
         </Grid>
         <Grid item xs={12}>
           <Table
-            tableTitle={'Document Schemas'}
+            tableTitle={"Document Schemas"}
             actionGroup={actionGroup}
             columnDefinitions={schemaListColumns}
             items={schemas}

@@ -14,6 +14,11 @@ module.exports = {
             },
         });
 
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            util: false,
+        };
+
         return config;
     },
 };

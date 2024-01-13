@@ -16,7 +16,7 @@ export interface CfnNagRuleSuppression {
  */
 export const addCfnNagSuppressions = (
   construct: CfnResource,
-  rulesToSuppress: CfnNagRuleSuppression[]
+  rulesToSuppress: CfnNagRuleSuppression[],
 ): void => {
   construct.cfnOptions.metadata = {
     ...construct.cfnOptions.metadata,
@@ -34,32 +34,36 @@ export const addCfnNagSuppressions = (
  * Adds cfn nag suppressions to the given stack
  */
 export const addNagSupressionsToStack = (stack: Stack) => {
-  NagSuppressions.addStackSuppressions(stack, [
-    {
-      id: "AwsSolutions-S1",
-      reason: "overkill for this small sample",
-    },
-    {
-      id: "AwsSolutions-IAM4",
-      reason: "Managed policies are sufficient for a sample of this size",
-    },
-    {
-      id: "AwsSolutions-IAM5",
-      reason:
-        "Some dynamic wildcard permissions are required for several service actions",
-    },
-    {
-      id: "AwsSolutions-DDB3",
-      reason: "Point in time recovery is not required",
-    },
-    {
-      id: "AwsSolutions-L1",
-      reason: "Lambda functions are using python 3.9",
-    },
-    {
-      id: "AwsSolutions-SF1",
-      reason:
-        "Step functions not required to log ALL events. They are logged in lambda functions.",
-    },
-  ]);
+  NagSuppressions.addStackSuppressions(
+    stack,
+    [
+      {
+        id: "AwsSolutions-S1",
+        reason: "overkill for this small sample",
+      },
+      {
+        id: "AwsSolutions-IAM4",
+        reason: "Managed policies are sufficient for a sample of this size",
+      },
+      {
+        id: "AwsSolutions-IAM5",
+        reason:
+          "Some dynamic wildcard permissions are required for several service actions",
+      },
+      {
+        id: "AwsSolutions-DDB3",
+        reason: "Point in time recovery is not required",
+      },
+      {
+        id: "AwsSolutions-L1",
+        reason: "Lambda functions are using python 3.9",
+      },
+      {
+        id: "AwsSolutions-SF1",
+        reason:
+          "Step functions not required to log ALL events. They are logged in lambda functions.",
+      },
+    ],
+    true,
+  );
 };
