@@ -90,6 +90,11 @@
       "type": "override"
     },
     {
+      "name": "axios",
+      "version": "^1.6.0",
+      "type": "override"
+    },
+    {
       "name": "fast-xml-parser",
       "version": "^4.2.5",
       "type": "override"
@@ -97,6 +102,11 @@
     {
       "name": "nth-check",
       "version": "^2.0.1",
+      "type": "override"
+    },
+    {
+      "name": "postcss",
+      "version": "^8.4.31",
       "type": "override"
     },
     {
