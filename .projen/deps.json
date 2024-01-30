@@ -69,6 +69,7 @@
     },
     {
       "name": "syncpack",
+      "version": "^12",
       "type": "build"
     },
     {

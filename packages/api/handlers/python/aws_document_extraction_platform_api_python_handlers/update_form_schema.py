@@ -3,7 +3,6 @@
 #   SPDX-License-Identifier: MIT-0
 #
 from typing import Any
-import aws_document_extraction_platform_api_python_runtime
 from aws_document_extraction_platform_api_python_runtime.models import *
 from aws_document_extraction_platform_api_python_runtime.response import Response
 from aws_document_extraction_platform_lib.utils.ddb.form_schema_store import (
@@ -19,24 +18,6 @@ from aws_document_extraction_platform_api_python_runtime.api.operation_config im
     update_form_schema_handler,
     UpdateFormSchemaRequest,
     UpdateFormSchemaOperationResponses,
-)
-import json
-
-# HACK! Patch body parser since "schemaId" is not included in FormSchema.from_dict
-def patched_parse_body(body, content_types, model):
-    """
-    Parse the body of an api request into the given model if present
-    """
-    if len([c for c in content_types if c != "application/json"]) == 0:
-        if model != Any:
-            body = model.model_validate(json.loads(body))
-        else:
-            body = json.loads(body or "{}")
-    return body
-
-
-aws_document_extraction_platform_api_python_runtime.api.operation_config.parse_body = (
-    patched_parse_body
 )
 
 

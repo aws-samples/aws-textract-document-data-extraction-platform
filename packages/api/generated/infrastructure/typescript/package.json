@@ -14,7 +14,7 @@
     "watch": "npx projen watch"
   },
   "devDependencies": {
-    "@aws/pdk": "0.22.49",
+    "@aws/pdk": "0.23.0",
     "@types/aws-lambda": "^8.10.131",
     "@types/node": "^18",
     "aws-cdk-lib": "2.118.0",
