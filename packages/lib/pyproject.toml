@@ -24,7 +24,7 @@ readme = "README.md"
     develop = true
 
   [tool.poetry.dev-dependencies]
-  black = "^22"
+  black = "^24"
   licenseheaders = "0.8.8"
   moto = "^4"
   types-python-dateutil = "^2"
