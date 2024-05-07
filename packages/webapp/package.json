@@ -55,7 +55,7 @@
     "react": "^17",
     "react-ace": "^10",
     "react-dom": "^17",
-    "react-pdf": "^5",
+    "react-pdf": "^7",
     "react-router-dom": "^6.21.1",
     "react-scripts": "^5",
     "react-zoom-pan-pinch": "^2",
