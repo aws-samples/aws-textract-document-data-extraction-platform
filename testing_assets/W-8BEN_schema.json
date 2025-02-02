@@ -1,0 +1,195 @@
+{
+  "title": "W-8BEN",
+  "required": [
+    "part1"
+  ],
+  "typeOf": "object",
+  "properties": {
+    "part1": {
+      "order": 1,
+      "required": [
+        "name",
+        "countryOfCitizenship",
+        "address",
+        "city",
+        "residenceAddressCountry",
+        "ssn",
+        "foreignTaxID",
+        "referenceNumber",
+        "dateOfBirth"
+      ],
+      "typeOf": "object",
+      "properties": {
+        "name": {
+          "order": 1,
+          "extractionMetadata": {
+            "formKey": "Name of individual who is the beneficial owner",
+            "textractQuery": "What is the Name of individual who is the beneficial owner?"
+          },
+          "title": "Name of individual who is the beneficial owner",
+          "type": "string"
+        },
+        "countryOfCitizenship": {
+          "order": 2,
+          "extractionMetadata": {
+            "formKey": "Country of citizenship",
+            "textractQuery": "What is the Country of citizenship?"
+          },
+          "title": "Country of citizenship",
+          "type": "string"
+        },
+        "address": {
+          "order": 3,
+          "extractionMetadata": {
+            "formKey": "Permanent residence address",
+            "textractQuery": "What is the permanent residence address?"
+          },
+          "title": "Permanent residence address",
+          "type": "string"
+        },
+        "city": {
+          "order": 4,
+          "extractionMetadata": {
+            "formKey": "City or town, state or province. Include postal code where appropriate.",
+            "textractQuery": "What is the City or town, state or province below the permanent residence address?"
+          },
+          "title": "City or town, state or province. Include postal code where appropriate.",
+          "type": "string"
+        },
+        "residenceAddressCountry": {
+          "order": 5,
+          "extractionMetadata": {
+            "formKey": "Country",
+            "textractQuery": "What is the residence address country?"
+          },
+          "title": "Country",
+          "type": "string"
+        },
+        "mailingAddress": {
+          "order": 6,
+          "extractionMetadata": {
+            "formKey": "Mailing address (if different from above)",
+            "textractQuery": "What is the Mailing address?"
+          },
+          "title": "Mailing address",
+          "type": "string"
+        },
+        "mailingAddressCity": {
+          "order": 7,
+          "extractionMetadata": {
+            "formKey": "City or town, state or province. Include postal code where appropriate.",
+            "textractQuery": "What is the City or town, state or province below the mailing address?"
+          },
+          "title": "City or town, state or province. Include postal code where appropriate.",
+          "type": "string"
+        },
+        "mailingAddressCountry": {
+          "order": 8,
+          "extractionMetadata": {
+            "formKey": "Country",
+            "textractQuery": "What is the Country of the mailing address?"
+          },
+          "title": "Country",
+          "type": "string"
+        },
+        "ssn": {
+          "order": 9,
+          "extractionMetadata": {
+            "formKey": "U.S taxpayer identification number(SSN or ITIN), if required (see instructions)",
+            "textractQuery": "What is the U.S taxpayer identification number(SSN or ITIN)?"
+          },
+          "title": "U.S taxpayer identification number(SSN or ITIN)",
+          "type": "string"
+        },
+        "checkFTIN": {
+          "order": 10,
+          "extractionMetadata": {
+            "formKey": "Check if FTIN not legally required"
+          },
+          "title": "Check if FTIN not legally required",
+          "type": "boolean"
+        },
+        "foreignTaxID": {
+          "order": 10,
+          "extractionMetadata": {
+            "formKey": "Foreign tax identifying number (see instructions)",
+            "textractQuery": "What is the Foreign tax identifying number?"
+          },
+          "title": "Foreign tax identifying number (see instructions)",
+          "type": "string"
+        },
+        "referenceNumber": {
+          "order": 11,
+          "extractionMetadata": {
+            "formKey": "Reference number(s)",
+            "textractQuery": "What is the Reference number(s)?"
+          },
+          "title": "Reference number(s) (see instructions)",
+          "type": "string"
+        },
+        "dateOfBirth": {
+          "order": 12,
+          "extractionMetadata": {
+            "formKey": "Date of birth",
+            "textractQuery": "What is the Date of birth?"
+          },
+          "title": "Date of birth (see instructions)",
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "part2": {
+      "order": 2,
+      "typeOf": "object",
+      "properties": {
+        "beneficialOwnerResident": {
+          "order": 1,
+          "extractionMetadata": {
+            "formKey": "I certify that the beneficial owner is a resident of",
+            "textractQuery": "Which country is the beneficial owner a resident of?"
+          },
+          "title": "I certify that the beneficial owner is a resident of",
+          "type": "string"
+        },
+        "specialRatesConditions": {
+          "order": 2,
+          "extractionMetadata": {
+            "formKey": "The beneficial owner is claiming the provisions of Article and paragraph",
+            "textractQuery": "Which provisions of Article and paragraph is the beneficial owner claiming?"
+          },
+          "title": "The beneficial owner is claiming the provisions of Article and paragraph",
+          "type": "string"
+        },
+        "specialRatesPercent": {
+          "order": 3,
+          "extractionMetadata": {
+            "formKey": "of the treaty identified on line 9 above to claim a",
+            "textractQuery": "What % rate is the beneficial owner withholding?"
+          },
+          "title": "of the treaty identified on line 9 above to claim a",
+          "type": "string"
+        },
+        "specialRatesTypeOfIncome": {
+          "order": 4,
+          "extractionMetadata": {
+            "formKey": "% rate of withholding on (specify type of income)",
+            "textractQuery": "What is the type of income withholding?"
+          },
+          "title": "% rate of withholding on (specify type of income)",
+          "type": "integer"
+        },
+        "specialRatesAdditionalConditions": {
+          "order": 5,
+          "extractionMetadata": {
+            "formKey": "Explain the additional conditions in the Article and paragraph the beneficial owner meets to be eligible for the rate of withholding",
+            "textractQuery": "What additional conditions are eligible for the rate of withholding?"
+          },
+          "title": "Explain the additional conditions in the Article and paragraph the beneficial owner meets to be eligible for the rate of withholding",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "description": "The W-8 form is a legal US Treasury document required by the Internal Revenue Service (IRS) that allows foreign investors to claim concessional tax treaty benefits, including a reduced rate of withholding tax"
+}

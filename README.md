@@ -71,7 +71,7 @@ For more information refer to the spec.yaml's `FormJSONSchema`.
   "required": [
     "part1"
   ],
-  "type": "object",
+  "typeOf": "object",
   "properties": {
     "part1": {
       "order": 1,
@@ -86,7 +86,7 @@ For more information refer to the spec.yaml's `FormJSONSchema`.
         "referenceNumber",
         "dateOfBirth"
       ],
-      "type": "object",
+      "typeOf": "object",
       "properties": {
         "name": {
           "order": 1,
@@ -209,7 +209,7 @@ For more information refer to the spec.yaml's `FormJSONSchema`.
     },
     "part2": {
       "order": 2,
-      "type": "object",
+      "typeOf": "object",
       "properties": {
         "beneficialOwnerResident": {
           "order": 1,

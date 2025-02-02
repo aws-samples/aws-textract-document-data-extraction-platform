@@ -69,6 +69,9 @@ const api = new TypeSafeApiProject({
 api.handlers.python!.addDependency("boto3@^1");
 api.handlers.python!.addDependency("botocore@^1");
 configurePyProject(api.handlers.python!);
+api.handlers.python!.packageTask.exec(
+    `cp -r ${path.join('../../generated/runtime/python/aws_document_extraction_platform_api_python_runtime')} dist/lambda/`
+);
 
 const pythonLibrary = new PythonProject({
   parent: monorepo,
@@ -108,6 +111,9 @@ pythonLibrary.packageTask.exec(
 );
 pythonLibrary.packageTask.exec(
   `pip install -r dist/lambda/requirements.txt --target dist/lambda --upgrade --platform manylinux2014_x86_64 --only-binary :all:`
+);
+pythonLibrary.packageTask.exec(
+    `cp -r ${path.join('../api/generated/runtime/python/aws_document_extraction_platform_api_python_runtime')} dist/lambda/`
 );
 
 
